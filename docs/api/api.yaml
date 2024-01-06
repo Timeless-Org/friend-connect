@@ -1,0 +1,942 @@
+openapi: 3.0.3
+info:
+  title: Friend Connect API
+  description: Friend Connect App.
+  version: 1.0.0
+servers:
+  - url: https://stg.friendconnect.com/api/v1
+    description: Staging server
+    variables:
+      version:
+        description: API version
+        enum:
+          - v1
+        default: v1
+  - url: https://api.friendconnect.com/api/v1
+    description: Production server
+    variables:
+      version:
+        description: API version
+        enum:
+          - v1
+        default: v1
+tags:
+  - name: Login
+    description: Login-related APIs.
+  - name: NFT
+    description: NFT-related APIs.
+  - name: User
+    description: User-related APIs.
+  - name: Chat
+    description: Chat-related APIs.
+  - name: Message
+    description: Message-related APIs.
+  - name: Point
+    description: Point-related APIs.
+  - name: Trade
+    description: Trade-related APIs.
+  - name: Session
+    description: Session-related APIs.
+paths:
+  /login/twitter:
+    post:
+      summary: connect twitter.
+      description: Twitter (X) linkage of users.
+      operationId: connect-twitter
+      tags:
+        - Login
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /login/code:
+    put:
+      summary: Code Verification.
+      description: Verify that the code is valid.
+      operationId: verify-code
+      tags:
+        - Login
+      requestBody:
+        $ref: '#/components/requestBodies/verifyCodeReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /nft:
+    post:
+      summary: create key nft.
+      description: Key NFT generation.
+      operationId: create-key-nft
+      tags:
+        - NFT
+      requestBody:
+        $ref: '#/components/requestBodies/addressReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /nft/hold-key/{address}:
+    get:
+      summary: get hold key nft num.
+      description: Get a list of Key NFT users who own the Key NFT.
+      operationId: get-hold-key-users
+      tags:
+        - NFT
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/users'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /nft/hold-key/amount/{address}:
+    get:
+      summary: get hold key nft num.
+      description: Get the total number of Key NFTs you own.
+      operationId: get-hold-key
+      tags:
+        - NFT
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/amount'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /nft/holder-key/{address}:
+    get:
+      summary: Get a list of users who have Key NFT.
+      description: Get a list of users who have Key NFTs.
+      operationId: get-holder-key-users
+      tags:
+        - NFT
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/users'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /nft/holder-key/amount/{address}:
+    get:
+      summary: get hold key nft num.
+      description: Total number of Key NFTs held.
+      operationId: get-holder-key
+      tags:
+        - NFT
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/amount'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /nft/trade-profit/{address}:
+    get:
+      summary: Get the price obtained by buying and selling Key NFT (ETH).
+      description: Get the price obtained from previous Key NFT trades (ETH).
+      operationId: get-user-trade-profit
+      tags:
+        - NFT
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/priceAmount'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user:
+    post:
+      summary: create user.
+      description: Save data of logged-in users.
+      operationId: create-user
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/createUserReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/{address}:
+    get:
+      summary: get user.
+      description: Retrieve user information from the wallet address.
+      operationId: get-user
+      tags:
+        - User
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/user'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    put:
+      summary: update user.
+      description: User's own profile update.
+      operationId: update-user
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/updateUserReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/codes/{address}:
+    get:
+      summary: Get a list of codes held.
+      description: Get a list of codes held by the user.
+      operationId: get-user-codes
+      tags:
+        - User
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/codes'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/watchlists/{address}:
+    get:
+      summary: get user watchlist.
+      description: Get a list of Watchlist registered by the user.
+      operationId: get-user-watchlist
+      tags:
+        - User
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/watchlist:
+    put:
+      summary: update user watchlist.
+      description: Update the user's watch list.
+      operationId: update-user-watchlist
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/updateWatchlistReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/notification:
+    put:
+      summary: update user notification setting.
+      description: Updated notification permission settings.
+      operationId: update-user-notification
+      tags:
+        - User
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/search/{keyword}:
+    get:
+      summary: search user.
+      description: Retrieve user information from the wallet address.
+      operationId: search
+      tags:
+        - User
+      parameters:
+        - name: keyword
+          in: path
+          description: search word.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/users'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/top-price-users:
+    get:
+      summary: Key NFT prices get Top 50 users.
+      description: Get a list of users with the Top 50 Key NFT prices.
+      operationId: get-top-price-users
+      tags:
+        - User
+      responses:
+        '200':
+          $ref: '#/components/responses/users'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /chat/all/{address}:
+    get:
+      summary: get chat list.
+      description: Get a list of chats that users can view.
+      operationId: get-chat-list
+      tags:
+        - Chat
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/chatList'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /chat/latest:
+    get:
+      summary: Chat get Top 50 users.
+      description: Get a list of the 50 most recently exchanged chats.
+      operationId: get-latest-chat
+      tags:
+        - Chat
+      responses:
+        '200':
+          $ref: '#/components/responses/users'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /chat/{address}:
+    get:
+      summary: get chat info.
+      description: Obtain specific chat information.
+      operationId: get-chat
+      tags:
+        - Chat
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/chat'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /message:
+    post:
+      summary: create message.
+      description: Sending messages via chat.
+      operationId: create-message
+      tags:
+        - Message
+      requestBody:
+        $ref: '#/components/requestBodies/createMessageReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /point:
+    post:
+      summary: create user point.
+      description: Friend Connect Point create for specific users.
+      operationId: create-point
+      tags:
+        - Point
+      requestBody:
+        $ref: '#/components/requestBodies/createPointReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /point/latest/{address}:
+    get:
+      summary: Get the most recently earned Friend Connect Point.
+      description: Get Friend Connect Points earned last week.
+      operationId: get-latest-point
+      tags:
+        - Point
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/amount'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /points:
+    post:
+      summary: create user points.
+      description: Friend Connect Point create for users.
+      operationId: create-points
+      tags:
+        - Point
+      requestBody:
+        $ref: '#/components/requestBodies/createPointsReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /trade/{address}:
+    get:
+      summary: Key NFT trading history list acquisition.
+      description: Get a list of Key NFT transaction history for a specific user (up to 100 most recent transactions).
+      operationId: get-user-trades
+      tags:
+        - Trade
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/tradeList'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /trade/holder/{address}:
+    get:
+      summary: Get a list of Key NFT trading history of users who own the Key NFT.
+      description: Get a list of Key NFT transaction history held by a specific user (up to 100 most recent transactions).
+      operationId: get-user-hold-key-trades
+      tags:
+        - Trade
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/tradeList'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /trade/watchlist/{address}:
+    get:
+      summary: Get a list of Key NFT trading history of users registered on the watch list.
+      description: Get a list of Key NFT trading history of users registered on the watch list of a specific user (up to 100 most recent transactions).
+      operationId: get-user-watchlist-trades
+      tags:
+        - Trade
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/tradeList'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /trade/all/{address}:
+    get:
+      summary: Get a list of Key NFT trading history for the entire world.
+      description: Get the latest Key NFT trading history list for the entire world (up to 100 most recent transactions).
+      operationId: get-all-trades
+      tags:
+        - Trade
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/tradeList'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /trade/latest/:
+    get:
+      summary: User gets the most recent Key NFT traded.
+      description: Get a list of the 50 users with the most recent Key NFT trades.
+      operationId: get-latest-trades
+      tags:
+        - Trade
+      responses:
+        '200':
+          $ref: '#/components/responses/users'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /trades:
+    post:
+      summary: create user trades.
+      description: Create transaction history data for users.
+      operationId: create-trades
+      tags:
+        - Trade
+      requestBody:
+        $ref: '#/components/requestBodies/createTradesReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /session:
+    post:
+      summary: create session.
+      description: Create a session when a user connects to the application.
+      operationId: create-session
+      tags:
+        - Session
+      requestBody:
+        $ref: '#/components/requestBodies/addressReqBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        address:
+          type: string
+          description: User's wallet address.
+          example: 0x123abc...
+    Code:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Invite code.
+          example: 1234abcd
+        address:
+          type: string
+          description: User's wallet address.
+          example: 0x123abc...
+    Amount:
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Some total number.
+          example: 10
+    PriceAmount:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+          description: Decimal point number of some kind.
+          example: 23.56
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name.
+          example: Cardene
+        biography:
+          type: string
+          description: User self-introduction.
+          example: I 'm a blockchain engineer.
+        icon:
+          type: string
+          description: User profile icon image.
+          example: https://example.com/img.pog
+        key_img:
+          type: string
+          description: User's Key NFT Image.
+          example: https://example.com/img.pog
+        address:
+          type: string
+          description: User's wallet address.
+          example: 0x123abc...
+        key_price:
+          type: number
+          format: float
+          description: Current price of Key NFT (ETH).
+          example: 0.01
+        ranking:
+          type: integer
+          description: NFT Key Price Ranking.
+          example: 100
+        point:
+          type: integer
+          description: User's current Friend Connect Point.
+          example: 7
+    UpdateUser:
+      type: object
+      properties:
+        biography:
+          type: string
+          description: User self-introduction.
+          example: I 'm a blockchain engineer.
+        icon:
+          type: string
+          description: User profile icon image.
+          example: https://example.com/img.pog
+        key_img:
+          type: string
+          description: User's Key NFT Image.
+          example: https://example.com/img.pog
+    Watchlist:
+      type: object
+      properties:
+        address:
+          type: string
+          description: User's wallet address.
+          example: 0x123abc...
+        watch_address:
+          type: string
+          description: Wallet address of the user to be registered on Watchlist.
+          example: 0x123abc...
+        register:
+          type: boolean
+          description: Watchlist or unsubscribe.
+          example: true
+    WatchlistInfo:
+      type: object
+      properties:
+        address:
+          type: string
+          description: User's wallet address.
+          example: 0x123abc...
+        name:
+          type: string
+          description: user name.
+          example: Cardene
+        icon:
+          type: string
+          description: user icon.
+          example: https://example.com/img.pog
+        key_price:
+          type: number
+          format: float
+          description: Current price of Key NFT (ETH).
+          example: 0.01
+    Chat:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name.
+          example: Cardene
+        icon:
+          type: string
+          description: User profile icon image.
+          example: https://example.com/img.pog
+        key_price:
+          type: number
+          format: float
+          description: Current price of Key NFT (ETH).
+          example: 0.01
+    Point:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name.
+          example: Cardene
+        point:
+          type: integer
+          description: Acquired Friend Connect Point updates.
+          example: 3
+    Message:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name.
+          example: Cardene
+        icon:
+          type: string
+          description: User profile icon image.
+          example: https://example.com/img.pog
+        text:
+          type: string
+          description: message text.
+          example: hello
+        created_at:
+          type: string
+          format: date-time
+          description: Message creation time.
+          example: 2023-07-21T17:32:28Z
+    ChatMessage:
+      type: object
+      properties:
+        address:
+          type: string
+          description: User wallet address.
+          example: 0x123abc...
+        text:
+          type: string
+          description: message text.
+          example: hello
+    Trade:
+      type: object
+      properties:
+        buy_address:
+          type: string
+          description: Address where Key NFT was purchased.
+          example: 0x123abc...
+        sell_address:
+          type: string
+          description: Address where Key NFT was sold.
+          example: 0x789xyz
+        key_price:
+          type: number
+          format: float
+          description: Key NFT prices traded.
+          example: 0.01
+        is_buy:
+          type: boolean
+          description: Key NFT purchase or not.
+          example: true
+    Success:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: Success
+    UnauthorizedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 401
+        message:
+          type: string
+          example: Unauthorized
+    InternalServerError:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: Internal server error
+  requestBodies:
+    addressReqBody:
+      description: A request to pass the user's wallet address.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Address'
+    verifyCodeReqBody:
+      description: Code validation request.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Code'
+    createUserReqBody:
+      description: Data received at the time of a user creation request.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    updateUserReqBody:
+      description: User profile updates.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateUser'
+    updateWatchlistReqBody:
+      description: Update user watchlist.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Watchlist'
+    createMessageReqBody:
+      description: Create Message.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ChatMessage'
+    createPointReqBody:
+      description: Friend Connect Point update request..
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Point'
+    createPointsReqBody:
+      description: Friend Connect Point create request.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Point'
+    createTradesReqBody:
+      description: Key NFT's request for creation of historical trading data.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Trade'
+  responses:
+    amount:
+      description: Some total number.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Amount'
+    priceAmount:
+      description: Decimal point number of some kind.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PriceAmount'
+    user:
+      description: User Information.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID of User data (PK).
+                    example: 1
+              - $ref: '#/components/schemas/User'
+    users:
+      description: List of users.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+    chatList:
+      description: A list of chats for a specific address.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Chat'
+    watchlist:
+      description: List of watchlist.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/WatchlistInfo'
+    chat:
+      description: Obtain information on specific chats.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/User'
+              - type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+    tradeList:
+      description: A list of trades for a specific address.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Trade'
+    codes:
+      description: Code list.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Code'
+    success:
+      description: Successful processing.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Success'
+    unauthorized:
+      description: Authentication failure.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    internalServerError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
