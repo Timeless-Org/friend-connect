@@ -12,6 +12,7 @@ erDiagram
         int key_price "user key nft price."
         int ranking "NFT Key Price Ranking."
         int point "user friend connect point."
+        int code UK "Invite code"
         boolean is_online "Whether the user is online or not"
         boolean notification "Allow Notification"
         timestamp last_login "Time last online."
@@ -26,8 +27,7 @@ erDiagram
         int id PK "code Id."
         int user_id FK "user id."
         int use_user_id FK "code use user id."
-        int code UK "Invite code"
-        boolean used "Whether the code has been used or not."
+        int point "get friend connect point."
     }
     Chat {
         int id PK "chat room Id."
