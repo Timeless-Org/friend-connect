@@ -227,25 +227,25 @@ paths:
           $ref: '#/components/responses/success'
         '500':
           $ref: '#/components/responses/internalServerError'
-  /user/codes/{address}:
-    get:
-      summary: Get a list of codes held.
-      description: Get a list of codes held by the user.
-      operationId: get-user-codes
-      tags:
-        - User
-      parameters:
-        - name: address
-          in: path
-          description: User's wallet address.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          $ref: '#/components/responses/codes'
-        '500':
-          $ref: '#/components/responses/internalServerError'
+  # /user/codes/{address}:
+  #   get:
+  #     summary: Get a list of codes held.
+  #     description: Get a list of codes held by the user.
+  #     operationId: get-user-codes
+  #     tags:
+  #       - User
+  #     parameters:
+  #       - name: address
+  #         in: path
+  #         description: User's wallet address.
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/codes'
+  #       '500':
+  #         $ref: '#/components/responses/internalServerError'
   /user/watchlists/{address}:
     get:
       summary: get user watchlist.
@@ -521,7 +521,7 @@ paths:
           $ref: '#/components/responses/users'
         '500':
           $ref: '#/components/responses/internalServerError'
-  /trades:
+  /trade:
     post:
       summary: create user trades.
       description: Create transaction history data for users.
