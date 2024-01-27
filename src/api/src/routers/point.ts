@@ -1,9 +1,8 @@
 import router from "express";
+import { getLatestPointController } from "../controllers/point";
 
 const routers = router.Router();
 
-routers.post("/");
-routers.get("/latest/:address");
-routers.post("/points");
+routers.get("/latest/:address", getLatestPointController);
 
 export default routers;

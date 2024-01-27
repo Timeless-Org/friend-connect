@@ -1,18 +1,20 @@
 import router from "express";
+import {
+  createTradeController,
+  getUserTradeController,
+  getHolderTradeController,
+  getWatchlistTradeController,
+  getAllTradeController,
+  getLatestTrade50Controller,
+} from "../controllers/trade";
 
 const routers = router.Router();
 
-routers.get("/:address");
-routers.post("/");
-routers.get("/holder/:address");
-routers.get("/watchlist/:address");
-routers.get("/all/:address");
-routers.get("/all/:address");
-routers.get("/latest");
-routers.get("/");
-routers.get("/");
-routers.get("/");
-routers.get("/");
-routers.get("/");
+routers.get("/:address", getUserTradeController);
+routers.post("/", createTradeController);
+routers.get("/holder/:address", getHolderTradeController);
+routers.get("/watchlist/:address", getWatchlistTradeController);
+routers.get("/all/:address", getAllTradeController);
+routers.get("/latest", getLatestTrade50Controller);
 
 export default routers;

@@ -53,7 +53,7 @@ paths:
         '500':
           $ref: '#/components/responses/internalServerError'
   /login/code:
-    put:
+    post:
       summary: Code Verification.
       description: Verify that the code is valid.
       operationId: verify-code
@@ -279,13 +279,20 @@ paths:
           $ref: '#/components/responses/success'
         '500':
           $ref: '#/components/responses/internalServerError'
-  /user/notification:
+  /user/notification/{address}:
     put:
       summary: update user notification setting.
       description: Updated notification permission settings.
       operationId: update-user-notification
       tags:
         - User
+      parameters:
+        - name: address
+          in: path
+          description: User's wallet address.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -386,20 +393,6 @@ paths:
           $ref: '#/components/responses/success'
         '500':
           $ref: '#/components/responses/internalServerError'
-  /point:
-    post:
-      summary: create user point.
-      description: Friend Connect Point create for specific users.
-      operationId: create-point
-      tags:
-        - Point
-      requestBody:
-        $ref: '#/components/requestBodies/createPointReqBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
-        '500':
-          $ref: '#/components/responses/internalServerError'
   /point/latest/{address}:
     get:
       summary: Get the most recently earned Friend Connect Point.
@@ -417,20 +410,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/amount'
-        '500':
-          $ref: '#/components/responses/internalServerError'
-  /points:
-    post:
-      summary: create user points.
-      description: Friend Connect Point create for users.
-      operationId: create-points
-      tags:
-        - Point
-      requestBody:
-        $ref: '#/components/requestBodies/createPointsReqBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
         '500':
           $ref: '#/components/responses/internalServerError'
   /trade/{address}:
@@ -490,20 +469,13 @@ paths:
           $ref: '#/components/responses/tradeList'
         '500':
           $ref: '#/components/responses/internalServerError'
-  /trade/all/{address}:
+  /trade/all/:
     get:
       summary: Get a list of Key NFT trading history for the entire world.
       description: Get the latest Key NFT trading history list for the entire world (up to 100 most recent transactions).
       operationId: get-all-trades
       tags:
         - Trade
-      parameters:
-        - name: address
-          in: path
-          description: User's wallet address.
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           $ref: '#/components/responses/tradeList'
@@ -620,6 +592,29 @@ components:
           type: integer
           description: User's current Friend Connect Point.
           example: 7
+    CreateUser:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name.
+          example: Cardene
+        biography:
+          type: string
+          description: User self-introduction.
+          example: I 'm a blockchain engineer.
+        icon:
+          type: string
+          description: User profile icon image.
+          example: https://example.com/img.pog
+        key_img:
+          type: string
+          description: User's Key NFT Image.
+          example: https://example.com/img.pog
+        address:
+          type: string
+          description: User's wallet address.
+          example: 0x123abc...
     UpdateUser:
       type: object
       properties:
@@ -686,17 +681,6 @@ components:
           format: float
           description: Current price of Key NFT (ETH).
           example: 0.01
-    Point:
-      type: object
-      properties:
-        name:
-          type: string
-          description: User name.
-          example: Cardene
-        point:
-          type: integer
-          description: Acquired Friend Connect Point updates.
-          example: 3
     Message:
       type: object
       properties:
@@ -796,7 +780,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/CreateUser'
     updateUserReqBody:
       description: User profile updates.
       required: true
@@ -818,22 +802,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ChatMessage'
-    createPointReqBody:
-      description: Friend Connect Point update request..
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Point'
-    createPointsReqBody:
-      description: Friend Connect Point create request.
-      required: true
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Point'
     createTradesReqBody:
       description: Key NFT's request for creation of historical trading data.
       required: true

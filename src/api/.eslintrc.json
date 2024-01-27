@@ -11,10 +11,6 @@
     "project": "./tsconfig.eslint.json"
   },
   "plugins": [],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "rules": {}
 }

@@ -1,12 +1,20 @@
 import router from "express";
+import {
+  createKeyNftController,
+  getHoldKeyController,
+  getHoldKeyAmountController,
+  getKeyNFTHolderController,
+  getHolderKeyAmountController,
+  getTradeProfitController,
+} from "../controllers/nft";
 
 const routers = router.Router();
 
-routers.post("/");
-routers.get("/hold-key/:address");
-routers.get("/hold-key/amount/:address");
-routers.get("/holder-key/:address");
-routers.get("/holder-key/amount/:address");
-routers.get("/trade-profit/:address");
+routers.post("/", createKeyNftController);
+routers.get("/hold-key/:address", getHoldKeyController);
+routers.get("/hold-key/amount/:address", getHoldKeyAmountController);
+routers.get("/holder-key/:address", getKeyNFTHolderController);
+routers.get("/holder-key/amount/:address", getHolderKeyAmountController);
+routers.get("/trade-profit/:address", getTradeProfitController);
 
 export default routers;

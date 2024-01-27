@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,105 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String    @unique
+  biography    String?
+  icon         String?
+  key_img      String?
+  address      String    @unique
+  code         String    @unique
+  key_price    Int?
+  ranking      Int?
+  point        Int?
+  is_online    Boolean   @default(false)
+  notification Boolean   @default(true)
+  last_login   DateTime  @default(now())
+  created_at   DateTime  @default(now())
+  Points       Point[]
+  Codes        Code[]
+  Chats        Chat[]
+  Messages     Message[]
+  TradesAsBuyer  Trade[] @relation("TradeBuyer")
+  TradesAsSeller Trade[] @relation("TradeSeller")
+  Watchlists   Watchlist[]
+  Holders      Holder[]
+}
+
+model Watchlist {
+  id           Int     @id @default(autoincrement())
+  user_id      Int
+  watch_user_id Int
+  register     Boolean @default(true)
+  User         User    @relation(fields: [user_id], references: [id])
+  created_at   DateTime  @default(now())
+
+  @@unique([user_id, watch_user_id])
+}
+
+model Code {
+  id           Int     @id @default(autoincrement())
+  user_id      Int
+  use_user_id  Int
+  point        Int
+  created_at   DateTime  @default(now())
+  User         User    @relation(fields: [user_id], references: [id])
+}
+
+model Chat {
+  id           Int     @id @default(autoincrement())
+  user_id      Int     @unique
+  created_at   DateTime  @default(now())
+  Messages     Message[]
+  User         User    @relation(fields: [user_id], references: [id])
+  Holders      Holder[]
+}
+
+model Message {
+  id           Int     @id @default(autoincrement())
+  user_id      Int
+  chat_id      Int
+  text         String
+  created_at   DateTime  @default(now())
+  User         User    @relation(fields: [user_id], references: [id])
+  Chat         Chat    @relation(fields: [chat_id], references: [id])
+}
+
+model Holder {
+  id           Int     @id @default(autoincrement())
+  user_id      Int
+  chat_id      Int
+  created_at   DateTime  @default(now())
+  User         User    @relation(fields: [user_id], references: [id])
+  Chat         Chat    @relation(fields: [chat_id], references: [id])
+}
+
+model Point {
+  id           Int     @id @default(autoincrement())
+  user_id      Int
+  point        Int
+  created_at   DateTime  @default(now())
+  User         User    @relation(fields: [user_id], references: [id])
+}
+
+model Trade {
+  id           Int     @id @default(autoincrement())
+  buy_user_id  Int
+  sell_user_id Int
+  key_price    Int
+  profit       Int     @default(0)
+  is_buy       Boolean
+  trade_at     DateTime
+  created_at   DateTime  @default(now())
+  Buyer        User    @relation("TradeBuyer", fields: [buy_user_id], references: [id])
+  Seller       User    @relation("TradeSeller", fields: [sell_user_id], references: [id])
+}
+
+model Featured {
+  id               Int     @id @default(autoincrement())
+  featured_user_id Int
+  message          String
+  created_at   DateTime  @default(now())
 }
