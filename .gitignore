@@ -15,6 +15,9 @@ cache/
 cache_forge/
 lib/
 
+.DS_Store
+.vscode/
+
 # Logs
 logs
 *.log
