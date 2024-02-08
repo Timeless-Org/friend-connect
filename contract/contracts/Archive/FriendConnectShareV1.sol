@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import { SafeTransferLib } from "solady/src/utils/SafeTransferLib.sol";
-import { IFriendConnectShareV1 } from "./IFriendConnectShareV1.sol";
-import { FriendConnectKey } from "./FriendConnectKey.sol";
-import { IBlast } from "./IBlast.sol";
+import "./IFriendConnectShareV1.sol";
+import "../FriendConnectKey.sol";
 
 contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUpgradeable {
     // =============================================================
@@ -17,28 +16,60 @@ contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUp
 
     FriendConnectKey public keyNft;
 
+    address public protocolFeeDestination;
+    uint256 public protocolFeePercent;
+    uint256 public subjectFeePercent;
+
     // SharesSubject => (Holder => Balance)
     mapping(address => mapping(address => uint256)) public sharesBalance;
 
     // SharesSubject => Supply
     mapping(address => uint256) public sharesSupply;
 
-    mapping(address => uint256) public claimableAmount;
-
     // =============================================================
     //                          INITIALIZER
     // =============================================================
+
+    // constructor(address keyNftAddress) Ownable(msg.sender) {
+    //     keyNft = FriendConnectKey(keyNftAddress);
+    //     protocolFeeDestination = msg.sender;
+    //     protocolFeePercent = (1 ether * 5) / 100;
+    //     subjectFeePercent = (1 ether * 5) / 100;
+    // }
 
     function initialize(EditionInitialization memory init) public initializer {
         __Ownable_init(msg.sender); // Ownableの初期化
 
         keyNft = FriendConnectKey(init.keyNft);
-        IBlast(0x4300000000000000000000000000000000000002).configureAutomaticYield();
+        protocolFeeDestination = msg.sender;
+        protocolFeePercent = init.protocolFeePercent; // (1 ether * 5) / 100
+        subjectFeePercent = init.subjectFeePercent; // (1 ether * 5) / 100
     }
 
     // =============================================================
     //                         EXTERNAL WRTIE
     // =============================================================
+
+    /// @notice update protocol fee destination.
+    /// @dev Only the owner can update the protocol fee destination.
+    /// @param _feeDestination The new protocol fee destination.
+    function setFeeDestination(address _feeDestination) public onlyOwner {
+        protocolFeeDestination = _feeDestination;
+    }
+
+    /// @notice update protocol fee percent.
+    /// @dev Only the owner can update the protocol fee percent.
+    /// @param _feePercent The new protocol fee percent.
+    function setProtocolFeePercent(uint16 _feePercent) public onlyOwner {
+        protocolFeePercent = _feePercent;
+    }
+
+    /// @notice update subject fee percent.
+    /// @dev Only the owner can update the subject fee percent.
+    /// @param _feePercent The new subject fee percent.
+    function setSubjectFeePercent(uint16 _feePercent) public onlyOwner {
+        subjectFeePercent = _feePercent;
+    }
 
     /// @notice Buy Key NFT shares.
     /// @dev Only one initial Key NFT Mint can be executed.
@@ -51,10 +82,12 @@ contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUp
             revert NotAuthorizedToBuyFirstShare(msg.sender, sharesSubject);
         }
         uint256 price = getPrice(supply, amount);
-        if (msg.value < price) {
+        uint256 protocolFee = (price * protocolFeePercent) / 1 ether;
+        uint256 subjectFee = (price * subjectFeePercent) / 1 ether;
+        if (msg.value < price + protocolFee + subjectFee) {
             revert PaymentInsufficient(
                 msg.value,
-                price
+                price + protocolFee + subjectFee
             );
         }
         sharesBalance[sharesSubject][msg.sender] =
@@ -68,8 +101,18 @@ contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUp
             true,
             amount,
             price,
+            protocolFee,
+            subjectFee,
             supply + amount
         );
+
+        if (subjectFee > 0)
+            SafeTransferLib.safeTransferETH(sharesSubject, subjectFee);
+        if (protocolFee > 0)
+            SafeTransferLib.safeTransferETH(
+                protocolFeeDestination,
+                protocolFee
+            );
     }
 
     /// @notice Sell Key NFT shares.
@@ -86,6 +129,8 @@ contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUp
             revert CannotSellLastShare(amount, supply);
         }
         uint256 price = getPrice(supply - amount, amount);
+        uint256 protocolFee = (price * protocolFeePercent) / 1 ether;
+        uint256 subjectFee = (price * subjectFeePercent) / 1 ether;
         if (sharesBalance[sharesSubject][msg.sender] < amount) {
             revert InsufficientShares(msg.sender, amount);
         }
@@ -100,8 +145,17 @@ contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUp
             false,
             amount,
             price,
+            protocolFee,
+            subjectFee,
             supply - amount
         );
+
+        SafeTransferLib.safeTransferETH(
+            msg.sender,
+            price - protocolFee - subjectFee
+        );
+        SafeTransferLib.safeTransferETH(protocolFeeDestination, protocolFee);
+        SafeTransferLib.safeTransferETH(sharesSubject, subjectFee);
     }
 
     // =============================================================
@@ -148,6 +202,34 @@ contract FriendConnectShareV1 is IFriendConnectShareV1, Initializable, OwnableUp
         uint256 amount
     ) public view returns (uint256) {
         return getPrice(sharesSupply[sharesSubject] - amount, amount);
+    }
+
+    /// @notice get the price of the Key NFT you want to buy sell after fee.
+    /// @param sharesSubject Subject address of the Key NFT you wish to buy.
+    /// @param amount The amount of tokens to buy.
+    /// @return Price after Key NFT fees are added.
+    function getBuyPriceAfterFee(
+        address sharesSubject,
+        uint256 amount
+    ) public view returns (uint256) {
+        uint256 price = getBuyPrice(sharesSubject, amount);
+        uint256 protocolFee = (price * protocolFeePercent) / 1 ether;
+        uint256 subjectFee = (price * subjectFeePercent) / 1 ether;
+        return price + protocolFee + subjectFee;
+    }
+
+    /// @notice get the price of the Key NFT you want to sell after fee.
+    /// @param sharesSubject Subject address of the Key NFT you wish to sell.
+    /// @param amount The amount of tokens to sell.
+    /// @return Key NFT prices after fee deductions.
+    function getSellPriceAfterFee(
+        address sharesSubject,
+        uint256 amount
+    ) public view returns (uint256) {
+        uint256 price = getSellPrice(sharesSubject, amount);
+        uint256 protocolFee = (price * protocolFeePercent) / 1 ether;
+        uint256 subjectFee = (price * subjectFeePercent) / 1 ether;
+        return price - protocolFee - subjectFee;
     }
 
     fallback() external payable {}
