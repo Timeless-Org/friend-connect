@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ConnectTwitterService, VerifyCodeService } from "services/login";
+import { ConnectTwitterService, VerifyCodeService } from "../services/login";
 
 export const ConnectTwitterController = async (req: Request, res: Response) => {
   try {

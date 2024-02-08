@@ -1,0 +1,74 @@
+[
+  {
+    "buy_user_id": 1,
+    "sell_user_id": 1,
+    "key_price": 0,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 2,
+    "sell_user_id": 2,
+    "key_price": 0,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 2,
+    "sell_user_id": 1,
+    "key_price": 0.0005,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 2,
+    "sell_user_id": 1,
+    "key_price": 0.0005,
+    "profit": 0,
+    "is_buy": false,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 2,
+    "sell_user_id": 1,
+    "key_price": 0.0005,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 3,
+    "sell_user_id": 3,
+    "key_price": 0,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 3,
+    "sell_user_id": 1,
+    "key_price": 0.0007,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  },
+  {
+    "buy_user_id": 3,
+    "sell_user_id": 2,
+    "key_price": 0.0005,
+    "profit": 0,
+    "is_buy": true,
+    "trade_at": "2021-01-01T00:00:00Z",
+    "created_at": "2021-01-01T00:00:00Z"
+  }
+]

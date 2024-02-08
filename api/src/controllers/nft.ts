@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "lib/type";
+import { IUser } from "../lib/type";
 import {
   createKeyNftService,
   getHoldKeyAmountService,
@@ -7,7 +7,7 @@ import {
   getKeyNFTHolderAmountService,
   getKeyNFTHolderService,
   getTradeProfitService,
-} from "services/nft";
+} from "../services/nft";
 
 export const createKeyNftController = async (req: Request, res: Response) => {
   const { address } = req.body;

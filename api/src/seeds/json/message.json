@@ -1,0 +1,62 @@
+[
+  {
+    "user_id": 1,
+    "chat_id": 1,
+    "text": "Hello, world!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 1,
+    "chat_id": 1,
+    "text": "Hello, long star !",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 1,
+    "chat_id": 1,
+    "text": "Hello, blockchain!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 2,
+    "chat_id": 2,
+    "text": "Hello, metamon!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 1,
+    "chat_id": 2,
+    "text": "I'm a blockchain!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 2,
+    "chat_id": 2,
+    "text": "go away!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 3,
+    "chat_id": 3,
+    "text": "Hello, logn long star!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 1,
+    "chat_id": 3,
+    "text": "I'm a blockchain!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 3,
+    "chat_id": 3,
+    "text": "welcome to the world!",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  {
+    "user_id": 2,
+    "chat_id": 3,
+    "text": "Are you a blockchain?",
+    "created_at": "2024-01-01T00:00:00Z"
+  }
+]

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getLatestPointService } from "services/point";
+import { getLatestPointService } from "../services/point";
 
 export const getLatestPointController = async (req: Request, res: Response) => {
   try {

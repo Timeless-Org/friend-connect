@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { IAllChat, IChat, IChatWithMessage } from "lib/type";
-import { getLastestChatService, getUserAllChatService, getUserChatService } from "services/chat";
+import { IAllChat, IChat, IChatWithMessage } from "../lib/type";
+import { getLastestChatService, getUserAllChatService, getUserChatService } from "../services/chat";
 
 export const getUserChatController = async (req: Request, res: Response) => {
   const { address } = req.params;

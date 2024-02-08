@@ -1,5 +1,5 @@
-import { ITrade } from "lib/type";
 import { prisma } from "../app";
+import { ITrade } from "../lib/type";
 
 // Trade
 
