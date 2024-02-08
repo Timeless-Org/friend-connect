@@ -18,7 +18,7 @@ const TabsList = React.forwardRef<
     //   className
     // )}
     className={cn(
-      "inline-flex items-center justify-center bg-black text-orange dark:bg-slate-800 dark:text-slate-400",
+      "inline-flex items-center justify-start bg-black text-orange dark:bg-slate-800 dark:text-slate-400",
       className
     )}
     {...props}
