@@ -1,11 +1,11 @@
-import { ITrade } from "lib/type";
+import { ITrade } from "../lib/type";
 import {
   createTradeModel,
   getHolderTradesModel,
   getLatestTradesModel,
   getTradeModel,
   getWatchlistTradesModel,
-} from "models/trade";
+} from "../models/trade";
 
 export const createTradeService = async (buyAddress: string, sellAddress: string, keyPrice: number, isBuy: boolean) => {
   const result: ITrade = await createTradeModel(buyAddress, sellAddress, keyPrice, isBuy);

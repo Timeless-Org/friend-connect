@@ -1,4 +1,4 @@
-import { getLastWeekPointModel } from "models/point";
+import { getLastWeekPointModel } from "../models/point";
 
 export const getLatestPointService = async (address: string): Promise<number> => {
   const amount = await getLastWeekPointModel(address);

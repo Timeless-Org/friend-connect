@@ -1,4 +1,4 @@
-import { IUser } from "lib/type";
+import { IUser } from "../lib/type";
 import {
   createUserModel,
   getTop50KeyNFTPriceUserModel,
@@ -7,7 +7,7 @@ import {
   updateNotificationModel,
   updateUserModel,
   upsertWatchListModel,
-} from "models/user";
+} from "../models/user";
 
 export const createUserService = async (
   address: string,

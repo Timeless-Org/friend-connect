@@ -1,5 +1,5 @@
-import { createCodeModel } from "models/code";
-import { getUserFromCodeModel, getUserModel } from "models/user";
+import { createCodeModel } from "../models/code";
+import { getUserFromCodeModel, getUserModel } from "../models/user";
 
 export const ConnectTwitterService = async (): Promise<boolean> => {
   try {

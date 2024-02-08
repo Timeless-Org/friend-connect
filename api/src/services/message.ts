@@ -1,6 +1,6 @@
-import { getChatModel } from "models/chat";
-import { createMessageModel } from "models/message";
-import { getUserModel } from "models/user";
+import { getChatModel } from "../models/chat";
+import { createMessageModel } from "../models/message";
+import { getUserModel } from "../models/user";
 
 export const createMessageService = async (address: string, text: string): Promise<boolean> => {
   const user = await getUserModel(address);

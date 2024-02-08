@@ -1,6 +1,11 @@
-import { IUser } from "lib/type";
-import { getTotalProfitModel } from "models/trade";
-import { getHoldKeyAmountModel, getHoldKeyModel, getKeyNFTHolderAmountModel, getKeyNFTHolderModel } from "models/user";
+import { IUser } from "../lib/type";
+import { getTotalProfitModel } from "../models/trade";
+import {
+  getHoldKeyAmountModel,
+  getHoldKeyModel,
+  getKeyNFTHolderAmountModel,
+  getKeyNFTHolderModel,
+} from "../models/user";
 
 export const createKeyNftService = async (address: string): Promise<boolean> => {
   // Mint Key Nft

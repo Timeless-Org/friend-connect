@@ -1,5 +1,5 @@
-import { prisma } from "../app";
 import { ICreateUser, IUser, IWatchList } from "../lib/type";
+import { prisma } from "../app";
 
 function generateRandomString(length: number): string {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
