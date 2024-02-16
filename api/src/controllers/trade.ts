@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { ITrade } from "../lib/interfaces";
 import {
   createTradeService,
   getAllTradeService,
@@ -7,6 +6,7 @@ import {
   getLatestTrade50Service,
   getUserTradeService,
 } from "../services/trade";
+import { ITrade } from "../utils/interfaces";
 
 export const createTradeController = async (req: Request, res: Response): Promise<void> => {
   try {

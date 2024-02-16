@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { TWITTER_REDIRECT_URL } from "../lib/config";
-import { IReqSession } from "../lib/interfaces";
 import { getSessionModel } from "../models/session";
 import { generateAuthLinkService, redirectAuthLinkService } from "../services/twitter";
+import { TWITTER_REDIRECT_URL } from "../utils/config";
+import { IReqSession } from "../utils/interfaces";
 
 export const generateAuthLinkServiceController = async (req: Request, res: Response) => {
   try {

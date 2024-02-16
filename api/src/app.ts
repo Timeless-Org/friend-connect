@@ -1,20 +1,20 @@
-import helmet from "helmet";
+import { PrismaClient } from "@prisma/client";
 import connectPgSimple from "connect-pg-simple";
 import cookieParser from "cookie-parser";
 import express, { Application, Request, Response } from "express";
-import userRouters from "./routers/user";
-import nftRouters from "./routers/nft";
-import loginRouters from "./routers/login";
+import session from "express-session";
+import helmet from "helmet";
+import { CorsMiddleware } from "./middlewares";
 import chatRouters from "./routers/chat";
+import loginRouters from "./routers/login";
 import messageRouters from "./routers/message";
+import nftRouters from "./routers/nft";
 import pointRouters from "./routers/point";
 import sessionRouters from "./routers/session";
 import tradeRouters from "./routers/trade";
 import twitterRouters from "./routers/twitter";
-import { PrismaClient } from "@prisma/client";
-import session from "express-session";
-import { DATABASE_URL } from "./lib/config";
-import { CorsMiddleware } from "./middlewares";
+import userRouters from "./routers/user";
+import { DATABASE_URL } from "./utils/config";
 // import cors from "cors";
 
 export const prisma = new PrismaClient();
@@ -42,7 +42,6 @@ const sessionStore = new pgSession({
   errorLog: (...args) => console.error(`sessionStoreError: ${args}`),
 });
 
-
 app.use(
   session({
     secret: "long_star",
@@ -59,7 +58,6 @@ app.use(
     },
   }),
 );
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -83,10 +81,7 @@ app.use("/api/v1/message", messageRouters);
 app.use("/api/v1/point", pointRouters);
 app.use("/api/v1/trade", tradeRouters);
 app.use("/api/v1/session", sessionRouters);
-app.use(
-  "/api/v1/twitter",
-  twitterRouters,
-);
+app.use("/api/v1/twitter", twitterRouters);
 
 app.get("/api/v1", (req: Request, res: Response) => {
   return res.status(200).send({

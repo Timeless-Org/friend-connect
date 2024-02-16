@@ -1,5 +1,5 @@
 import { app } from "./app";
-import { APP_PORT } from "./lib/config";
+import { APP_PORT } from "./utils/config";
 
 try {
   app.listen(APP_PORT, () => {

@@ -1,6 +1,6 @@
 import { TwitterApi } from "twitter-api-v2";
-import { TWITTER_CALLBACK_URL, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from "../lib/config";
 import { updateUserNameModel, updateUserTwitterAuthModel } from "../models/user";
+import { TWITTER_CALLBACK_URL, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from "../utils/config";
 
 export const generateAuthLinkService = async (sessionId: string) => {
   const client = new TwitterApi({
@@ -17,7 +17,12 @@ export const generateAuthLinkService = async (sessionId: string) => {
   return { url, codeVerifier, state };
 };
 
-export const redirectAuthLinkService = async (sessionId: string, address: string, code: string, codeVerifier: string) => {
+export const redirectAuthLinkService = async (
+  sessionId: string,
+  address: string,
+  code: string,
+  codeVerifier: string,
+) => {
   try {
     const client = new TwitterApi({
       clientId: TWITTER_CLIENT_ID,

@@ -1,13 +1,13 @@
 import router from "express";
 import {
   createUserController,
-  getUserController,
-  updateUserController,
-  getWatchlistController,
-  updateWatchlistController,
-  updateNotificationController,
-  searchUserController,
   getTopPriceUsersController,
+  getUserController,
+  getWatchlistController,
+  searchUserController,
+  updateNotificationController,
+  updateUserController,
+  updateWatchlistController,
 } from "../controllers/user";
 
 const routers = router.Router();

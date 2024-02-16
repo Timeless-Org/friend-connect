@@ -1,6 +1,6 @@
 import router from "express";
 
-import { getUserChatController, getUserAllChatController, getLatestChatController } from "../controllers/chat";
+import { getLatestChatController, getUserAllChatController, getUserChatController } from "../controllers/chat";
 
 const routers = router.Router();
 

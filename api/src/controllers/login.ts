@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ConnectTwitterService, VerifyCodeService } from "../services/login";
-import { normalizeErrorMessage } from "../lib/error";
+import { normalizeErrorMessage } from "../utils/error";
 
 export const ConnectTwitterController = async (req: Request, res: Response) => {
   try {
@@ -18,7 +18,7 @@ export const ConnectTwitterController = async (req: Request, res: Response) => {
 
 export const VerifyCodeController = async (req: Request, res: Response) => {
   const { code, address } = req.body;
-  if (!code || !address)  res.status(400).json({ message: "Bad Request" });
+  if (!code || !address) res.status(400).json({ message: "Bad Request" });
 
   try {
     const lowerAddress = address.toLowerCase();
