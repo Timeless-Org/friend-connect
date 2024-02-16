@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Progress } from "@components/ui/progress";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { Progress } from "@/components/ui/progress";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface INavigation {
   changePrePage: () => void;

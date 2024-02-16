@@ -1,6 +1,7 @@
 import { IUser } from "../lib/type";
 import {
   createUserModel,
+  getUserModel,
   getTop50KeyNFTPriceUserModel,
   getWatchListModel,
   searchUserModel,
@@ -11,30 +12,26 @@ import {
 
 export const createUserService = async (
   address: string,
-  name: string,
-  biography: string,
-  icon: string,
-  keyImage: string,
 ): Promise<boolean> => {
-  const user = await createUserModel({ address, name, biography, icon, keyImage });
+  const user = await createUserModel({ address });
   if (user) {
     return true;
   }
   return false;
 };
 
-export const getUserModel = async (address: string): Promise<IUser | null> => {
+export const getUserService = async (address: string): Promise<IUser | null> => {
   const user = await getUserModel(address);
   return user;
 };
 
 export const updateUserService = async (
   address: string,
+  name: string,
   biography: string,
-  icon: string,
   keyImage: string,
 ): Promise<IUser | null> => {
-  const updatedUser = await updateUserModel(address, biography, icon, keyImage);
+  const updatedUser = await updateUserModel(address, name, biography, keyImage);
   return updatedUser;
 };
 

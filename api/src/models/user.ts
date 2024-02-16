@@ -1,48 +1,29 @@
-import { ICreateUser, IUser, IWatchList } from "../lib/type";
+import { IInitialUser, IUser, IWatchList } from "../lib/type";
 import { prisma } from "../app";
-
-function generateRandomString(length: number): string {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters[randomIndex];
-  }
-  return result;
-}
+import { getUnusedCodeModel } from "./code";
 
 // Post
 
-export const createUserModel = async (user: ICreateUser): Promise<IUser> => {
-  let unique = false;
-  let generatedCode = "";
+export const createUserModel = async (user: IInitialUser): Promise<IUser> => {
+  const code = await getUnusedCodeModel();
 
-  while (!unique) {
-    generatedCode = generateRandomString(10);
-    const existingData = await prisma.user.findUnique({
-      where: {
-        code: generatedCode,
-      },
-    });
-
-    if (!existingData) {
-      unique = true;
-    }
+  if (!code) {
+    throw new Error("Code not found");
   }
 
   const newUser = await prisma.user.create({
     data: {
-      name: user.name,
-      biography: user.biography,
-      icon: user.icon,
-      key_img: user.keyImage,
-      address: user.address,
+      name: "",
+      biography: "",
+      icon: "",
+      key_img: "",
+      address: user.address.toLowerCase(),
       key_price: 0,
       ranking: 0,
       is_online: true,
       notification: false,
       last_login: new Date(),
-      code: generatedCode,
+      code_id: code.id,
     },
   });
   return newUser;
@@ -53,25 +34,64 @@ export const createUserModel = async (user: ICreateUser): Promise<IUser> => {
 export const getUserModel = async (address: string): Promise<IUser | null> => {
   const user = await prisma.user.findUnique({
     where: {
-      address,
+      address: address.toLowerCase(),
     },
   });
   return user;
 };
 
-export const getUserFromCodeModel = async (code: string): Promise<IUser | null> => {
-  const user = await prisma.user.findUnique({
+export const getUserFromCodeModel = async (_code: string): Promise<IUser | null> => {
+  const code = await prisma.code.findUnique({
     where: {
-      code,
+      code: _code,
     },
   });
+  if (!code) {
+    return null;
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      code_id: code.id,
+    },
+  });
+
   return user;
 };
 
 // Update
 
-export const updateUserModel = async (
+export const updateUserModel = async (address: string, name: string, biography: string, key_img: string): Promise<IUser> => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      address,
+    },
+    data: {
+      name,
+      biography,
+      key_img,
+    },
+  });
+  return updatedUser;
+};
+
+export const updateUserNameModel = async (
   address: string,
+  name: string,
+): Promise<IUser> => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      address,
+    },
+    data: {
+      name,
+    },
+  });
+  return updatedUser;
+};
+
+export const updateInitialUserModel = async (
+  address: string,
+  name: string,
   biography: string,
   icon: string,
   key_img: string,
@@ -81,9 +101,29 @@ export const updateUserModel = async (
       address,
     },
     data: {
+      name,
       biography,
       icon,
       key_img,
+    },
+  });
+  return updatedUser;
+};
+
+export const updateUserTwitterAuthModel = async (
+  address: string,
+  accessToken: string,
+  refreshToken: string,
+  expiresIn: number,
+): Promise<IUser> => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      address,
+    },
+    data: {
+      twitter_access_token: accessToken,
+      twitter_refresh_token: refreshToken,
+      twitter_access_token_expires_at: expiresIn,
     },
   });
   return updatedUser;

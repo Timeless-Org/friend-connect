@@ -1,21 +1,59 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@components/ui/button";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import Navigation from "@components/common/Navigation";
 import IconCircle from "@components/common/IconCircle";
-import OrangeButton from "@components/common/OrangeButton";
+import { usePrivy } from "@privy-io/react-auth";
+import { IAddress } from "@utils/types";
+import { copyClipboard } from "@utils/common";
+import { useWallets } from "@privy-io/react-auth";
+import { blastSepolia } from "@lib/chain";
+import { formatEther } from "@lib/common";
 
 export default function LoginDeposit() {
-  const address = "0x1234567890123456789012345678901234567890";
+  const { user } = usePrivy();
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const address = user?.wallet?.address as IAddress || "0x";
+  const { wallets } = useWallets();
+
+  const [balance, setBalance] = useState<number | null>(0);
+
   const router = useRouter();
   const changePrePage = () => {
     router.push("/login/twitter");
   };
+
+  const handleCopy = async (copyText: string) => {
+    try {
+      await copyClipboard(copyText);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 1500);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    const getBalance = async () => {
+      const embeddedWallet = wallets[0];
+      if (embeddedWallet) {
+        await embeddedWallet.switchChain(blastSepolia.id);
+        const provider = await embeddedWallet.getEthersProvider();
+        const currentBalance = await provider.getBalance(address)
+        const formatBalance =
+          Math.floor(formatEther(currentBalance) * 100000) / 100000;
+        setBalance(formatBalance);
+      }
+    };
+
+    if (balance === 0) {
+      getBalance();
+    }
+  }, [address, balance, wallets]);
 
   return (
     <div className="container flex flex-col items-center justify-center mt-10">
@@ -31,7 +69,7 @@ export default function LoginDeposit() {
           sell your friends&apos; keys.
         </p>
       </div>
-      <div className="mt-10 w-full flex flex-col items-start justify-center">
+      <div className="mt-10 w-full flex flex-col items-start justify-center space-y-4">
         <div className="w-full flex justify-between bg-squareGray py-6 px-4 rounded-xl items-center">
           <div className="flex items-center justify-center space-x-3">
             <IconCircle icon={faEthereum} />
@@ -55,8 +93,16 @@ export default function LoginDeposit() {
               )}...${address.substring(address.length - 8)}`}</p>
             </div>
           </div>
-          <Button variant="linkButton" className="font-semibold py-5">
-            Copy
+          <Button
+            variant="linkButton"
+            className="font-semibold py-5"
+            onClick={() => handleCopy(address)}
+          >
+            {isCopied ? (
+              <FontAwesomeIcon icon={faCheck} className="h-4" />
+            ) : (
+              "Copy"
+            )}
           </Button>
         </div>
       </div>
@@ -66,12 +112,21 @@ export default function LoginDeposit() {
           <p className="text-gray60 font-semibold">Wallet Balance:</p>
           <div className="flex justify-center items-center">
             <p className="mr-3 font-semibold">
-              0 <span className="text-gray60">ETH</span>
+              {balance || 0} <span className="text-gray60">ETH</span>
             </p>
             <FontAwesomeIcon icon={faArrowsRotate} className="h-4" />
           </div>
         </div>
-        <OrangeButton text={"Proceed"} />
+        <Button
+          variant={
+            balance !== null && balance >= 0.01 ? "default" : "roundedBtn"
+          }
+          className="w-full h-12"
+          onClick={() => router.push("/login/key")}
+          disabled={!(balance !== null && balance >= 0.01)}
+        >
+          Proceed
+        </Button>
       </div>
     </div>
   );

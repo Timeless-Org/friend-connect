@@ -1,8 +1,13 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/sideMenuTabs";
-import YouTab from "@/components/keys/YouTab";
-import YourKeyTab from "@/components/keys/YourKeyTab";
-import HoldersTab from "@/components/SideMenu/HoldersTab";
-import WatchListTab from "@/components/SideMenu/WatchListTab";
+import HoldersTab from "@components/SideMenu/HoldersTab";
+import WatchListTab from "@components/SideMenu/WatchListTab";
+import YouTab from "@components/keys/YouTab";
+import YourKeyTab from "@components/keys/YourKeyTab";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@components/ui/sideMenuTabs";
 
 interface ISideMenuTab {
   isMenuContentOpen: boolean;

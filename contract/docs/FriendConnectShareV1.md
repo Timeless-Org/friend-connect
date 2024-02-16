@@ -1,4 +1,4 @@
-# FriendConnectShareV1
+# LongStarShareV1
 
 ## Overview
 

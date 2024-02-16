@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 
@@ -19,7 +18,6 @@ const KeyTradeModal = ({
   ownKey,
   keyPrice,
 }: IKeyTradeModal) => {
-    const modalRef = useRef<HTMLDivElement>(null);
 
   const handleContainerClick = () => {
     closeModal();

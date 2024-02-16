@@ -1,13 +1,13 @@
 "use client";
 
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import { IAirDrop } from "@/utils/types";
-import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Copy from "@components/common/Copy";
+import Footer from "@components/common/Footer";
+import Header from "@components/common/Header";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import Copy from "@/components/common/Copy";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 
 export default function AirDrop() {
   const [pointInfo, setPointInfo] = useState<IAirDrop>({});

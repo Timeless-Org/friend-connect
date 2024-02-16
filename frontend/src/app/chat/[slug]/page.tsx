@@ -1,7 +1,7 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { IMessage, IUser, IUserInfo } from "@/utils/types";
+import { Input } from "@components/ui/input";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faBookmark as registerBookmark } from "@fortawesome/free-regular-svg-icons";
 import {

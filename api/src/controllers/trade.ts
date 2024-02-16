@@ -26,7 +26,8 @@ export const createTradeController = async (req: Request, res: Response): Promis
 export const getUserTradeController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const trades: ITrade[] = await getUserTradeService(address);
+    const lowerAddress = address.toLowerCase();
+    const trades: ITrade[] = await getUserTradeService(lowerAddress);
     res.status(200).json({ trades });
   } catch (err) {
     console.error(`👾 getUserTradeController: ${err}`);

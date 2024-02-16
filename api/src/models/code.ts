@@ -2,39 +2,48 @@ import { prisma } from "../app";
 
 // Codes
 
-export const getCodeModel = async (id: number) => {
+export const getCodeModel = async (code: string) => {
   const response = await prisma.code.findUnique({
     where: {
-      id,
+      code,
     },
   });
   return response;
 };
 
-export const getCodesModel = async (userId: number) => {
-  const response = await prisma.code.findMany({
+export const getUnusedCodeModel = async () => {
+  const response = await prisma.code.findFirst({
     where: {
-      user_id: userId,
+      user_id: null,
     },
   });
-  return response;
-};
-
-export const createCodeModel = async (userId: number, usedUserId: number, point: number) => {
-  const response = await prisma.code.create({
-    data: {
-      user_id: userId,
-      use_user_id: usedUserId,
-      point,
-    },
-  });
+  console.log(`unused code: ${JSON.stringify(response)}`);
   return response;
 };
 
 export const verificateCodeModel = async (code: string) => {
-  const response = await prisma.user.findUnique({
+  const validCodeCount = await prisma.code.count({
     where: {
       code,
+    },
+  });
+  return validCodeCount > 0;
+};
+
+export const updateCodeModel = async (code: string, address: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      address,
+    },
+  });
+  if (!user) throw new Error("User not found");
+  const response = await prisma.code.update({
+    where: {
+      code,
+    },
+
+    data: {
+      user_id: user.id,
     },
   });
   return response;

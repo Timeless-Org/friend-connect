@@ -1,4 +1,9 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { Address } from "viem";
+
+// Onchain
+
+export type IAddress = Address;
 
 // User
 export interface IUser {

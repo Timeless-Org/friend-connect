@@ -1,23 +1,28 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import InputFile from "@components/common/InputFile";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
-import { Input } from "@/components/ui/input";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Input } from "@components/ui/input";
+import { Textarea } from "@components/ui/textarea";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
-import InputFile from "@components/common/InputFile";
-import { Textarea } from "@/components/ui/textarea";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
+import { addUserProfile } from "@utils/api";
+import { usePrivy } from "@privy-io/react-auth";
+import { IAddress } from "@/utils/types";
 
 export default function LoginNotification() {
   const router = useRouter();
+  const { user } = usePrivy();
+  const address = (user?.wallet?.address as IAddress) || "0x";
 
   const [userName, setUserName] = useState<string>("");
   const [biography, setBiography] = useState<string>("");
 
   const changePrePage = () => {
-    router.push("/login/notification");
+    router.push("/login/key");
   };
 
   const handleSetUserName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +32,13 @@ export default function LoginNotification() {
   const handleSetBiography = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setBiography(event.target.value);
   };
+
+  const updateUser = async () => {
+    const result = await addUserProfile(address, userName, biography, "");
+    if (result) {
+      router.push("/login/start");
+    }
+  }
 
   return (
     <div className="container flex flex-col items-center justify-center mt-10">
@@ -44,7 +56,7 @@ export default function LoginNotification() {
           className="mt-2"
           onChange={handleSetUserName}
         />
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <p className="text-gray">Profile picture</p>
           <div className="flex items-center justify-center mt-2">
             <FontAwesomeIcon
@@ -63,15 +75,23 @@ export default function LoginNotification() {
             />
             <InputFile />
           </div>
-        </div>
+        </div> */}
         <div className="mt-6 w-full">
           <p>Bio</p>
-          <Textarea placeholder="Bio." onChange={handleSetBiography} className="w-full" />
+          <Textarea
+            placeholder="Bio."
+            onChange={handleSetBiography}
+            className="w-full"
+          />
         </div>
       </div>
 
       <div className="flex flex-col fixed bottom-0 mb-10 w-full px-10 pt-10">
-        <OrangeButton text={"Proceed"} />
+        <OrangeButton
+          text={"Proceed"}
+          buttonAction={updateUser}
+          disabled={!userName}
+        />
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
 "use client";
 
-import Copy from "@/components/common/Copy";
-import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
 import { IWallet } from "@/utils/types";
+import Copy from "@components/common/Copy";
+import Footer from "@components/common/Footer";
+import Header from "@components/common/Header";
+import OrangeButton from "@components/common/OrangeButton";
+import { Button } from "@components/ui/button";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -15,8 +17,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Button } from "@components/ui/button";
-import OrangeButton from "@components/common/OrangeButton";
 
 export default function Wallet() {
   const [walletInfo, setWalletInfo] = useState<IWallet>({});
@@ -123,7 +123,11 @@ export default function Wallet() {
         </div>
         <div className="flex flex-col items-center justify-center w-full">
           <OrangeButton text={"Export Private Key"} />
-          <Button variant="none" className="w-full h-12 text-red" onClick={() => {}}>
+          <Button
+            variant="none"
+            className="w-full h-12 text-red"
+            onClick={() => {}}
+          >
             Log out
           </Button>
         </div>

@@ -1,8 +1,8 @@
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import MenuWindow from "@components/common/MenuWindow";
+import { faEthereum } from "@fortawesome/free-brands-svg-icons";
+import { faAngleRight, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import { useState } from "react";
 
 interface ISideMenu {
@@ -17,7 +17,7 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
   const openMenuContent = (menu: string) => {
     setMenuContent(menu);
     setMenuContentOpen(true);
-  }
+  };
   return (
     <>
       <MenuWindow
@@ -34,7 +34,7 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
       >
         <div className="flex items-center justify-between px-4 h-16 w-full bg-black ">
           <Image
-            src="/static/img/icon/long_star.png"
+            src="/static/img/icon/long_star_logo_black.jpg"
             alt="long_star"
             className="rounded-full"
             width={36}

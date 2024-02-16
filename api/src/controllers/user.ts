@@ -3,7 +3,7 @@ import { IUser } from "../lib/type";
 import {
   createUserService,
   getTopPriceUsersService,
-  getUserModel,
+  getUserService,
   getWatchlistService,
   searchUserService,
   updateNotificationService,
@@ -13,10 +13,16 @@ import {
 
 export const createUserController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { address, name, biography, icon, keyImage } = req.body;
-    const result: boolean = await createUserService(address, name, biography, icon, keyImage);
+    const { address } = req.body;
+    const lowerAddress: string = address.toLowerCase();
+    const user: IUser | null = await getUserService(lowerAddress);
+    if (user) {
+      res.status(500).json({ message: "User already exists" });
+      return;
+    }
+      const result: boolean = await createUserService(lowerAddress);
     if (result) {
-      res.status(200).json({ message: "User created" });
+      res.status(200).json({ message: "success" });
       return;
     }
     res.status(500).json({ message: "Internal Server Error" });
@@ -29,7 +35,7 @@ export const createUserController = async (req: Request, res: Response): Promise
 export const getUserController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const user: IUser | null = await getUserModel(address);
+    const user: IUser | null = await getUserService(address);
     if (user) {
       res.status(200).json(user);
       return;
@@ -44,10 +50,11 @@ export const getUserController = async (req: Request, res: Response): Promise<vo
 export const updateUserController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const { biography, icon, keyImage } = req.body;
-    const user: IUser | null = await updateUserService(address, biography, icon, keyImage);
+    const { name, biography, keyImage } = req.body;
+    const lowerAddress: string = address.toLowerCase();
+    const user: IUser | null = await updateUserService(lowerAddress, name, biography, keyImage);
     if (user) {
-      res.status(200).json(user);
+      res.status(200).json({ message: "success" });
       return;
     }
     res.status(404).json({ message: "User not found" });
