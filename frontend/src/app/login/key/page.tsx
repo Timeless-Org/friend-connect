@@ -1,7 +1,7 @@
 "use client";
 
-import { blastSepolia } from "@/libs/chain";
-import { ethersContract } from "@/libs/ethersContract";
+import { blastSepolia } from "@/lib/chain";
+import { ethersContract } from "@/lib/ethersContract";
 import { createTrade } from "@/utils/api";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
