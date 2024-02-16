@@ -21,8 +21,11 @@ export const ConnectTwitterService = async (): Promise<boolean> => {
 export const VerifyCodeService = async (code: string, address: string): Promise<boolean> => {
   try {
     const res = await verificateCodeModel(code);
+    console.log(`res: ${res}`)
     if (res) {
       const user = await getUserFromCodeModel(code);
+      console.log(`user: ${JSON.stringify(user)}`)
+      console.log(`address: ${address}`)
       if (!user || user.address === address) throw new Error("User not found");
       const alreadyAddPoint = await getSpecificPointModel(address, 0);
       if (alreadyAddPoint.length > 0) throw new Error("Already added point");
