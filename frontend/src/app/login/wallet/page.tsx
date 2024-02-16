@@ -30,13 +30,23 @@ export default function LoginLoginWallet() {
         className="rounded-full"
       />
       <div className="flex flex-col fixed bottom-0 mb-10 w-full px-10 pt-10">
-        <Button
-          variant="default"
-          className="w-full h-12"
-          onClick={authenticated ? createUserData : login}
-        >
-          {authenticated ? "Proceed" : "Create a wallet"}
-        </Button>
+        {authenticated ? (
+          <Button
+            variant="default"
+            className="w-full h-12"
+            onClick={createUserData}
+          >
+            Proceed
+          </Button>
+        ) : (
+          <Button
+            variant="default"
+            className="w-full h-12"
+            onClick={login}
+          >
+            Create a wallet
+          </Button>
+        )}
         <Button
           variant="bgWhite"
           className={`${authenticated ? "flex" : "hidden"} w-full h-12`}
