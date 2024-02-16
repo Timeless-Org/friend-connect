@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "dotenv -e .env.local -- nodemon --exec ts-node src/server.ts",
     "build": "npx tsc --outDir ./dist",
-    "start": "node dist/index.js",
+    "serve": "yarn build && node ./dist/server.js",
     "check-types": "tsc --noEmit",
     "lint": "run-p -l -c --aggregate-output lint:*",
     "lint:eslint": "eslint src/**/*.ts",

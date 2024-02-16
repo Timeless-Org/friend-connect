@@ -1,4 +1,4 @@
-import { IUser } from "../lib/type";
+import { IUser } from "../lib/interfaces";
 import { getTotalProfitModel } from "../models/trade";
 import {
   getHoldKeyAmountModel,
