@@ -1,11 +1,11 @@
 import router from "express";
 import {
   createTradeController,
-  getUserTradeController,
-  getHolderTradeController,
-  getWatchlistTradeController,
   getAllTradeController,
+  getHolderTradeController,
   getLatestTrade50Controller,
+  getUserTradeController,
+  getWatchlistTradeController,
 } from "../controllers/trade";
 
 const routers = router.Router();

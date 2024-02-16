@@ -1,5 +1,5 @@
 import { prisma } from "../app";
-import { IInitialUser, IUser, IWatchList } from "../lib/interfaces";
+import { IInitialUser, IUser, IWatchList } from "../utils/interfaces";
 import { getUnusedCodeModel } from "./code";
 
 // Post

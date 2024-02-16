@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { IUser } from "../lib/interfaces";
 import {
   createUserService,
   getTopPriceUsersService,
@@ -10,6 +9,7 @@ import {
   updateUserService,
   updateWatchlistService,
 } from "../services/user";
+import { IUser } from "../utils/interfaces";
 
 export const createUserController = async (req: Request, res: Response): Promise<void> => {
   try {

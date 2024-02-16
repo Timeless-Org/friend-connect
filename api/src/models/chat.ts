@@ -1,5 +1,5 @@
 import { prisma } from "../app";
-import { IAllChat, IChat, IChatWithMessage } from "../lib/interfaces";
+import { IAllChat, IChat, IChatWithMessage } from "../utils/interfaces";
 
 // Chat
 

@@ -1,6 +1,6 @@
 import cors from "cors";
 
-import { NODE_ENV, ALLOWED_ORIGIN, ALLOWED_ORIGINS } from "../lib/config";
+import { ALLOWED_ORIGIN, ALLOWED_ORIGINS, NODE_ENV } from "../utils/config";
 
 export const validateOrigin = cors({
   origin: (origin, callback) => {

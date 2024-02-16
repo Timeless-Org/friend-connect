@@ -1,5 +1,5 @@
 import { prisma } from "../app";
-import { IPoint } from "../lib/interfaces";
+import { IPoint } from "../utils/interfaces";
 
 // Point
 

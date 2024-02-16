@@ -1,10 +1,10 @@
 import router from "express";
 import {
   createKeyNftController,
-  getHoldKeyController,
   getHoldKeyAmountController,
-  getKeyNFTHolderController,
+  getHoldKeyController,
   getHolderKeyAmountController,
+  getKeyNFTHolderController,
   getTradeProfitController,
 } from "../controllers/nft";
 

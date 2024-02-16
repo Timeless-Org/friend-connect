@@ -1,4 +1,3 @@
-import { IUser } from "../lib/interfaces";
 import {
   createUserModel,
   getTop50KeyNFTPriceUserModel,
@@ -9,6 +8,7 @@ import {
   updateUserModel,
   upsertWatchListModel,
 } from "../models/user";
+import { IUser } from "../utils/interfaces";
 
 export const createUserService = async (address: string): Promise<boolean> => {
   const user = await createUserModel({ address });
