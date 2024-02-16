@@ -13,7 +13,7 @@
 artifacts/
 cache/
 cache_forge/
-lib/
+contract/lib/
 
 .DS_Store
 .vscode/
