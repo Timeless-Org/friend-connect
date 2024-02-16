@@ -1,4 +1,4 @@
-import Ranking from "@/components/explorer/Ranking";
+import Ranking from "@components/explorer/Ranking";
 import { ITop } from "@utils/types";
 import { useEffect, useState } from "react";
 

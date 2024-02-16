@@ -40,6 +40,7 @@ export const getTradeModel = async (address: string): Promise<ITrade[]> => {
     },
   });
   if (!user) throw new Error("User not found");
+  // userテーブルのbuy_user_idとsell_user_idのkey_img、Tradeテーブルのis_buy、key_price、trade_atを取得するコードにしてください。
   const trades = await prisma.trade.findMany({
     where: {
       OR: [{ buy_user_id: user.id }, { sell_user_id: user.id }],

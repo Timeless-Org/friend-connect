@@ -1,11 +1,11 @@
 "use client";
 
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
 import { IChat } from "@/utils/types";
-import { useEffect, useState } from "react";
+import Footer from "@components/common/Footer";
+import Header from "@components/common/Header";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Keys() {
   const [chats, setChats] = useState<IChat[]>([]);

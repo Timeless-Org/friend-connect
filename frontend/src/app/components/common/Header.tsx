@@ -1,9 +1,8 @@
-
-import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
 import SideMenu from "@components/common/SideMenu";
+import { faBell, faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import { useState } from "react";
 
 const Header = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -28,7 +27,7 @@ const Header = () => {
       <header className="fixed top-0 inset-x-0 h-24 bg-black flex justify-between items-center px-6">
         <div className="flex justify-center items-center space-x-3">
           <Image
-            src="/static/img/icon/long_star.png"
+            src="/static/img/icon/long_star_logo_black.jpg"
             alt="long_star"
             className="rounded-full"
             width={42}

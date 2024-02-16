@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import WalletProvider from "@components/common/PrivyProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon.jpg"></link>
+        <meta name="theme-color" content="#d1cd0c" />
+      </head>
+      <body className={inter.className}>
+        <WalletProvider>{children}</WalletProvider>
+      </body>
     </html>
   );
 }

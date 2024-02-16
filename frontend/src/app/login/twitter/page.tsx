@@ -5,11 +5,24 @@ import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import Navigation from "@components/common/Navigation";
+import { getTwitterAuthLink } from "@utils/api";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function LoginConnectTwitter() {
+  const { user } = usePrivy();
   const router = useRouter();
+
   const changePrePage = () => {
     router.push("/login/code");
+  };
+
+  const connectTwitter = async () => {
+    if (user?.wallet?.address) {
+      const url = await getTwitterAuthLink(user?.wallet?.address);
+      console.log(`url: ${url}`);
+      if (url) router.push(url);
+      console.log(`afba-d0fb9ja0erign0-qp34inyt1-354y`)
+    }
   };
 
   return (
@@ -35,7 +48,11 @@ export default function LoginConnectTwitter() {
             />
             <p className="font-semibold text-lg">Link your Twitter</p>
           </div>
-          <Button variant="linkButton" className="font-semibold py-5">
+          <Button
+            variant="linkButton"
+            className="font-semibold py-5"
+            onClick={connectTwitter}
+          >
             Link
           </Button>
         </div>

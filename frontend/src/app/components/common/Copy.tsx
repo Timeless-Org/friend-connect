@@ -1,13 +1,20 @@
 import { copyClipboard } from "@/utils/common";
-import { useState } from "react";
 
 interface ICopy {
-    copyText: string;
-    content: React.ReactNode | string;
-    setIsCopied: (isCopied: boolean) => void;
+  copyText: string;
+  content?: React.ReactNode | string;
+  setIsCopied: (isCopied: boolean) => void;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-const Copy = ({ copyText, content, setIsCopied }: ICopy) => {
+const Copy = ({
+  copyText,
+  content,
+  setIsCopied,
+  className,
+  children,
+}: ICopy) => {
   const handleCopy = async () => {
     try {
       await copyClipboard(copyText);
@@ -17,8 +24,8 @@ const Copy = ({ copyText, content, setIsCopied }: ICopy) => {
   };
 
   return (
-    <button type="button" onClick={() => handleCopy()}>
-      {content}
+    <button type="button" onClick={() => handleCopy()} className={className}>
+      {content || children}
     </button>
   );
 };

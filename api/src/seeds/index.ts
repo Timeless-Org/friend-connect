@@ -23,9 +23,9 @@ async function main() {
   await prisma.trade.deleteMany();
   await prisma.featured.deleteMany();
 
+  await codePost();
   await userPost();
   await watchlistPost();
-  await codePost();
   await chatPost();
   await messagePost();
   await holderPost();

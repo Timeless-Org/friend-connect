@@ -10,6 +10,7 @@ export const getChatModel = async (address: string): Promise<IChatWithMessage | 
     },
   });
 
+
   const chat = await prisma.chat.findUnique({
     where: {
       user_id: user?.id,
@@ -19,6 +20,10 @@ export const getChatModel = async (address: string): Promise<IChatWithMessage | 
       User: true,
     },
   });
+
+  if (!chat || !chat.User) {
+    return null;
+  }
   return chat;
 };
 

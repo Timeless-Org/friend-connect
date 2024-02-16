@@ -1,11 +1,11 @@
 "use client";
 
-import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
-import NewChatTab from "@/components/explorer/NewChatTab";
-import TopTab from "@/components/explorer/TopTab";
-import TrendTab from "@/components/explorer/TrendTab";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Footer from "@components/common/Footer";
+import Header from "@components/common/Header";
+import NewChatTab from "@components/explorer/NewChatTab";
+import TopTab from "@components/explorer/TopTab";
+import TrendTab from "@components/explorer/TrendTab";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 
 export default function Search() {
   return (

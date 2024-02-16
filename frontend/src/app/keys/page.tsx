@@ -1,12 +1,12 @@
 "use client";
 
-import Header from "@/components/common/Header";
-import Footer from "@/components/common/Footer";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import YouTab from "@/components/keys/YouTab";
-import YourKeyTab from "@/components/keys/YourKeyTab";
-import FriendsTab from "@/components/keys/FriendsTab";
-import GlobalTab from "@/components/keys/GlobalTab";
+import Footer from "@components/common/Footer";
+import Header from "@components/common/Header";
+import FriendsTab from "@components/keys/FriendsTab";
+import GlobalTab from "@components/keys/GlobalTab";
+import YouTab from "@components/keys/YouTab";
+import YourKeyTab from "@components/keys/YourKeyTab";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 
 export default function Keys() {
   return (

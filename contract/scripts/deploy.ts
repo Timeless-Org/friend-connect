@@ -1,25 +1,35 @@
-import { formatEther, parseEther } from "viem";
-import hre from "hardhat";
+import { ethers, upgrades } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = BigInt(currentTimestampInSeconds + 60);
+  const baseUri = "https://example.com/";
 
-  const lockedAmount = parseEther("0.001");
+  const longStarKeyContract = await ethers.deployContract("LongStarKey", [
+    baseUri,
+  ]);
+  await longStarKeyContract.waitForDeployment();
 
-  const lock = await hre.viem.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  const longStarKeyContractAddress = await longStarKeyContract.getAddress();
+
+  console.log("🚀 LongStarKey deployed to:", longStarKeyContractAddress);
+
+  const LongStarShareFactory = await ethers.getContractFactory(
+    "LongStarShareV1"
+  );
+
+  const longStarShareContract = await upgrades.deployProxy(
+    LongStarShareFactory,
+    [{ keyNft: longStarKeyContractAddress }],
+    { initializer: "initialize" },
+  );
+
+  await longStarShareContract.waitForDeployment();
 
   console.log(
-    `Lock with ${formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    "🚀 longStarShareContract(Proxy) deployed to:",
+    await longStarShareContract.getAddress()
   );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

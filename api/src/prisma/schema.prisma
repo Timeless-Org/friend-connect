@@ -8,28 +8,30 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  name         String    @unique
-  biography    String?
-  icon         String?
-  key_img      String?
-  address      String    @unique
-  code         String    @unique
-  key_price    Int?
-  ranking      Int?
-  point        Int?
-  is_online    Boolean   @default(false)
-  notification Boolean   @default(true)
-  last_login   DateTime  @default(now())
-  created_at   DateTime  @default(now())
-  Points       Point[]
-  Codes        Code[]
-  Chats        Chat[]
-  Messages     Message[]
-  TradesAsBuyer  Trade[] @relation("TradeBuyer")
-  TradesAsSeller Trade[] @relation("TradeSeller")
-  Watchlists   Watchlist[]
-  Holders      Holder[]
+  id                              Int       @id @default(autoincrement())
+  name                            String?    @unique
+  biography                       String?
+  icon                            String?
+  key_img                         String?
+  address                         String    @unique
+  code_id                         Int       @unique
+  key_price                       Int?
+  ranking                         Int?
+  point                           Int?
+  is_online                       Boolean   @default(false)
+  notification                    Boolean   @default(true)
+  last_login                      DateTime  @default(now())
+  created_at                      DateTime  @default(now())
+  twitter_access_token            String?
+  twitter_refresh_token          String?
+  twitter_access_token_expires_at Int?
+  Points                          Point[]
+  Chats                           Chat[]
+  Messages                        Message[]
+  TradesAsBuyer                   Trade[] @relation("TradeBuyer")
+  TradesAsSeller                  Trade[] @relation("TradeSeller")
+  Watchlists                      Watchlist[]
+  Holders                         Holder[]
 }
 
 model Watchlist {
@@ -44,20 +46,18 @@ model Watchlist {
 }
 
 model Code {
-  id           Int     @id @default(autoincrement())
-  user_id      Int
-  use_user_id  Int
-  point        Int
+  id           Int       @id @default(autoincrement())
+  user_id      Int?      @unique
+  code         String    @unique
   created_at   DateTime  @default(now())
-  User         User    @relation(fields: [user_id], references: [id])
 }
 
 model Chat {
   id           Int     @id @default(autoincrement())
-  user_id      Int     @unique
+  user_id      Int    @unique
   created_at   DateTime  @default(now())
   Messages     Message[]
-  User         User    @relation(fields: [user_id], references: [id])
+  User         User?    @relation(fields: [user_id], references: [id])
   Holders      Holder[]
 }
 
@@ -81,11 +81,12 @@ model Holder {
 }
 
 model Point {
-  id           Int     @id @default(autoincrement())
-  user_id      Int
-  point        Int
-  created_at   DateTime  @default(now())
-  User         User    @relation(fields: [user_id], references: [id])
+  id             Int     @id @default(autoincrement())
+  user_id        Int
+  point          Int
+  action_user_id Int
+  created_at     DateTime  @default(now())
+  User           User    @relation(fields: [user_id], references: [id])
 }
 
 model Trade {
@@ -106,4 +107,12 @@ model Featured {
   featured_user_id Int
   message          String
   created_at   DateTime  @default(now())
+}
+
+model Session {
+  id            Int     @id @default(autoincrement())
+  sid    String   @unique @db.VarChar(256)
+  sess          Json     @db.Json
+  expire        DateTime @db.Timestamptz(6)
+  created_at    DateTime  @default(now())
 }

@@ -1,4 +1,4 @@
-# FriendConnectKey
+# LongStarKey
 
 ## Overview
 
@@ -10,7 +10,7 @@ Contracts that manage NFTs for the ERC1155 standard.
 
 The maximum amount of each tokenId to be issued.
 
-### _tokenIdCounter
+### \_tokenIdCounter
 
 The value that currently manages how many tokenId minted.
 
@@ -50,12 +50,12 @@ Only NFTs of your own address can be issued.
 Default metadata is set.
 If you are already the owner of one of the tokenId, Mint the NFT for the specified amount.
 Only addresses with MINTER_ROLE can execute.
-This address is a proxy contract for FriendConnectShareV1.
+This address is a proxy contract for LongStarShareV1.
 
 ### grantMintRole
 
 Function to grant MINTER_ROLE.
-Assumed to be executed after deploying FriendConnectShareV1 contract.
+Assumed to be executed after deploying LongStarShareV1 contract.
 
 ### setTokenRoyalty
 

@@ -1,0 +1,159 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xD688acB676771F6aA01114c78A39E594564d3944",
+      "txHash": "0x642eda6999b884fd63b47ae9d9336828518a93a26f92df49d07f55dab50ccb07",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "48f5f7b8c48d132262c97e3c7555c577765251362e84cc9fe60b169efded48ac": {
+      "address": "0x0aE1Ea0a8FB50A2D7b403cd8736F38E7695b6C13",
+      "txHash": "0x9c6918e9bc7f7c348a0b2006e0416c09ab834769ca78390eb5bebf93ede938c3",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "keyNft",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_contract(LongStarKey)5592",
+            "contract": "LongStarShareV1",
+            "src": "contracts/LongStarShareV1.sol:22"
+          },
+          {
+            "label": "tradeContractBlance",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "LongStarShareV1",
+            "src": "contracts/LongStarShareV1.sol:24"
+          },
+          {
+            "label": "blastYieldContract",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "LongStarShareV1",
+            "src": "contracts/LongStarShareV1.sol:26"
+          },
+          {
+            "label": "sharesBalance",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "contract": "LongStarShareV1",
+            "src": "contracts/LongStarShareV1.sol:29"
+          },
+          {
+            "label": "sharesSupply",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "LongStarShareV1",
+            "src": "contracts/LongStarShareV1.sol:32"
+          },
+          {
+            "label": "yieldClaimable",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "LongStarShareV1",
+            "src": "contracts/LongStarShareV1.sol:35"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_contract(LongStarKey)5592": {
+            "label": "contract LongStarKey",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
