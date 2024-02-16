@@ -1,6 +1,6 @@
 "use client";
 
-import { blastSepolia } from "@lib/chain";
+import { blastSepolia } from "@/libs/chain";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { PRIVY_APP_ID } from "@utils/config";
 import { useRouter } from "next/navigation";

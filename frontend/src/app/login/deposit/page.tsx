@@ -1,25 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "@components/ui/button";
-import { useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { faCopy } from "@fortawesome/free-regular-svg-icons";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons";
-import Navigation from "@components/common/Navigation";
+import { blastSepolia } from "@/libs/chain";
+import { formatEther } from "@/libs/common";
 import IconCircle from "@components/common/IconCircle";
-import { usePrivy } from "@privy-io/react-auth";
-import { IAddress } from "@utils/types";
+import Navigation from "@components/common/Navigation";
+import { Button } from "@components/ui/button";
+import { faEthereum } from "@fortawesome/free-brands-svg-icons";
+import { faCopy } from "@fortawesome/free-regular-svg-icons";
+import { faArrowsRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { copyClipboard } from "@utils/common";
-import { useWallets } from "@privy-io/react-auth";
-import { blastSepolia } from "@lib/chain";
-import { formatEther } from "@lib/common";
+import { IAddress } from "@utils/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LoginDeposit() {
   const { user } = usePrivy();
   const [isCopied, setIsCopied] = useState<boolean>(false);
-  const address = user?.wallet?.address as IAddress || "0x";
+  const address = (user?.wallet?.address as IAddress) || "0x";
   const { wallets } = useWallets();
 
   const [balance, setBalance] = useState<number | null>(0);
@@ -43,7 +42,7 @@ export default function LoginDeposit() {
       if (embeddedWallet) {
         await embeddedWallet.switchChain(blastSepolia.id);
         const provider = await embeddedWallet.getEthersProvider();
-        const currentBalance = await provider.getBalance(address)
+        const currentBalance = await provider.getBalance(address);
         const formatBalance =
           Math.floor(formatEther(currentBalance) * 100000) / 100000;
         setBalance(formatBalance);

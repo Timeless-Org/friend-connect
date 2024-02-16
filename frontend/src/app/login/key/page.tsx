@@ -1,15 +1,14 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { blastSepolia } from "@/libs/chain";
+import { ethersContract } from "@/libs/ethersContract";
+import { createTrade } from "@/utils/api";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { IAddress } from "@utils/types";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useWallets } from "@privy-io/react-auth";
-import { blastSepolia } from "@lib/chain";
-import { ethersContract } from "@lib/ethersContract";
-import { createTrade } from "@/utils/api";
 
 export default function LoginKey() {
   const router = useRouter();
