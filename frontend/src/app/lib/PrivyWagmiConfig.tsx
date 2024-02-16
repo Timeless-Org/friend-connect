@@ -1,6 +1,6 @@
 "use client";
 
-import { blastSepolia } from "@/libs/chain";
+import { blastSepolia } from "@/lib/chain";
 import { PrivyWagmiConnector } from "@privy-io/wagmi-connector";
 import React from "react";
 import { configureChains } from "wagmi";

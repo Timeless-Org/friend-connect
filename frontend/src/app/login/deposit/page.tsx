@@ -1,7 +1,7 @@
 "use client";
 
-import { blastSepolia } from "@/libs/chain";
-import { formatEther } from "@/libs/common";
+import { blastSepolia } from "@/lib/chain";
+import { formatEther } from "@/lib/common";
 import IconCircle from "@components/common/IconCircle";
 import Navigation from "@components/common/Navigation";
 import { Button } from "@components/ui/button";
