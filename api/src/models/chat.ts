@@ -1,5 +1,5 @@
 import { prisma } from "../app";
-import { IAllChat, IChat, IChatWithMessage } from "../lib/type";
+import { IAllChat, IChat, IChatWithMessage } from "../lib/interfaces";
 
 // Chat
 
@@ -9,7 +9,6 @@ export const getChatModel = async (address: string): Promise<IChatWithMessage | 
       address: address,
     },
   });
-
 
   const chat = await prisma.chat.findUnique({
     where: {

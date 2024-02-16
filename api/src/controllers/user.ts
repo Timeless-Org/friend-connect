@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../lib/type";
+import { IUser } from "../lib/interfaces";
 import {
   createUserService,
   getTopPriceUsersService,
@@ -20,7 +20,7 @@ export const createUserController = async (req: Request, res: Response): Promise
       res.status(500).json({ message: "User already exists" });
       return;
     }
-      const result: boolean = await createUserService(lowerAddress);
+    const result: boolean = await createUserService(lowerAddress);
     if (result) {
       res.status(200).json({ message: "success" });
       return;

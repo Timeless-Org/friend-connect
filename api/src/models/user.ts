@@ -1,5 +1,5 @@
-import { IInitialUser, IUser, IWatchList } from "../lib/type";
 import { prisma } from "../app";
+import { IInitialUser, IUser, IWatchList } from "../lib/interfaces";
 import { getUnusedCodeModel } from "./code";
 
 // Post
@@ -60,7 +60,12 @@ export const getUserFromCodeModel = async (_code: string): Promise<IUser | null>
 
 // Update
 
-export const updateUserModel = async (address: string, name: string, biography: string, key_img: string): Promise<IUser> => {
+export const updateUserModel = async (
+  address: string,
+  name: string,
+  biography: string,
+  key_img: string,
+): Promise<IUser> => {
   const updatedUser = await prisma.user.update({
     where: {
       address,
@@ -74,10 +79,7 @@ export const updateUserModel = async (address: string, name: string, biography: 
   return updatedUser;
 };
 
-export const updateUserNameModel = async (
-  address: string,
-  name: string,
-): Promise<IUser> => {
+export const updateUserNameModel = async (address: string, name: string): Promise<IUser> => {
   const updatedUser = await prisma.user.update({
     where: {
       address,

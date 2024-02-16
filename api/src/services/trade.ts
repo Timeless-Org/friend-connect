@@ -1,4 +1,4 @@
-import { ITrade } from "../lib/type";
+import { ITrade } from "../lib/interfaces";
 import {
   createTradeModel,
   getHolderTradesModel,

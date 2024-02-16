@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IAllChat, IChat, IChatWithMessage } from "../lib/type";
+import { IAllChat, IChat, IChatWithMessage } from "../lib/interfaces";
 import { getLastestChatService, getUserAllChatService, getUserChatService } from "../services/chat";
 
 export const getUserChatController = async (req: Request, res: Response) => {

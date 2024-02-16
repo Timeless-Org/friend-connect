@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../lib/type";
+import { IUser } from "../lib/interfaces";
 import {
   createKeyNftService,
   getHoldKeyAmountService,

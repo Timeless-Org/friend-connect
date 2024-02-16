@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ITrade } from "../lib/type";
+import { ITrade } from "../lib/interfaces";
 import {
   createTradeService,
   getAllTradeService,

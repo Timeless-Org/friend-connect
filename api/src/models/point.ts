@@ -1,5 +1,5 @@
-import { IPoint } from "lib/type";
 import { prisma } from "../app";
+import { IPoint } from "../lib/interfaces";
 
 // Point
 
@@ -44,7 +44,6 @@ export const getSpecificPointModel = async (actionUserAddress: string, point: nu
   });
   return points;
 };
-
 
 export const getLastWeekPointModel = async (address: string): Promise<number> => {
   const user = await prisma.user.findUnique({
