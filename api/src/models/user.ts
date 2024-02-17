@@ -49,7 +49,6 @@ export const getUserFromCodeModel = async (_code: string): Promise<IUser | null>
   if (!code) {
     return null;
   }
-  console.log(`code: ${JSON.stringify(code)}`);
   const user = await prisma.user.findUnique({
     where: {
       code_id: code.id,

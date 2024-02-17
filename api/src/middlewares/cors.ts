@@ -10,7 +10,7 @@ export const validateOrigin = cors({
     if (ALLOWED_ORIGIN === origin) {
       return callback(null, true);
     }
-    if (ALLOWED_ORIGINS.some((allowOrigin) => origin?.match(new RegExp(allowOrigin)))) {
+    if (ALLOWED_ORIGINS.some((allowOrigin: string | RegExp) => origin?.match(new RegExp(allowOrigin)))) {
       console.log(`ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}`);
       return callback(null, true);
     }
