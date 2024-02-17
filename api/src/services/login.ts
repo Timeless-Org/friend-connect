@@ -10,8 +10,10 @@ export const VerifyCodeService = async (code: string, address: string): Promise<
       const inviteUser = await getUserFromCodeModel(code);
       console.log(`✅ VerifyCodeService: inviteUser -> ${JSON.stringify(inviteUser)}, address -> ${address}`);
       if (!inviteUser || inviteUser.address === address) throw new Error("User not found");
-      const requestUser = await getUserModel(address);
-      if (!requestUser) await createUserModel({ address });
+      let requestUser = await getUserModel(address);
+      if (!requestUser) {
+        requestUser = await createUserModel({ address });
+      }
       const alreadyAddPoint = await getSpecificPointModel(inviteUser.id, requestUser.id, 0);
       if (alreadyAddPoint.length === 0) await createPointFromId(inviteUser.id, requestUser.id,  0);
       return true;
