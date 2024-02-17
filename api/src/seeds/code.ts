@@ -1,4 +1,5 @@
 import { prisma } from "../app";
+import { NODE_ENV } from "../utils/config";
 
 const generateUniqueRandomCodes = (length: number, count: number): Set<string> => {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -23,17 +24,22 @@ export const post = async () => {
       user_id: 1,
       created_at: new Date().toISOString(),
     },
-    {
-      code: "0987654321",
-      user_id: 2,
-      created_at: new Date().toISOString(),
-    },
-    {
-      code: "ABCDEFGHIJ",
-      user_id: 3,
-      created_at: new Date().toISOString(),
-    },
   ];
+  if (NODE_ENV === "local") {
+    codes.push(
+      {
+        code: "0987654321",
+        user_id: 2,
+        created_at: new Date().toISOString(),
+      },
+      {
+        code: "ABCDEFGHIJ",
+        user_id: 3,
+        created_at: new Date().toISOString(),
+      },
+    );
+  }
+
   const generateCodes = generateUniqueRandomCodes(10, 100);
   for (const generateCode of generateCodes) {
     codes.push({

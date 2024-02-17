@@ -15,11 +15,11 @@ model User {
   key_img                         String?
   address                         String    @unique
   code_id                         Int       @unique
-  key_price                       Int?
+  key_price                       Int?      @default(0)
   ranking                         Int?
   point                           Int?
   is_online                       Boolean   @default(false)
-  notification                    Boolean   @default(true)
+  notification                    Boolean   @default(false)
   last_login                      DateTime  @default(now())
   created_at                      DateTime  @default(now())
   twitter_access_token            String?
