@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import WalletProvider from "@components/common/PrivyProvider";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@utils/config";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,11 +35,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.jpg"></link>
         <meta name="theme-color" content="#d1cd0c" />
-      </Head>
+      </head>
       <body className={`${inter.className} w-screen h-screen`}>
         <WalletProvider>{children}</WalletProvider>
       </body>

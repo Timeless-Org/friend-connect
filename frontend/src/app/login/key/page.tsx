@@ -24,7 +24,9 @@ export default function LoginKey() {
   };
 
   const changeNextPage = async () => {
-    await createTrade(address, address, 0, true);
+    try {
+      await createTrade(address, address, 0, true);
+    } catch (err: any) { }
     router.push("/login/profile");
   };
 
