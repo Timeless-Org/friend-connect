@@ -7,6 +7,8 @@ import { getUnusedCodeModel } from "./code";
 export const createUserModel = async (user: IInitialUser): Promise<IUser> => {
   const code = await getUnusedCodeModel();
 
+  console.log(`unused code: ${JSON.stringify(code)}`);
+
   if (!code) {
     throw new Error("Code not found");
   }
@@ -27,7 +29,9 @@ export const createUserModel = async (user: IInitialUser): Promise<IUser> => {
     },
   });
 
-  await prisma.code.update({
+  console.log(`✅ createUserModel newUser: ${JSON.stringify(newUser)}`);
+
+  const updateCode = await prisma.code.update({
     where: {
       id: code.id,
     },
@@ -35,6 +39,7 @@ export const createUserModel = async (user: IInitialUser): Promise<IUser> => {
       user_id: newUser.id,
     },
   });
+  console.log(`✅ createUserModel updateCode: ${JSON.stringify(updateCode)}`);
   return newUser;
 };
 

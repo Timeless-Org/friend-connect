@@ -17,7 +17,6 @@ export const getUnusedCodeModel = async () => {
       user_id: null,
     },
   });
-  console.log(`unused code: ${JSON.stringify(response)}`);
   return response;
 };
 
@@ -41,7 +40,6 @@ export const updateCodeModel = async (code: string, address: string) => {
     where: {
       code,
     },
-
     data: {
       user_id: user.id,
     },
