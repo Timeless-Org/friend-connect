@@ -50,7 +50,7 @@ export default function LoginLoginCode() {
   };
 
   return (
-    <div className="container flex flex-col items-center justify-center mt-10 w-full h-full">
+    <div className="container flex flex-col items-center justify-center mt-10 w-full">
       <ErrorModal
         message={"Invalid code"}
         isModalDisplay={isModalDisplay}
@@ -64,7 +64,7 @@ export default function LoginLoginCode() {
       <div className="mt-10 w-full flex flex-col items-start justify-center">
         <p className="font-semibold text-lg">Got an invite code?</p>
         <p className="text-gray60 mt-4">
-          long star is currently in beta. Get an invite code from an existing
+          LongStar is currently in beta. Get an invite code from an existing
           user to sign up
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function LoginLoginCode() {
         >
           Proceed
         </Button>
-        <Button variant="bgWhite" className="w-full h-12">
+        <Button variant="bgWhite" className="w-full h-12" onClick={logout}>
           Log out
         </Button>
       </div>

@@ -26,10 +26,16 @@ export default function LoginStart() {
         <p className="font-semibold text-lg">Long Star is in beta!</p>
         <p className="text-gray60 mt-4">
           Thanks for being an early supporter and helping us test the app.
-          We&apos;ve given you three invites to share with friends. You can find
-          these codes in the Airdrop tab. If you have any feedback, please let
-          us know on Twitter at @friendtech. By using this app, you confirm that
-          you are 18 years of age or older.
+          <br />
+          <br />
+          We&rsquo;ve given you invite code to share with friends. You can find
+          it in the Airdrop tab. <br />
+          <br />
+          If you have any feedback, please let us know on Twitter at
+          @longstar_social.
+          <br />
+          <br />
+          By using this app, you confirm our terms of service
         </p>
       </div>
 
@@ -40,7 +46,10 @@ export default function LoginStart() {
             Post a Tweet to let your friends know you joined
           </label>
         </div>
-        <OrangeButton text={"Start using the app"} buttonAction={changeKeysPage} />
+        <OrangeButton
+          text={"Start using the app"}
+          buttonAction={changeKeysPage}
+        />
       </div>
     </div>
   );

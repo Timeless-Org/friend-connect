@@ -8,6 +8,7 @@ import { post as messagePost } from "./message";
 import { post as holderPost } from "./holder";
 import { post as pointPost } from "./point";
 import { post as tradePost } from "./trade";
+import { NODE_ENV } from "../utils/config";
 
 export const prisma = new PrismaClient();
 
@@ -23,14 +24,18 @@ async function main() {
   await prisma.trade.deleteMany();
   await prisma.featured.deleteMany();
 
-  await codePost();
-  await userPost();
-  await watchlistPost();
-  await chatPost();
-  await messagePost();
-  await holderPost();
-  await pointPost();
-  await tradePost();
+  if (NODE_ENV === "local") {
+    await codePost();
+    await userPost();
+    await watchlistPost();
+    await chatPost();
+    await messagePost();
+    await holderPost();
+    await pointPost();
+    await tradePost();
+  } else {
+    await codePost();
+  }
 }
 
 main()

@@ -18,6 +18,7 @@
     "prisma:dev": "dotenv -e .env.development -- npx prisma",
     "prisma:prod": "dotenv -e .env.production -- npx prisma",
     "seed": "dotenv -e .env.local -- npx prisma migrate reset --force && dotenv -e .env.local -- ts-node src/seeds/index.ts",
+    "seed:dev": "npx prisma migrate reset --force && ts-node src/seeds/index.ts",
     "studio": "dotenv -e .env.local -- npx prisma studio"
   },
   "author": "",
