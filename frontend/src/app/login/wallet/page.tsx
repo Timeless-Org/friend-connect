@@ -10,46 +10,36 @@ export default function LoginLoginWallet() {
   const router = useRouter();
   const { login, authenticated, logout, user } = usePrivy();
 
-  const createUserData = async () => {
+  const changeNextPage = async () => {
     if (user?.wallet && user.wallet.address) {
-      const result = await createUser(user.wallet.address);
-      if (result) {
-        router.push("/login/code");
-        return;
-      }
+      router.push("/login/code");
+      return;
     }
   };
 
   return (
-    <div className="container flex flex-col items-center justify-center h-screen pb-32">
+    <div className="container flex flex-col items-center justify-center h-screen pb-32  bg-black w-full">
       <Image
-        src="/static/img/icon/long_star_logo_black.jpg"
+        src="/static/img/banner/long_star_yellow.jpg"
         alt="long star"
         width={300}
         height={300}
-        className="rounded-full"
       />
+      <p className="text-white text-center w-full px-5 mt-5">
+        LongStar is a Social Fi platform that enables creators to get native
+        yield from their followers via social tokens.
+      </p>
       <div className="flex flex-col fixed bottom-0 mb-10 w-full px-10 pt-10">
-        {authenticated ? (
-          <Button
-            variant="default"
-            className="w-full h-12"
-            onClick={createUserData}
-          >
-            Proceed
-          </Button>
-        ) : (
-          <Button
-            variant="default"
-            className="w-full h-12"
-            onClick={login}
-          >
-            Create a wallet
-          </Button>
-        )}
         <Button
-          variant="bgWhite"
-          className={`${authenticated ? "flex" : "hidden"} w-full h-12`}
+          variant="bgYellow"
+          className="w-full h-12 rounded-full"
+          onClick={authenticated ? changeNextPage : login}
+        >
+          {authenticated ? "Proceed" : "Create a wallet"}
+        </Button>
+        <Button
+          variant="bgBlack"
+          className={`${authenticated ? "flex" : "hidden"} w-full h-12 mt-4`}
           onClick={logout}
         >
           Log out

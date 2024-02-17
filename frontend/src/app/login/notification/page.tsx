@@ -22,22 +22,13 @@ export default function LoginNotification() {
         <p className="font-semibold text-lg">Exclusive chats</p>
         <p className="text-gray60 mt-4">
           Keys give you access to exclusive one-to-many chats with your friends.
-          In your own chat, you&apos;ll see messages from all your holders,
-          but they&apos;ll only see messages from you. To prevent spam, every
-          holder gets to send three messages before waiting for you to reply and
-          reset their limit. Turn on notifications to find out when new messages
-          come in. You&apos;ll be able to choose different notification levels
-          on a per-room basis.
+          <br /><br />Turn on notifications to find out when new messages come in.
         </p>
       </div>
 
       <div className="flex flex-col fixed bottom-0 mb-10 w-full px-10 pt-10">
         <OrangeButton text={"Enable notifications"} />
-        <Button
-          variant="none"
-          className="w-full h-12"
-                  onClick={() => {}}
-        >
+        <Button variant="none" className="w-full h-12" onClick={() => {}}>
           No notifications
         </Button>
       </div>

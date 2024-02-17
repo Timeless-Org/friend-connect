@@ -71,11 +71,18 @@ export default function LoginKey() {
       <div className="mt-10 w-full flex flex-col items-start justify-center">
         <p className="font-semibold text-lg">Buy your first key</p>
         <p className="text-gray60 mt-4">
-          Everyone on friend.tech has a chat unlocked by their keys. These keys
-          can be bought and sold on a person&apos;s profile and their price goes
-          up and down based on how many are currently circulating. You&apos;ll
-          earn trading fees every time your keys are bought and sold by anyone.
-          To create your profile, buy the first key to your own room for free.
+          Everyone has a chat unlocked by their NFT keys. These NFT keys can be
+          bought and sold and their price goes up and down based on how many are
+          currently circulating.
+          <br />
+          <br />
+          You can trade keys with 0% trade fees.
+          <br />
+          <br />
+          You&rsquo;ll earn native yield based on your rankings.
+          <br />
+          <br />
+          To create your profile, buy the first key to your own room.
         </p>
       </div>
 

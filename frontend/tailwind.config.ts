@@ -31,6 +31,7 @@ const config = {
         greenThin: "#E6F7F0",
         red: "#C0555B",
         redThin: "#F8E6E8",
+        yellow: "#E0FF00",
       },
       keyframes: {
         "accordion-down": {
