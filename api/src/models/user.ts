@@ -26,6 +26,15 @@ export const createUserModel = async (user: IInitialUser): Promise<IUser> => {
       code_id: code.id,
     },
   });
+
+  await prisma.code.update({
+    where: {
+      id: code.id,
+    },
+    data: {
+      user_id: newUser.id,
+    },
+  });
   return newUser;
 };
 
