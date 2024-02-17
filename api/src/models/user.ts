@@ -13,18 +13,13 @@ export const createUserModel = async (user: IInitialUser): Promise<IUser> => {
     throw new Error("Code not found");
   }
 
+  const allUserCount = await prisma.user.count();
+
   const newUser = await prisma.user.create({
     data: {
-      name: "",
-      biography: "",
-      icon: "",
-      key_img: "",
       address: user.address.toLowerCase(),
-      key_price: 0,
-      ranking: 0,
+      ranking: allUserCount,
       is_online: true,
-      notification: false,
-      last_login: new Date(),
       code_id: code.id,
     },
   });
