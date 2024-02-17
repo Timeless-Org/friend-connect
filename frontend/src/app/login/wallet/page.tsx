@@ -18,9 +18,10 @@ export default function LoginLoginWallet() {
   };
 
   return (
-    <div className="container flex items-center justify-center h-screen pb-32 bg-black w-full">
-      <div className="flex flex-col justify-between h-full w-full">
-        <div className="flex flex-col">
+    <div className="container flex items-center justify-center h-screen bg-black w-full">
+      <div className="flex flex-col justify-between h-screen w-full">
+        <div></div>
+        <div className="flex flex-col items-center justify-center ">
           <Image
             src="/static/img/banner/long_star_yellow.jpg"
             alt="long star"
@@ -32,7 +33,7 @@ export default function LoginLoginWallet() {
             yield from their followers via social tokens.
           </p>
         </div>
-        <div className="flex flex-col mb-10 w-full px-10 pt-10">
+        <div className="flex flex-col mb-5 w-full px-5">
           <Button
             variant="bgYellow"
             className="w-full h-12 rounded-full"

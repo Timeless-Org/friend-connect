@@ -38,25 +38,27 @@ export default function LoginNotification() {
     if (result) {
       router.push("/login/start");
     }
-  }
+  };
 
   return (
-    <div className="container flex flex-col items-center justify-center mt-10">
-      <Navigation
-        changePrePage={changePrePage}
-        progressValue={85.8}
-        pageNum={6}
-      />
-      <div className="mt-10 w-full flex flex-col items-start justify-center">
-        <p className="font-semibold text-lg">Create your account</p>
-        <p className="text-gray mt-4">User name</p>
-        <Input
-          type="text"
-          placeholder="User name"
-          className="mt-2"
-          onChange={handleSetUserName}
-        />
-        {/* <div className="mt-6">
+    <div className="container flex flex-col items-center justify-center">
+      <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+        <div>
+          <Navigation
+            changePrePage={changePrePage}
+            progressValue={85.8}
+            pageNum={6}
+          />
+          <div className="mt-10 w-full flex flex-col items-start justify-center">
+            <p className="font-semibold text-lg">Create your account</p>
+            <p className="text-gray mt-4">User name</p>
+            <Input
+              type="text"
+              placeholder="User name"
+              className="mt-2"
+              onChange={handleSetUserName}
+            />
+            {/* <div className="mt-6">
           <p className="text-gray">Profile picture</p>
           <div className="flex items-center justify-center mt-2">
             <FontAwesomeIcon
@@ -76,22 +78,24 @@ export default function LoginNotification() {
             <InputFile />
           </div>
         </div> */}
-        <div className="mt-6 w-full">
-          <p>Bio</p>
-          <Textarea
-            placeholder="Bio."
-            onChange={handleSetBiography}
-            className="w-full"
+            <div className="mt-6 w-full">
+              <p>Bio</p>
+              <Textarea
+                placeholder="Bio."
+                onChange={handleSetBiography}
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col mb-5 px-5">
+          <OrangeButton
+            text={"Proceed"}
+            buttonAction={updateUser}
+            disabled={!userName}
           />
         </div>
-      </div>
-
-      <div className="flex flex-col fixed bottom-0 mb-10 w-full px-10 pt-10">
-        <OrangeButton
-          text={"Proceed"}
-          buttonAction={updateUser}
-          disabled={!userName}
-        />
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ export default function LoginKey() {
   const changeNextPage = async () => {
     try {
       await createTrade(address, address, 0, true);
-    } catch (err: any) { }
+    } catch (err: any) {}
     router.push("/login/profile");
   };
 
@@ -64,37 +64,41 @@ export default function LoginKey() {
   }, [getKeyNftBalance, keyNftBalance]);
 
   return (
-    <div className="container flex flex-col items-center justify-center mt-10">
-      <Navigation
-        changePrePage={changePrePage}
-        progressValue={57.2}
-        pageNum={4}
-      />
-      <div className="mt-10 w-full flex flex-col items-start justify-center">
-        <p className="font-semibold text-lg">Buy your first key</p>
-        <p className="text-gray60 mt-4">
-          Everyone has a chat unlocked by their NFT keys. These NFT keys can be
-          bought and sold and their price goes up and down based on how many are
-          currently circulating.
-          <br />
-          <br />
-          You can trade keys with 0% trade fees.
-          <br />
-          <br />
-          You&rsquo;ll earn native yield based on your rankings.
-          <br />
-          <br />
-          To create your profile, buy the first key to your own room.
-        </p>
-      </div>
+    <div className="container flex flex-col items-center justify-center">
+      <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+        <div>
+          <Navigation
+            changePrePage={changePrePage}
+            progressValue={57.2}
+            pageNum={4}
+          />
+          <div className="mt-10 w-full flex flex-col items-start justify-center">
+            <p className="font-semibold text-lg">Buy your first key</p>
+            <p className="text-gray60 mt-4">
+              Everyone has a chat unlocked by their NFT keys. These NFT keys can
+              be bought and sold and their price goes up and down based on how
+              many are currently circulating.
+              <br />
+              <br />
+              You can trade keys with 0% trade fees.
+              <br />
+              <br />
+              You&rsquo;ll earn native yield based on your rankings.
+              <br />
+              <br />
+              To create your profile, buy the first key to your own room.
+            </p>
+          </div>
+        </div>
 
-      <div className="flex flex-col fixed bottom-0 mb-10 w-full px-10 pt-10">
-        <OrangeButton
-          text={keyNftBalance > 0 ? "Proceed" : "Buy Key for $0"}
-          buttonAction={
-            keyNftBalance > 0 ? changeNextPage : () => buyKey(address)
-          }
-        />
+        <div className="flex flex-col mb-5 px-5">
+          <OrangeButton
+            text={keyNftBalance > 0 ? "Proceed" : "Buy Key for $0"}
+            buttonAction={
+              keyNftBalance > 0 ? changeNextPage : () => buyKey(address)
+            }
+          />
+        </div>
       </div>
     </div>
   );
