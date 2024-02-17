@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { post as userPost } from "./user";
+import { post as adminUserPost } from "./adminUser";
 import { post as watchlistPost } from "./watchlist";
 import { post as codePost } from "./code";
 import { post as chatPost } from "./chat";
@@ -35,6 +36,7 @@ async function main() {
     await tradePost();
   } else {
     await codePost();
+    await adminUserPost();
   }
 }
 
