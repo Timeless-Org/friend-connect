@@ -109,7 +109,7 @@ export default function LoginDeposit() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full px-5 mb-5">
+        <div className="flex flex-col w-full px-5 mb-10">
           <div className="flex justify-between items-center mb-3">
             <p className="text-gray60 font-semibold">Wallet Balance:</p>
             <div className="flex justify-center items-center">

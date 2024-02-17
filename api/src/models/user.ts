@@ -88,13 +88,38 @@ export const updateUserModel = async (
   return updatedUser;
 };
 
-export const updateUserNameModel = async (address: string, name: string): Promise<IUser> => {
+export const updateUserTwitterModel = async (address: string, name: string, icon: string): Promise<IUser> => {
   const updatedUser = await prisma.user.update({
     where: {
       address,
     },
     data: {
       name,
+      icon,
+    },
+  });
+  return updatedUser;
+};
+
+export const updateUserBioModel = async (address: string, biography: string): Promise<IUser> => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      address,
+    },
+    data: {
+      biography,
+    },
+  });
+  return updatedUser;
+};
+
+export const updateUserNotificationModel = async (address: string, notification: boolean): Promise<IUser> => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      address,
+    },
+    data: {
+      notification,
     },
   });
   return updatedUser;

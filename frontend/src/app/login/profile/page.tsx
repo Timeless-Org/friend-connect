@@ -1,40 +1,32 @@
 "use client";
 
-import InputFile from "@components/common/InputFile";
+import { IAddress } from "@/utils/types";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
 import { Input } from "@components/ui/input";
 import { Textarea } from "@components/ui/textarea";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePrivy } from "@privy-io/react-auth";
+import { addUserBiography } from "@utils/api";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import { addUserProfile } from "@utils/api";
-import { usePrivy } from "@privy-io/react-auth";
-import { IAddress } from "@/utils/types";
 
 export default function LoginNotification() {
   const router = useRouter();
   const { user } = usePrivy();
   const address = (user?.wallet?.address as IAddress) || "0x";
 
-  const [userName, setUserName] = useState<string>("");
   const [biography, setBiography] = useState<string>("");
 
   const changePrePage = () => {
-    router.push("/login/key");
-  };
-
-  const handleSetUserName = (event: ChangeEvent<HTMLInputElement>) => {
-    setUserName(event.target.value);
+    router.push("/login/notification");
   };
 
   const handleSetBiography = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setBiography(event.target.value);
   };
 
-  const updateUser = async () => {
-    const result = await addUserProfile(address, userName, biography, "");
+  const updateBiography = async () => {
+    const result = await addUserBiography(address, biography);
     if (result) {
       router.push("/login/start");
     }
@@ -51,13 +43,13 @@ export default function LoginNotification() {
           />
           <div className="mt-10 w-full flex flex-col items-start justify-center">
             <p className="font-semibold text-lg">Create your account</p>
-            <p className="text-gray mt-4">User name</p>
+            {/* <p className="text-gray mt-4">User name</p>
             <Input
               type="text"
               placeholder="User name"
               className="mt-2"
               onChange={handleSetUserName}
-            />
+            /> */}
             {/* <div className="mt-6">
           <p className="text-gray">Profile picture</p>
           <div className="flex items-center justify-center mt-2">
@@ -89,11 +81,11 @@ export default function LoginNotification() {
           </div>
         </div>
 
-        <div className="flex flex-col mb-5 px-5">
+        <div className="flex flex-col mb-10 px-5">
           <OrangeButton
             text={"Proceed"}
-            buttonAction={updateUser}
-            disabled={!userName}
+            buttonAction={updateBiography}
+            disabled={!biography}
           />
         </div>
       </div>

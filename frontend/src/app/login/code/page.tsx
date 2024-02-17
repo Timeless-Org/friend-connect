@@ -18,6 +18,7 @@ export default function LoginLoginCode() {
 
   const verifyCode = async (code: string) => {
     try {
+      console.log(`user.wallet.address: ${user?.wallet?.address}`);
       if (user?.wallet && user.wallet.address) {
         const result = await codeVerify(code, user.wallet.address);
         console.log(`result: ${result}`);

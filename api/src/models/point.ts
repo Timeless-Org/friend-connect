@@ -25,7 +25,11 @@ export const createPoint = async (address: string, actionAddress: string, point:
   });
 };
 
-export const createPointFromId = async (pointGrantUserId: number, actionUserId: number, point: number): Promise<void> => {
+export const createPointFromId = async (
+  pointGrantUserId: number,
+  actionUserId: number,
+  point: number,
+): Promise<void> => {
   await prisma.point.create({
     data: {
       user_id: pointGrantUserId,
@@ -37,7 +41,11 @@ export const createPointFromId = async (pointGrantUserId: number, actionUserId: 
 };
 
 // Get
-export const getSpecificPointModel = async (inviteUserId: number, actionUserId: number, point: number): Promise<IPoint[]> => {
+export const getSpecificPointModel = async (
+  inviteUserId: number,
+  actionUserId: number,
+  point: number,
+): Promise<IPoint[]> => {
   const points = await prisma.point.findMany({
     where: {
       user_id: inviteUserId,

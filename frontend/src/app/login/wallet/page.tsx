@@ -32,8 +32,11 @@ export default function LoginLoginWallet() {
             LongStar is a Social Fi platform that enables creators to get native
             yield from their followers via social tokens.
           </p>
+          <p className="text-white text-center w-full px-5 mt-5">
+            address: {user?.wallet?.address}
+          </p>
         </div>
-        <div className="flex flex-col mb-5 w-full px-5">
+        <div className="flex flex-col mb-10 w-full px-5">
           <Button
             variant="bgYellow"
             className="w-full h-12 rounded-full"

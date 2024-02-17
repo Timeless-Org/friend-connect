@@ -27,6 +27,9 @@ export default function WalletProvider({
         },
         defaultChain: blastSepolia,
         supportedChains: [blastSepolia],
+        embeddedWallets: {
+          createOnLogin: "users-without-wallets",
+        },
       }}
     >
       {children}

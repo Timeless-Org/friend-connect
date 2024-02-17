@@ -27,7 +27,7 @@ export default function LoginKey() {
     try {
       await createTrade(address, address, 0, true);
     } catch (err: any) {}
-    router.push("/login/profile");
+    router.push("/login/notification");
   };
 
   const getKeyNftBalance = useCallback(async () => {
@@ -91,7 +91,7 @@ export default function LoginKey() {
           </div>
         </div>
 
-        <div className="flex flex-col mb-5 px-5">
+        <div className="flex flex-col mb-10 px-5">
           <OrangeButton
             text={keyNftBalance > 0 ? "Proceed" : "Buy Key for $0"}
             buttonAction={

@@ -5,10 +5,14 @@ import {
   getWatchListModel,
   searchUserModel,
   updateNotificationModel,
-  updateUserModel,
+  updateUserBioModel,
+  updateUserNotificationModel,
+  updateUserTwitterModel,
   upsertWatchListModel,
 } from "../models/user";
 import { IUser } from "../utils/interfaces";
+
+// Create
 
 export const createUserService = async (address: string): Promise<boolean> => {
   const user = await createUserModel({ address });
@@ -18,24 +22,42 @@ export const createUserService = async (address: string): Promise<boolean> => {
   return false;
 };
 
+// Get
+
 export const getUserService = async (address: string): Promise<IUser | null> => {
   const user = await getUserModel(address);
   return user;
 };
 
-export const updateUserService = async (
-  address: string,
-  name: string,
-  biography: string,
-  keyImage: string,
-): Promise<IUser | null> => {
-  const updatedUser = await updateUserModel(address, name, biography, keyImage);
-  return updatedUser;
-};
-
 export const getWatchlistService = async (address: string): Promise<IUser[]> => {
   const users = await getWatchListModel(address);
   return users;
+};
+
+// Update
+
+export const updateUserService = async (
+  address: string,
+  name: string | null,
+  biography: string | null,
+  icon: string | null,
+  notification: boolean | null,
+): Promise<boolean> => {
+  let flag = false;
+  if (name && icon) {
+    const result = await updateUserTwitterModel(address, name, icon);
+    if (result) flag = true;
+  }
+  if (biography) {
+    const result = await updateUserBioModel(address, biography);
+    if (result) flag = true;
+  }
+  if (notification) {
+    const result = await updateUserNotificationModel(address, notification);
+    if (result) flag = true;
+  }
+
+  return flag;
 };
 
 export const updateWatchlistService = async (

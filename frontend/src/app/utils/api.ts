@@ -31,17 +31,38 @@ export const getTwitterAuthLink = async (address: string): Promise<string> => {
     return result?.data.url;
 }
 
-// login: add user profile
-export const addUserProfile = async (
+// login: add user twitter profile
+export const addUserTwitterProfile = async (
   address: string,
   name: string,
-  biography: string,
-  keyImage: string
+  icon: string
 ): Promise<boolean> => {
   const result = (await baseRequest("PUT", `/user/${address}`, {
     name,
+    icon,
+  })) as any;
+  return result?.data.message === "success";
+};
+
+
+// login: add user biography
+export const addUserBiography = async (
+  address: string,
+  biography: string,
+): Promise<boolean> => {
+  const result = (await baseRequest("PUT", `/user/${address}`, {
     biography,
-    keyImage,
+  })) as any;
+  return result?.data.message === "success";
+};
+
+// login: change user notification
+export const addUserNotification = async (
+  address: string,
+  notification: boolean,
+): Promise<boolean> => {
+  const result = (await baseRequest("PUT", `/user/${address}`, {
+    notification,
   })) as any;
   return result?.data.message === "success";
 };
