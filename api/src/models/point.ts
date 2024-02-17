@@ -25,20 +25,23 @@ export const createPoint = async (address: string, actionAddress: string, point:
   });
 };
 
-// Get
-export const getSpecificPointModel = async (actionUserAddress: string, point: number): Promise<IPoint[]> => {
-  const actionUser = await prisma.user.findUnique({
-    where: {
-      address: actionUserAddress,
-    },
-    select: {
-      id: true,
+export const createPointFromId = async (pointGrantUserId: number, actionUserId: number, point: number): Promise<void> => {
+  await prisma.point.create({
+    data: {
+      user_id: pointGrantUserId,
+      point: point,
+      action_user_id: actionUserId,
+      created_at: new Date(),
     },
   });
-  if (!actionUser) throw new Error("User not found");
+};
+
+// Get
+export const getSpecificPointModel = async (inviteUserId: number, actionUserId: number, point: number): Promise<IPoint[]> => {
   const points = await prisma.point.findMany({
     where: {
-      action_user_id: actionUser.id,
+      user_id: inviteUserId,
+      action_user_id: actionUserId,
       point: point,
     },
   });

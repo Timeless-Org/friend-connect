@@ -18,8 +18,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex flex-col items-center justify-between bg-black">
-      <div className="flex flex-col space-y-10 w-full justify-center items-center h-screen">
+    <main className="flex flex-col items-center justify-between bg-black h-full">
+      <div className="flex flex-col space-y-10 w-full justify-center items-center h-full">
         <div className="flex w-full justify-center items-center space-x-5 px-5">
           <Image
             src="/static/img/banner/long_star_yellow.jpg"
