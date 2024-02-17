@@ -1,5 +1,5 @@
 import { TwitterApi } from "twitter-api-v2";
-import { updateUserNameModel, updateUserTwitterAuthModel } from "../models/user";
+import { updateUserTwitterAuthModel } from "../models/user";
 import { TWITTER_CALLBACK_URL, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from "../utils/config";
 
 export const generateAuthLinkService = async (sessionId: string) => {
@@ -46,12 +46,12 @@ export const redirectAuthLinkService = async (
     ) {
       const { data: userObject } = await loggedClient.v2.me();
       console.log(`userObject: ${JSON.stringify(userObject)}`);
-      const name = userObject.name;
+      // const name = userObject.name;
       // const profile_image_url = await loggedClient.;
       // console.log(`user: ${JSON.stringify(user)}`);
       // const userIcon = userObject.profile_image_url;
       await updateUserTwitterAuthModel(address, accessToken, refreshToken, expiresIn);
-      await updateUserNameModel(address, name);
+      // await updateUserNameModel(address, name);
       return true;
     }
     return false;

@@ -1,30 +1,59 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@components/ui/button";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import Navigation from "@components/common/Navigation";
-import { getTwitterAuthLink } from "@utils/api";
+import { addUserTwitterProfile } from "@utils/api";
 import { usePrivy } from "@privy-io/react-auth";
+import ErrorModal from "@components/Modal/ErrorModal";
 
 export default function LoginConnectTwitter() {
-  const { user } = usePrivy();
+  const { user, linkTwitter, authenticated } = usePrivy();
   const router = useRouter();
+
+  const [isModalDisplay, setIsmModalDisplay] = useState<boolean>(false);
 
   const changePrePage = () => {
     router.push("/login/code");
   };
 
+  const changeNextPage = async () => {
+    if (user && user.wallet?.address && user.twitter?.name) {
+      await addUserTwitterProfile(
+        user.wallet.address,
+        user.twitter.name,
+        user.twitter.profilePictureUrl || ""
+      );
+    }
+    router.push("/login/deposit");
+  };
+
   const connectTwitter = async () => {
-    if (user?.wallet?.address) {
-      const url = await getTwitterAuthLink(user?.wallet?.address);
-      if (url) router.push(url);
+    // if (user?.wallet?.address) {
+    //   const url = await getTwitterAuthLink(user?.wallet?.address);
+    //   if (url) router.push(url);
+    // }
+    if (!authenticated) return;
+    if (user && user.twitter?.name) {
+      setIsmModalDisplay(true);
+    } else {
+      linkTwitter();
     }
   };
 
+  const closeErrorModal = () => {
+    setIsmModalDisplay(false);
+  };
   return (
     <div className="container flex flex-col items-center justify-center">
+      <ErrorModal
+        message={"Already linked to Twitter"}
+        isModalDisplay={isModalDisplay}
+        closeModal={closeErrorModal}
+      />
       <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
         <div>
           <Navigation
@@ -60,6 +89,14 @@ export default function LoginConnectTwitter() {
         </div>
 
         <div className="flex flex-col w-full px-5">
+          <Button
+            variant={user?.twitter?.name ? "default" : "roundedBtn"}
+            className="w-full h-12"
+            onClick={changeNextPage}
+            disabled={!user?.twitter?.name}
+          >
+            Proceed
+          </Button>
           <Button variant="bgWhite" className="w-full h-12">
             Log out
           </Button>

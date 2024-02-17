@@ -5,7 +5,7 @@ import { createUserModel, getUserFromCodeModel, getUserModel } from "../models/u
 export const VerifyCodeService = async (code: string, address: string): Promise<boolean> => {
   try {
     const res = await verificateCodeModel(code);
-    console.log(`✅ VerifyCodeService: ${res}`)
+    console.log(`✅ VerifyCodeService: ${res}`);
     if (res) {
       const inviteUser = await getUserFromCodeModel(code);
       console.log(`✅ VerifyCodeService: inviteUser -> ${JSON.stringify(inviteUser)}, address -> ${address}`);
@@ -15,7 +15,7 @@ export const VerifyCodeService = async (code: string, address: string): Promise<
         requestUser = await createUserModel({ address });
       }
       const alreadyAddPoint = await getSpecificPointModel(inviteUser.id, requestUser.id, 0);
-      if (alreadyAddPoint.length === 0) await createPointFromId(inviteUser.id, requestUser.id,  0);
+      if (alreadyAddPoint.length === 0) await createPointFromId(inviteUser.id, requestUser.id, 0);
       return true;
     }
     return false;

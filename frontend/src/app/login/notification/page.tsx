@@ -4,11 +4,21 @@ import { useRouter } from "next/navigation";
 import { Button } from "@components/ui/button";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
+import { addUserNotification } from "@utils/api";
+import { usePrivy } from "@privy-io/react-auth";
+import { IAddress } from "@/utils/types";
 
 export default function LoginNotification() {
   const router = useRouter();
+  const { user } = usePrivy();
+  const address = (user?.wallet?.address as IAddress) || "0x";
+
   const changePrePage = () => {
-    router.push("/login/deposit");
+    router.push("/login/key");
+  };
+  const changeNextPage = async (notification: boolean = false) => {
+    if (notification) await addUserNotification(address, notification);
+    router.push("/login/profile");
   };
 
   return (
@@ -33,8 +43,15 @@ export default function LoginNotification() {
         </div>
 
         <div className="flex flex-col px-5">
-          <OrangeButton text={"Enable notifications"} />
-          <Button variant="none" className="w-full h-12 mt-2" onClick={() => {}}>
+          <OrangeButton
+            text={"Enable notifications"}
+            buttonAction={() => changeNextPage(true)}
+          />
+          <Button
+            variant="none"
+            className="w-full h-12 mt-2"
+            onClick={() => changeNextPage(false)}
+          >
             No notifications
           </Button>
         </div>

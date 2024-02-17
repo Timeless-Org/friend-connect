@@ -42,7 +42,7 @@ export default function LoginStart() {
           </div>
         </div>
 
-        <div className="flex flex-col mb-5 px-5">
+        <div className="flex flex-col mb-10 px-5">
           <div className="flex items-center space-x-2 justify-start mb-3">
             <Checkbox id="terms" />
             <label htmlFor="terms" className="text-sm">

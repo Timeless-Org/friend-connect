@@ -50,10 +50,10 @@ export const getUserController = async (req: Request, res: Response): Promise<vo
 export const updateUserController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const { name, biography, keyImage } = req.body;
+    const { name, biography, icon, notification } = req.body;
     const lowerAddress: string = address.toLowerCase();
-    const user: IUser | null = await updateUserService(lowerAddress, name, biography, keyImage);
-    if (user) {
+    const result: boolean = await updateUserService(lowerAddress, name, biography, icon, notification);
+    if (result) {
       res.status(200).json({ message: "success" });
       return;
     }
