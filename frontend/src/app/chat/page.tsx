@@ -32,7 +32,7 @@ export default function Keys() {
     <>
       <Header />
       <div className="flex flex-col items-center justify-center w-full mt-28 px-4 mb-16 h-full">
-        {/* {chats.map((chat, index) => (
+        {chats.map((chat, index) => (
           <button
             type="button"
             className="flex justify-between w-full items-center py-2"
@@ -69,8 +69,8 @@ export default function Keys() {
               </p>
             </div>
           </button>
-        ))} */}
-        <p className="h-full flex justify-center items-center">Comming soon ...</p>
+        ))}
+        {/* <p className="h-full flex justify-center items-center">Comming soon ...</p> */}
       </div>
       <Footer />
     </>
