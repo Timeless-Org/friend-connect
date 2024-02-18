@@ -7,6 +7,7 @@ export const createTradeModel = async (
   buyAddress: string,
   sellAddress: string,
   keyPrice: number,
+  amount: number,
   isBuy: boolean,
 ): Promise<ITrade> => {
   const buyUser = await prisma.user.findUnique({
@@ -25,6 +26,7 @@ export const createTradeModel = async (
       buy_user_id: buyUser?.id,
       sell_user_id: sellUser?.id,
       key_price: keyPrice,
+      amount,
       is_buy: isBuy,
       trade_at: new Date(),
       created_at: new Date(),
@@ -40,10 +42,25 @@ export const getTradeModel = async (address: string): Promise<ITrade[]> => {
     },
   });
   if (!user) throw new Error("User not found");
-  // userテーブルのbuy_user_idとsell_user_idのkey_img、Tradeテーブルのis_buy、key_price、trade_atを取得するコードにしてください。
   const trades = await prisma.trade.findMany({
     where: {
       OR: [{ buy_user_id: user.id }, { sell_user_id: user.id }],
+    },
+    include: {
+      Buyer: {
+        select: {
+          address: true,
+          name: true,
+          icon: true,
+        },
+      },
+      Seller: {
+        select: {
+          address: true,
+          name: true,
+          icon: true,
+        },
+      },
     },
   });
   return trades;
@@ -105,6 +122,22 @@ export const getLatestTradesModel = async (take: number): Promise<ITrade[]> => {
     take,
     orderBy: {
       created_at: "desc",
+    },
+    include: {
+      Buyer: {
+        select: {
+          address: true,
+          name: true,
+          icon: true,
+        },
+      },
+      Seller: {
+        select: {
+          address: true,
+          name: true,
+          icon: true,
+        },
+      },
     },
   });
   return trades;

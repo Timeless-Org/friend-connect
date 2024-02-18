@@ -1,14 +1,10 @@
 import Image from "next/image";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-
-const getRandomInt = () => {
-  return (Math.floor(Math.random() * 3) + 1).toString();
-};
+import { truncateString } from "@utils/common";
 
 interface ITrade {
   key: number;
-  tradeUser: IconProp;
-  objectUser: IconProp;
+  tradeUser: string;
+  objectUser: string;
   tradeUserName: string;
   objectUserName: string;
   timestamp: string;
@@ -37,14 +33,14 @@ const Trade = ({
     >
       <div className="flex items-center -z-10">
         <Image
-          src={`/static/img/user/user${getRandomInt()}.png`}
+          src={tradeUser}
           alt="user"
           className="rounded-full relative"
           width={48}
           height={48}
         />
         <Image
-          src={`/static/img/user/user${getRandomInt()}.png`}
+          src={objectUser}
           alt="user"
           className="rounded-full absolute left-12"
           width={48}
@@ -53,10 +49,12 @@ const Trade = ({
       </div>
       <div className="flex flex-col items-start justify-center space-y-1">
         <div className="inline-flex space-x-2 justify-center items-center">
-          <p className="font-semibold">{tradeUserName}</p>
+          <p className="font-semibold text-gray80">
+            {truncateString(tradeUserName, 6)}
+          </p>
           <p className="text-gray80">sold</p>
-          <p className="font-semibold">{amount}</p>
-          <p className="text-gray80">{objectUserName}</p>
+          <p className="font-semibold text-gray80">{amount}</p>
+          <p className="text-gray80">{truncateString(objectUserName, 6)}</p>
         </div>
         <div className="flex space-x-3">
           <p
@@ -66,8 +64,7 @@ const Trade = ({
           >
             {value} ETH
           </p>
-          <p className="text-gray80">{timestamp}h</p>
-          <p className="text-gray80">ago</p>
+          <p className="text-gray80">{timestamp}</p>
         </div>
       </div>
     </div>

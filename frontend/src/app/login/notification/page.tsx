@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { Button } from "@components/ui/button";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
-import { addUserNotification } from "@utils/api";
+import { Button } from "@components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
-import { IAddress } from "@/utils/types";
+import { addUserNotification } from "@utils/api";
+import { IAddress } from "@utils/types";
+import { useRouter } from "next/navigation";
 
 export default function LoginNotification() {
   const router = useRouter();

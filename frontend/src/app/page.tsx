@@ -1,13 +1,18 @@
 "use client";
 
+import OrangeButton from "@components/common/OrangeButton";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import OrangeButton from "./components/common/OrangeButton";
+import { useEffect, useState } from "react";
+import { getUser } from "@utils/api";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Home() {
+  const { user } = usePrivy();
+
   const router = useRouter();
   const [isStandalone, setisStandalone] = useState(false);
+  const [isUserRegistered, setUserRegistered] = useState<boolean>(false);
 
   const changeNextPage = () => {
     router.push("/login/wallet");
@@ -16,6 +21,24 @@ export default function Home() {
   useEffect(() => {
     setisStandalone("standalone" in navigator && !!navigator.standalone);
   }, []);
+
+  useEffect(() => {
+    const getUserData = async (address: string) => {
+      const userData = await getUser(address);
+      if (userData.register) {
+        setUserRegistered(true);
+      }
+    };
+    if (user?.wallet?.address) {
+      getUserData(user?.wallet?.address);
+    }
+  }, [user?.wallet?.address]);
+
+  useEffect(() => {
+    if (isUserRegistered) {
+      router.push("/keys");
+    }
+  }, [isUserRegistered, router]);
 
   return (
     <main className="flex flex-col items-center justify-between bg-black h-full">
@@ -40,6 +63,12 @@ export default function Home() {
             disabled={!isStandalone}
           />
         )}
+        {/* <div className="flex flex-col mb-10 px-5">
+          <OrangeButton
+            text={"change keys page"}
+            buttonAction={() => router.push("/keys")}
+          />
+        </div> */}
       </div>
     </main>
   );

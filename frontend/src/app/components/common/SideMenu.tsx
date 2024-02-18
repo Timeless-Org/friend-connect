@@ -3,21 +3,47 @@ import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { faAngleRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useWallets } from "@privy-io/react-auth";
+import { blastSepolia } from "@/lib/chain";
+import { formatEther } from "@/lib/common";
 
 interface ISideMenu {
   isOpen: boolean;
   setMenuOpen: (isOpen: boolean) => void;
+  userName: string;
+  address: string;
 }
 
-const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
+const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
   const [isMenuContentOpen, setMenuContentOpen] = useState<boolean>(false);
   const [menuContent, setMenuContent] = useState<string>("");
+  const [balance, setBalance] = useState<number | null>(0);
+
+  const { wallets } = useWallets();
 
   const openMenuContent = (menu: string) => {
     setMenuContent(menu);
     setMenuContentOpen(true);
   };
+
+  const getBalance = useCallback(async () => {
+    const embeddedWallet = wallets[0];
+    if (embeddedWallet) {
+      await embeddedWallet.switchChain(blastSepolia.id);
+      const provider = await embeddedWallet.getEthersProvider();
+      const currentBalance = await provider.getBalance(address);
+      const formatBalance =
+        Math.floor(formatEther(currentBalance) * 100000) / 100000;
+      setBalance(formatBalance);
+    }
+  }, [address, wallets]);
+
+  useEffect(() => {
+    if (balance === 0) {
+      getBalance();
+    }
+  }, [address, balance, getBalance, wallets]);
   return (
     <>
       <MenuWindow
@@ -36,9 +62,8 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
           <Image
             src="/static/img/icon/long_star_logo_black.jpg"
             alt="long_star"
-            className="rounded-full"
-            width={36}
-            height={36}
+            width={40}
+            height={40}
           />
           <p className="text-white text-lg font-semibold">Menu</p>
           <button type="button" onClick={() => setMenuOpen(false)}>
@@ -54,10 +79,10 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
                 className="pb-3 border-b border-grayThin flex justify-between w-full items-center p-4"
                 onClick={() => openMenuContent("Account")}
               >
-                <p className="text-gray60 font-semibold">@Cardene</p>
+                <p className="text-gray60 font-semibold">{userName}</p>
                 <FontAwesomeIcon icon={faAngleRight} className="h-4" />
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="pb-3 border-b border-grayThin flex justify-between w-full items-center p-4"
                 onClick={() => openMenuContent("Airdrop")}
@@ -88,7 +113,7 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
               >
                 <p className="text-gray60 font-semibold">Bookmarks</p>
                 <FontAwesomeIcon icon={faAngleRight} className="h-4" />
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="flex flex-col justify-center items-start mt-6">
@@ -100,11 +125,11 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
                     icon={faEthereum}
                     className="h-4 w-4 p-2 bg-white text-gray60 rounded-full"
                   />
-                  <p className="font-semibold">ETH</p>
+                  <p className="font-semibold">Blast ETH</p>
                 </div>
-                <p className="font-semibold text-gray60">0.0015</p>
+                <p className="font-semibold text-gray60">{balance}</p>
               </div>
-              <div className="pb-3 flex justify-between w-full items-center p-4">
+              {/* <div className="pb-3 flex justify-between w-full items-center p-4">
                 <div className="flex justify-center space-x-3 items-center">
                   <FontAwesomeIcon
                     icon={faEthereum}
@@ -113,7 +138,7 @@ const SideMenu = ({ isOpen, setMenuOpen }: ISideMenu) => {
                   <p className="font-semibold">ETH</p>
                 </div>
                 <p className="font-semibold text-gray60">0.0015</p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

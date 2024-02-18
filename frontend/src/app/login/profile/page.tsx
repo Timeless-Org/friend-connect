@@ -1,12 +1,11 @@
 "use client";
 
-import { IAddress } from "@/utils/types";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
-import { Input } from "@components/ui/input";
 import { Textarea } from "@components/ui/textarea";
 import { usePrivy } from "@privy-io/react-auth";
 import { addUserBiography } from "@utils/api";
+import { IAddress } from "@utils/types";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 

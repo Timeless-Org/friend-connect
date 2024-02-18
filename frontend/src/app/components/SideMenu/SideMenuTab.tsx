@@ -1,5 +1,5 @@
-import HoldersTab from "@components/SideMenu/HoldersTab";
-import WatchListTab from "@components/SideMenu/WatchListTab";
+// import HoldersTab from "@components/SideMenu/HoldersTab";
+// import WatchListTab from "@components/SideMenu/WatchListTab";
 import YouTab from "@components/keys/YouTab";
 import YourKeyTab from "@components/keys/YourKeyTab";
 import {
@@ -20,7 +20,7 @@ const SideMenuTab = ({ isMenuContentOpen }: ISideMenuTab) => {
         isMenuContentOpen ? "flex" : "hidden"
       } items-center justify-center mt-10 mb-16`}
     >
-      <Tabs defaultValue="keys" className="">
+      {/* <Tabs defaultValue="keys" className="">
         <TabsList className="w-screen overflow-x-auto">
           <TabsTrigger value="keys" className="text-lg">
             Keys
@@ -53,7 +53,8 @@ const SideMenuTab = ({ isMenuContentOpen }: ISideMenuTab) => {
         <TabsContent value="watchlist" className="mt-6 mx-3">
           <WatchListTab />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
+      Comming soon ...
     </div>
   );
 };

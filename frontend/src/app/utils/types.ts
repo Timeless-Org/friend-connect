@@ -19,6 +19,7 @@ export interface IUser {
   is_online?: boolean;
   notification?: boolean;
   last_login?: string;
+  register?: boolean;
 }
 
 export interface IUserInfo {
@@ -35,15 +36,25 @@ export interface IUserInfo {
 }
 
 export interface IUserList {
-  tradeUser: IconProp;
-  objectUser: IconProp;
-  tradeUserName: string;
-  objectUserName: string;
-  timestamp: string;
+  Buyer: {
+    icon: string;
+    name: string;
+    address: string;
+  };
+  Seller: {
+    icon: string;
+    name: string;
+    address: string;
+  };
+  id: number;
+  buy_user_id: number;
+  sell_user_id: number;
+  key_price: number;
   amount: number;
-  value: number;
-  kingMark: boolean;
-  isBuy: boolean;
+  profit: number;
+  is_buy: boolean;
+  trade_at: Date;
+  created_at: Date;
 }
 
 // Chat
@@ -68,9 +79,12 @@ export interface IMessage {
 // Search
 
 export interface ITop {
-  userName: string;
-  holders: number;
-  keyPrice: number;
+  _count: {
+    Holders: number;
+  };
+  name: string;
+  icon: string;
+  key_price: number;
 }
 
 export interface INewChat {

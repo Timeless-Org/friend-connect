@@ -20,7 +20,7 @@ console.log(uniqueCodes);
 export const post = async () => {
   const codes: { code: string; user_id?: number; created_at: string }[] = [
     {
-      code: "1234567890",
+      code: "longstar7",
       user_id: 1,
       created_at: new Date().toISOString(),
     },

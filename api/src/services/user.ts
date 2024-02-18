@@ -1,3 +1,4 @@
+import { createChatModel } from "../models/chat";
 import {
   createUserModel,
   getTop50KeyNFTPriceUserModel,
@@ -7,6 +8,7 @@ import {
   updateNotificationModel,
   updateUserBioModel,
   updateUserNotificationModel,
+  updateUserRegisterModel,
   updateUserTwitterModel,
   upsertWatchListModel,
 } from "../models/user";
@@ -42,10 +44,11 @@ export const updateUserService = async (
   biography: string | null,
   icon: string | null,
   notification: boolean | null,
+  register: boolean | null,
 ): Promise<boolean> => {
   if (name && icon) {
     const user = await getUserModel(address);
-    if (user) return true;
+    if (user.name) return true;
     const result = await updateUserTwitterModel(address, name, icon);
     if (result) return true;
   }
@@ -55,6 +58,12 @@ export const updateUserService = async (
   }
   if (notification) {
     const result = await updateUserNotificationModel(address, notification);
+    if (result) return true;
+  }
+
+  if (register) {
+    const result = await updateUserRegisterModel(address);
+    await createChatModel(address);
     if (result) return true;
   }
 };

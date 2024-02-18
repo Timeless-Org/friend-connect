@@ -7,8 +7,14 @@ import {
 } from "../models/trade";
 import { ITrade } from "../utils/interfaces";
 
-export const createTradeService = async (buyAddress: string, sellAddress: string, keyPrice: number, isBuy: boolean) => {
-  const result: ITrade = await createTradeModel(buyAddress, sellAddress, keyPrice, isBuy);
+export const createTradeService = async (
+  buyAddress: string,
+  sellAddress: string,
+  keyPrice: number,
+  amount: number,
+  isBuy: boolean,
+) => {
+  const result: ITrade = await createTradeModel(buyAddress, sellAddress, keyPrice, amount, isBuy);
   if (result) return true;
   return false;
 };

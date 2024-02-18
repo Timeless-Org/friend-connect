@@ -2,7 +2,6 @@
 
 import { Button } from "@components/ui/button";
 import { usePrivy } from "@privy-io/react-auth";
-import { createUser } from "@utils/api";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -31,9 +30,6 @@ export default function LoginLoginWallet() {
           <p className="text-white text-center w-full px-5 mt-5">
             LongStar is a Social Fi platform that enables creators to get native
             yield from their followers via social tokens.
-          </p>
-          <p className="text-white text-center w-full px-5 mt-5">
-            address: {user?.wallet?.address}
           </p>
         </div>
         <div className="flex flex-col mb-10 w-full px-5">

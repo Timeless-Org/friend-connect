@@ -1,11 +1,11 @@
 "use client";
 
-import { blastSepolia } from "@/lib/chain";
-import { ethersContract } from "@/lib/ethersContract";
-import { createTrade } from "@/utils/api";
 import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
+import { blastSepolia } from "@lib/chain";
+import { ethersContract } from "@lib/ethersContract";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { createTrade } from "@utils/api";
 import { IAddress } from "@utils/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -25,7 +25,7 @@ export default function LoginKey() {
 
   const changeNextPage = async () => {
     try {
-      await createTrade(address, address, 0, true);
+      await createTrade(address, address, 0, 1, true);
     } catch (err: any) {}
     router.push("/login/notification");
   };

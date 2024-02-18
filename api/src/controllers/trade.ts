@@ -10,8 +10,10 @@ import { ITrade } from "../utils/interfaces";
 
 export const createTradeController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { buyAddress, sellAddress, keyPrice, isBuy } = req.body;
-    const result = await createTradeService(buyAddress, sellAddress, keyPrice, isBuy);
+    const { buyAddress, sellAddress, keyPrice, amount, isBuy } = req.body;
+    const lowerBuyAddress: string = buyAddress.toLowerCase();
+    const lowerSellAddress: string = sellAddress.toLowerCase();
+    const result = await createTradeService(lowerBuyAddress, lowerSellAddress, keyPrice, amount, isBuy);
     if (result) {
       res.status(200).json({ message: "Success" });
       return;

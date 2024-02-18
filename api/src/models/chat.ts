@@ -3,6 +3,23 @@ import { IAllChat, IChat, IChatWithMessage } from "../utils/interfaces";
 
 // Chat
 
+export const createChatModel = async (address: string): Promise<boolean> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      address: address,
+    },
+  });
+  if (!user) return false;
+  const chat = await prisma.chat.create({
+    data: {
+      user_id: user.id,
+      created_at: new Date(),
+    },
+  });
+  if (chat) return true;
+  return false;
+};
+
 export const getChatModel = async (address: string): Promise<IChatWithMessage | null> => {
   const user = await prisma.user.findUnique({
     where: {

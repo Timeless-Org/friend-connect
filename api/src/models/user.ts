@@ -125,6 +125,18 @@ export const updateUserNotificationModel = async (address: string, notification:
   return updatedUser;
 };
 
+export const updateUserRegisterModel = async (address: string): Promise<IUser> => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      address,
+    },
+    data: {
+      register: true,
+    },
+  });
+  return updatedUser;
+};
+
 export const updateInitialUserModel = async (
   address: string,
   name: string,
@@ -327,6 +339,11 @@ export const getTop50KeyNFTPriceUserModel = async (): Promise<IUser[]> => {
       key_price: "desc",
     },
     take: 50,
+    include: {
+      _count: {
+        select: { Holders: true },
+      },
+    },
   });
   return users;
 };
