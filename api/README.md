@@ -27,5 +27,5 @@ $ npm run prisma:prod -- migrate deploy
 - `local`
 
 ```bash
-$ npm run prisma:local -- migrate reset
+npm run prisma:local -- migrate reset
 ```

@@ -25,6 +25,7 @@ model User {
   twitter_access_token            String?
   twitter_refresh_token          String?
   twitter_access_token_expires_at Int?
+  register                        Boolean   @default(false)
   Points                          Point[]
   Chats                           Chat[]
   Messages                        Message[]
@@ -94,6 +95,7 @@ model Trade {
   buy_user_id  Int
   sell_user_id Int
   key_price    Int
+  amount       Int
   profit       Int     @default(0)
   is_buy       Boolean
   trade_at     DateTime

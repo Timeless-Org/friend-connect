@@ -1,6 +1,5 @@
 "use client";
 
-import { IMessage, IUser, IUserInfo } from "@/utils/types";
 import { Input } from "@components/ui/input";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faBookmark as registerBookmark } from "@fortawesome/free-regular-svg-icons";
@@ -11,6 +10,7 @@ import {
   faShareNodes,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IMessage, IUser, IUserInfo } from "@utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

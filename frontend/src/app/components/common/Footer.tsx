@@ -87,8 +87,8 @@ const Footer = () => {
     ];
 
     return (
-      <footer className="fixed inset-x-0 bottom-0 h-16 bg-white border-t-2 border-gray24 flex justify-center items-center px-6">
-        <div className="flex justify-between items-center w-full space-x-6">
+      <footer className="fixed inset-x-0 bottom-0 h-24 bg-white border-t-2 border-gray24 flex justify-center items-start px-6">
+        <div className="flex justify-between items-start w-full space-x-6 mt-2">
           {svgIcons.map((icon, index) => (
             <button
               key={index}

@@ -1,8 +1,8 @@
 "use client";
 
-import { IChat } from "@/utils/types";
 import Footer from "@components/common/Footer";
 import Header from "@components/common/Header";
+import { IChat } from "@utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -31,8 +31,8 @@ export default function Keys() {
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center justify-center w-full mt-28 px-4 mb-16">
-        {chats.map((chat, index) => (
+      <div className="flex flex-col items-center justify-center w-full mt-28 px-4 mb-16 h-full">
+        {/* {chats.map((chat, index) => (
           <button
             type="button"
             className="flex justify-between w-full items-center py-2"
@@ -69,7 +69,8 @@ export default function Keys() {
               </p>
             </div>
           </button>
-        ))}
+        ))} */}
+        <p className="h-full flex justify-center items-center">Comming soon ...</p>
       </div>
       <Footer />
     </>

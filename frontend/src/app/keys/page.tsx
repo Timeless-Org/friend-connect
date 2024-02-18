@@ -1,14 +1,18 @@
 "use client";
 
+import { IAddress } from "@/utils/types";
 import Footer from "@components/common/Footer";
 import Header from "@components/common/Header";
-import FriendsTab from "@components/keys/FriendsTab";
+// import FriendsTab from "@components/keys/FriendsTab";
 import GlobalTab from "@components/keys/GlobalTab";
 import YouTab from "@components/keys/YouTab";
 import YourKeyTab from "@components/keys/YourKeyTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function Keys() {
+  const { user } = usePrivy();
+  const address = (user?.wallet?.address as IAddress) || "0x";
   return (
     <>
       <Header />
@@ -21,22 +25,22 @@ export default function Keys() {
             <TabsTrigger value="your-key" className="text-lg">
               Your Key
             </TabsTrigger>
-            <TabsTrigger value="friends" className="text-lg">
+            {/* <TabsTrigger value="friends" className="text-lg">
               Friends
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger value="global" className="text-lg">
               Global
             </TabsTrigger>
           </TabsList>
           <TabsContent value="you" className="mt-12">
-            <YouTab />
+            <YouTab address={address} />
           </TabsContent>
           <TabsContent value="your-key" className="mt-12">
-            <YourKeyTab />
+            <YourKeyTab address={address} />
           </TabsContent>
-          <TabsContent value="friends" className="mt-12">
+          {/* <TabsContent value="friends" className="mt-12">
             <FriendsTab />
-          </TabsContent>
+          </TabsContent> */}
           <TabsContent value="global" className="mt-12">
             <GlobalTab />
           </TabsContent>

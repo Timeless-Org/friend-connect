@@ -1,4 +1,4 @@
-import { copyClipboard } from "@/utils/common";
+import { copyClipboard } from "@utils/common";
 
 interface ICopy {
   copyText: string;

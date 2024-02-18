@@ -1,26 +1,25 @@
 "use client";
 
-import { blastSepolia } from "@/lib/chain";
-import { formatEther } from "@/lib/common";
 import IconCircle from "@components/common/IconCircle";
 import Navigation from "@components/common/Navigation";
 import { Button } from "@components/ui/button";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faArrowsRotate, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { blastSepolia } from "@lib/chain";
+import { formatEther } from "@lib/common";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { copyClipboard } from "@utils/common";
 import { IAddress } from "@utils/types";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function LoginDeposit() {
   const { user } = usePrivy();
-  const [isCopied, setIsCopied] = useState<boolean>(false);
   const address = (user?.wallet?.address as IAddress) || "0x";
   const { wallets } = useWallets();
 
+  const [isCopied, setIsCopied] = useState<boolean>(false);
   const [balance, setBalance] = useState<number | null>(0);
 
   const router = useRouter();
@@ -36,7 +35,7 @@ export default function LoginDeposit() {
     } catch (err) {}
   };
 
-  const getBalance = async () => {
+  const getBalance = useCallback(async () => {
     const embeddedWallet = wallets[0];
     if (embeddedWallet) {
       await embeddedWallet.switchChain(blastSepolia.id);
@@ -46,10 +45,9 @@ export default function LoginDeposit() {
         Math.floor(formatEther(currentBalance) * 100000) / 100000;
       setBalance(formatBalance);
     }
-  };
+  }, [address, wallets]);
 
   useEffect(() => {
-
     if (balance === 0) {
       getBalance();
     }

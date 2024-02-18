@@ -17,6 +17,7 @@ CREATE TABLE "User" (
     "twitter_access_token" TEXT,
     "twitter_refresh_token" TEXT,
     "twitter_access_token_expires_at" INTEGER,
+    "register" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -89,6 +90,7 @@ CREATE TABLE "Trade" (
     "buy_user_id" INTEGER NOT NULL,
     "sell_user_id" INTEGER NOT NULL,
     "key_price" INTEGER NOT NULL,
+    "amount" INTEGER NOT NULL,
     "profit" INTEGER NOT NULL DEFAULT 0,
     "is_buy" BOOLEAN NOT NULL,
     "trade_at" TIMESTAMP(3) NOT NULL,

@@ -4,15 +4,22 @@ import Navigation from "@components/common/Navigation";
 import OrangeButton from "@components/common/OrangeButton";
 import { Checkbox } from "@components/ui/checkbox";
 import { useRouter } from "next/navigation";
+import { changeUserRegister } from "@utils/api";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function LoginStart() {
+  const { user } = usePrivy();
   const router = useRouter();
+
   const changePrePage = () => {
     router.push("/login/profile");
   };
 
-  const changeKeysPage = () => {
-    router.push("/keys");
+  const changeKeysPage = async () => {
+    if (user?.wallet?.address) {
+      await changeUserRegister(user?.wallet?.address);
+      router.push("/keys");
+    }
   };
 
   return (

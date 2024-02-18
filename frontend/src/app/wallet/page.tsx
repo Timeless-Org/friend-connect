@@ -1,11 +1,12 @@
 "use client";
 
-import { IWallet } from "@/utils/types";
+import { blastSepolia } from "@/lib/chain";
+import { formatEther } from "@/lib/common";
+import { ethersContract } from "@/lib/ethersContract";
 import Copy from "@components/common/Copy";
 import Footer from "@components/common/Footer";
 import Header from "@components/common/Header";
 import OrangeButton from "@components/common/OrangeButton";
-import { Button } from "@components/ui/button";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -15,38 +16,102 @@ import {
   faPiggyBank,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { IAddress, IUser, IWallet } from "@utils/types";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import ErrorModal from "@components/Modal/ErrorModal";
+import { truncateString } from "@/utils/common";
+import { getUser } from "@/utils/api";
 
 export default function Wallet() {
-  const [walletInfo, setWalletInfo] = useState<IWallet>({});
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets[0];
+  const { user, ready, authenticated, exportWallet } = usePrivy();
+  const address = (user?.wallet?.address as IAddress) || "0x";
+
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [balance, setBalance] = useState<number | null>(0);
+  const [keyNftPrice, setKeyNftPrice] = useState<number>(0);
+  const [isModalDisplay, setIsmModalDisplay] = useState<boolean>(false);
+  const [userData, setUserData] = useState<IUser>({});
+
+  const isAuthenticated = ready && authenticated;
+
+  const hasEmbeddedWallet = !!user?.linkedAccounts.find(
+    (account) => account.type === "wallet" && account.walletClient === "privy"
+  );
+
+  const getBalance = useCallback(async () => {
+    if (embeddedWallet) {
+      await embeddedWallet.switchChain(blastSepolia.id);
+      const provider = await embeddedWallet.getEthersProvider();
+      const currentBalance = await provider.getBalance(address);
+      const formatBalance =
+        Math.floor(formatEther(currentBalance) * 100000) / 100000;
+      setBalance(formatBalance);
+    }
+  }, [address, embeddedWallet]);
+
+  const getKeyNftPrice = useCallback(async () => {
+    if (embeddedWallet) {
+      await embeddedWallet.switchChain(blastSepolia.id);
+      const provider = await embeddedWallet.getEthersProvider();
+      const { keyNftShareContract } = await ethersContract(provider);
+      const keyNftPrice = await keyNftShareContract.getBuyPrice(address, 1);
+      const formatPrice =
+        Math.floor(formatEther(keyNftPrice) * 10000) / 10000;
+      setKeyNftPrice(formatPrice);
+    }
+  }, [address, embeddedWallet]);
+
+  const closeErrorModal = () => {
+    setIsmModalDisplay(false);
+  };
 
   useEffect(() => {
-    setWalletInfo({
-      userName: "Cardene",
-      address: "0x1234567890",
-    });
-  }, []);
+    if (balance === 0) {
+      getBalance();
+    }
+    if (keyNftPrice === 0) {
+      getKeyNftPrice();
+    }
+  }, [address, balance, getBalance, getKeyNftPrice, keyNftPrice, wallets]);
+
+  useEffect(() => {
+    const getUserData = async (address: string) => {
+      const user = await getUser(address);
+      setUserData(user);
+    };
+    if (user?.wallet?.address && !userData.icon) {
+      getUserData(user?.wallet?.address);
+    }
+  }, [user, userData]);
+
   return (
     <>
       <Header />
       <div className="flex flex-col items-center justify-center w-full mt-24 px-4 space-y-6">
+        <ErrorModal
+          message={"Comming soon ..."}
+          isModalDisplay={isModalDisplay}
+          closeModal={closeErrorModal}
+        />
         <div className="flex justify-between items-center mt-6 w-full">
           <div className="inline-flex items-center justify-center space-x-3">
             <Image
-              src="/static/img/user/user1.png"
+              src={userData.icon || ""}
               alt="user"
               className="rounded-full"
               width={48}
               height={48}
             />
             <div className="inline-flex flex-col justify-center items-start">
-              <p className="font-semibold">@{walletInfo.userName}</p>
+              <p className="font-semibold">{userData.name}</p>
               <div className="inline-flex space-x-3 items-center">
-                <p>{walletInfo.address}</p>
+                <p>{truncateString(address || "", 10)}</p>
                 <Copy
-                  copyText={walletInfo.address || ""}
+                  copyText={address || ""}
                   content={
                     <FontAwesomeIcon
                       icon={isCopied ? faCheck : faCopy}
@@ -60,7 +125,7 @@ export default function Wallet() {
           </div>
           <div className="inline-flex space-x-3 rounded-full border items-center px-3 py-1">
             <FontAwesomeIcon icon={faArrowsRotate} className="h-4" />
-            <p>Sync Profile</p>
+            <p>Sync</p>
           </div>
         </div>
         <div className="inline-flex flex-col w-full">
@@ -74,7 +139,8 @@ export default function Wallet() {
                   className="h-4 w-4 text-orange bg-black p-2 rounded-full"
                 />
                 <p>
-                  <span className="font-semibold text-black">0.001</span> ETH
+                  <span className="font-semibold text-black">{balance}</span>{" "}
+                  ETH
                 </p>
               </div>
             </div>
@@ -86,28 +152,37 @@ export default function Wallet() {
                   className="h-4 w-4 text-orange bg-black p-2 rounded-full"
                 />
                 <p>
-                  <span className="font-semibold text-black">0.001</span> ETH
+                  <span className="font-semibold text-black">
+                    {keyNftPrice}
+                  </span>{" "}
+                  ETH
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-between text-gray60 w-full">
+        {/* <div className="flex justify-between text-gray60 w-full">
           <p>Tadings fees earned:</p>
           <p>
-            <span className="font-semibold text-black">0.001</span> ETH
+            <span className="font-semibold text-black">{keyNftPrice}</span> ETH
           </p>
-        </div>
+        </div> */}
         <div className="flex justify-around w-full">
           <div className="inline-flex flex-col items-center justify-center space-y-3">
-            <FontAwesomeIcon
-              icon={faDownload}
-              className="h-4 p-4 rounded-full border"
-            />
+            <button type="button" onClick={() => setIsmModalDisplay(true)}>
+              <FontAwesomeIcon
+                icon={faDownload}
+                className="h-4 p-4 rounded-full border"
+              />
+            </button>
             <p className="font-semibold">Deposit on chain</p>
           </div>
           <div className="inline-flex flex-col items-center justify-center space-y-3">
-            <p className="rounded-full border p-3 items-center flex justify-center">
+            <button
+              type="button"
+              className="rounded-full border p-3 items-center flex justify-center"
+              onClick={() => setIsmModalDisplay(true)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1.5rem"
@@ -117,19 +192,16 @@ export default function Wallet() {
               >
                 <path fill="currentColor" d="M3 20v-6l8-2l-8-2V4l19 8z" />
               </svg>
-            </p>
-            <p className="font-semibold">Deposit on chain</p>
+            </button>
+            <p className="font-semibold">Withdraw</p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center w-full">
-          <OrangeButton text={"Export Private Key"} />
-          <Button
-            variant="none"
-            className="w-full h-12 text-red"
-            onClick={() => {}}
-          >
-            Log out
-          </Button>
+          <OrangeButton
+            text={"Export Private Key"}
+            buttonAction={exportWallet}
+            disabled={!isAuthenticated || !hasEmbeddedWallet}
+          />
         </div>
       </div>
       <Footer />
