@@ -11,13 +11,9 @@ export default function WalletProvider({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const changeCodePage = () => {
-    router.push("/login/code");
-  };
   return (
     <PrivyProvider
       appId={PRIVY_APP_ID}
-      onSuccess={changeCodePage}
       config={{
         loginMethods: ["google", "apple", "wallet"],
         appearance: {
