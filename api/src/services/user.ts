@@ -43,21 +43,20 @@ export const updateUserService = async (
   icon: string | null,
   notification: boolean | null,
 ): Promise<boolean> => {
-  let flag = false;
   if (name && icon) {
+    const user = await getUserModel(address);
+    if (user) return true;
     const result = await updateUserTwitterModel(address, name, icon);
-    if (result) flag = true;
+    if (result) return true;
   }
   if (biography) {
     const result = await updateUserBioModel(address, biography);
-    if (result) flag = true;
+    if (result) return true;
   }
   if (notification) {
     const result = await updateUserNotificationModel(address, notification);
-    if (result) flag = true;
+    if (result) return true;
   }
-
-  return flag;
 };
 
 export const updateWatchlistService = async (

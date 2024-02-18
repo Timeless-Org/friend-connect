@@ -36,23 +36,24 @@ export default function LoginDeposit() {
     } catch (err) {}
   };
 
+  const getBalance = async () => {
+    const embeddedWallet = wallets[0];
+    if (embeddedWallet) {
+      await embeddedWallet.switchChain(blastSepolia.id);
+      const provider = await embeddedWallet.getEthersProvider();
+      const currentBalance = await provider.getBalance(address);
+      const formatBalance =
+        Math.floor(formatEther(currentBalance) * 100000) / 100000;
+      setBalance(formatBalance);
+    }
+  };
+
   useEffect(() => {
-    const getBalance = async () => {
-      const embeddedWallet = wallets[0];
-      if (embeddedWallet) {
-        await embeddedWallet.switchChain(blastSepolia.id);
-        const provider = await embeddedWallet.getEthersProvider();
-        const currentBalance = await provider.getBalance(address);
-        const formatBalance =
-          Math.floor(formatEther(currentBalance) * 100000) / 100000;
-        setBalance(formatBalance);
-      }
-    };
 
     if (balance === 0) {
       getBalance();
     }
-  }, [address, balance, wallets]);
+  }, [address, balance, getBalance, wallets]);
 
   return (
     <div className="container flex flex-col items-center justify-center">
@@ -71,7 +72,7 @@ export default function LoginDeposit() {
             </p>
           </div>
           <div className="mt-10 w-full flex flex-col items-start justify-center space-y-4">
-            <div className="w-full flex justify-between bg-squareGray py-6 px-4 rounded-xl items-center">
+            {/* <div className="w-full flex justify-between bg-squareGray py-6 px-4 rounded-xl items-center">
               <div className="flex items-center justify-center space-x-3">
                 <IconCircle icon={faEthereum} />
                 <div className="inline-flex flex-col items-start justify-center">
@@ -82,7 +83,7 @@ export default function LoginDeposit() {
               <Button variant="linkButton" className="font-semibold py-5">
                 Deposit
               </Button>
-            </div>
+            </div> */}
             <div className="w-full flex justify-between bg-squareGray py-6 px-4 rounded-xl items-center">
               <div className="flex items-center justify-center space-x-3">
                 <IconCircle icon={faCopy} />
@@ -96,7 +97,7 @@ export default function LoginDeposit() {
               </div>
               <Button
                 variant="linkButton"
-                className="font-semibold py-5"
+                className={`font-semibold ${isCopied ? "p-3" : "py-5"}`}
                 onClick={() => handleCopy(address)}
               >
                 {isCopied ? (
@@ -116,7 +117,9 @@ export default function LoginDeposit() {
               <p className="mr-3 font-semibold">
                 {balance || 0} <span className="text-gray60">ETH</span>
               </p>
-              <FontAwesomeIcon icon={faArrowsRotate} className="h-4" />
+              <button type="button" onClick={getBalance}>
+                <FontAwesomeIcon icon={faArrowsRotate} className="h-4" />
+              </button>
             </div>
           </div>
           <Button
