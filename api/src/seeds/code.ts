@@ -38,6 +38,35 @@ export const post = async () => {
         created_at: new Date().toISOString(),
       },
     );
+  } else if (NODE_ENV === "development") {
+    codes.push(
+      {
+        code: "1234567890",
+        user_id: 2,
+        created_at: new Date().toISOString(),
+      },
+      {
+        code: "ABCDEFGHIJ",
+        user_id: 3,
+        created_at: new Date().toISOString(),
+      },
+      {
+        code: "abcdefghij",
+        user_id: 4,
+        created_at: new Date().toISOString(),
+      },
+      {
+        code: "0987654321",
+        user_id: 5,
+        created_at: new Date().toISOString(),
+      },
+      {
+        code: "abcde12345",
+        user_id: 6,
+        created_at: new Date().toISOString(),
+      },
+    );
+
   }
 
   const generateCodes = generateUniqueRandomCodes(10, 100);
