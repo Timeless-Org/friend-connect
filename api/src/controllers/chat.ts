@@ -36,9 +36,9 @@ export const getUserAllChatController = async (req: Request, res: Response) => {
 
 export const getLatestChatController = async (req: Request, res: Response) => {
   try {
-    const latestChat: IChat[] = await getLastestChatService();
-    if (latestChat) {
-      res.status(200).json({ latestChat });
+    const user: IChat[] = await getLastestChatService();
+    if (user) {
+      res.status(200).json({ user });
       return;
     } else res.status(404).json({ message: "Not Found" });
   } catch (err) {

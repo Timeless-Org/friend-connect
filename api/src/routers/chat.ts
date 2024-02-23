@@ -4,8 +4,8 @@ import { getLatestChatController, getUserAllChatController, getUserChatControlle
 
 const routers = router.Router();
 
-routers.get("/:address", getUserChatController);
-routers.get("/all/:address", getUserAllChatController);
 routers.get("/latest", getLatestChatController);
+routers.get("/all/:address", getUserAllChatController);
+routers.get("/:address", getUserChatController);
 
 export default routers;

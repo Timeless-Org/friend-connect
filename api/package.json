@@ -9,7 +9,6 @@
     "serve": "node ./dist/server.js",
     "check-types": "tsc --noEmit",
     "lint": "run-p -l -c --aggregate-output lint:*",
-    "lint:eslint": "eslint src/**/*.ts",
     "lint:prettier": "prettier --check .",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "eslint --fix src/**/*.ts",
@@ -17,6 +16,7 @@
     "prisma:local": "dotenv -e .env.local -- npx prisma",
     "prisma:dev": "dotenv -e .env.development -- npx prisma",
     "prisma:prod": "dotenv -e .env.production -- npx prisma",
+    "db:reset": "dotenv -e .env.local -- npx prisma migrate reset --force && dotenv -e .env.local -- npm run prisma:local -- migrate dev --name init",
     "seed": "dotenv -e .env.local -- npx prisma migrate reset --force && dotenv -e .env.local -- ts-node src/seeds/index.ts",
     "seed:dev": "npx prisma migrate reset --force && ts-node src/seeds/index.ts",
     "studio": "dotenv -e .env.local -- npx prisma studio"

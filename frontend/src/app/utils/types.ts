@@ -12,6 +12,7 @@ export interface IUser {
   icon?: string;
   key_img?: string;
   address?: string;
+  twitter_id?: string;
   code?: string;
   key_price?: number;
   ranking?: number;
@@ -20,6 +21,7 @@ export interface IUser {
   notification?: boolean;
   last_login?: string;
   register?: boolean;
+  created_at: Date;
 }
 
 export interface IUserInfo {
@@ -114,4 +116,25 @@ export interface IAirDrop {
 export interface IWallet {
   userName?: string;
   address?: string;
+}
+
+// Chat
+export interface IChatUser {
+  User: {
+    name?: string;
+    biography?: string;
+    icon?: string;
+    key_img?: string;
+    address?: string;
+    twitter_id?: string;
+    code?: string;
+    key_price?: number;
+    ranking?: number;
+    point?: number;
+    is_online?: boolean;
+    notification?: boolean;
+    last_login?: string;
+    register?: boolean;
+    created_at: Date;
+  }
 }

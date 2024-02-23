@@ -11,14 +11,14 @@ const Header = () => {
   const { user } = usePrivy();
 
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [userData, setUserData] = useState<IUser>({});
+  const [userData, setUserData] = useState<IUser>();
 
   useEffect(() => {
     const getUserData = async (address: string) => {
       const user = await getUser(address);
       setUserData(user);
     };
-    if (user?.wallet?.address && !userData.icon) {
+    if (user?.wallet?.address && !userData) {
       getUserData(user?.wallet?.address);
     }
   }, [user, userData]);
@@ -28,7 +28,7 @@ const Header = () => {
       <SideMenu
         isOpen={isMenuOpen}
         setMenuOpen={setMenuOpen}
-        userName={userData.name || ""}
+        userName={userData?.name || ""}
         address={user?.wallet?.address || ""}
       />
       <header className="fixed top-0 inset-x-0 h-24 bg-black flex justify-between items-center px-6">

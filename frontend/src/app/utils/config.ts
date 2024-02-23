@@ -10,3 +10,6 @@ export const LONG_STAR_SHARE_CONTRACT_ADDRESS =
 export const SITE_NAME = "Long Star";
 export const SITE_DESCRIPTION = "Long Star";
 export const SITE_URL = process.env.URL || "http://localhost:3000";
+
+// Twitter
+export const SHARE_TEXT = "Long StarStar 🚀🚀🚀 \n\n https://testnet.longstar.xyz/";

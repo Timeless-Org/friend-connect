@@ -6,6 +6,9 @@ import {
   getWatchlistController,
   searchUserController,
   updateNotificationController,
+  getHolderController,
+  getHoldController,
+  getCodeController,
   updateUserController,
   updateWatchlistController,
 } from "../controllers/user";
@@ -18,6 +21,9 @@ routers.put("/watchlist", updateWatchlistController);
 routers.put("/notification/:address", updateNotificationController);
 routers.get("/search/:keyword", searchUserController);
 routers.get("/top-price-users", getTopPriceUsersController);
+routers.get("/holder/:address", getHolderController);
+routers.get("/hold/:address", getHoldController);
+routers.get("/code/:address", getCodeController);
 routers.get("/:address", getUserController);
 routers.put("/:address", updateUserController);
 

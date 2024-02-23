@@ -88,7 +88,12 @@ export const updateUserModel = async (
   return updatedUser;
 };
 
-export const updateUserTwitterModel = async (address: string, name: string, icon: string): Promise<IUser> => {
+export const updateUserTwitterModel = async (
+  address: string,
+  name: string,
+  icon: string,
+  twitterId: string,
+): Promise<IUser> => {
   const updatedUser = await prisma.user.update({
     where: {
       address,
@@ -96,6 +101,7 @@ export const updateUserTwitterModel = async (address: string, name: string, icon
     data: {
       name,
       icon,
+      twitter_id: twitterId,
     },
   });
   return updatedUser;
@@ -158,24 +164,24 @@ export const updateInitialUserModel = async (
   return updatedUser;
 };
 
-export const updateUserTwitterAuthModel = async (
-  address: string,
-  accessToken: string,
-  refreshToken: string,
-  expiresIn: number,
-): Promise<IUser> => {
-  const updatedUser = await prisma.user.update({
-    where: {
-      address,
-    },
-    data: {
-      twitter_access_token: accessToken,
-      twitter_refresh_token: refreshToken,
-      twitter_access_token_expires_at: expiresIn,
-    },
-  });
-  return updatedUser;
-};
+// export const updateUserTwitterAuthModel = async (
+//   address: string,
+//   accessToken: string,
+//   refreshToken: string,
+//   expiresIn: number,
+// ): Promise<IUser> => {
+//   const updatedUser = await prisma.user.update({
+//     where: {
+//       address,
+//     },
+//     data: {
+//       twitter_access_token: accessToken,
+//       twitter_refresh_token: refreshToken,
+//       twitter_access_token_expires_at: expiresIn,
+//     },
+//   });
+//   return updatedUser;
+// };
 
 // WatchList
 
@@ -253,7 +259,7 @@ export const updateNotificationModel = async (address: string): Promise<IUser> =
 export const getHoldKeyModel = async (address: string): Promise<IUser[]> => {
   const holders = await prisma.holder.findMany({
     where: {
-      User: {
+      HolderUser: {
         address,
       },
     },
@@ -271,7 +277,7 @@ export const getHoldKeyModel = async (address: string): Promise<IUser[]> => {
 export const getHoldKeyAmountModel = async (address: string): Promise<number> => {
   const amount = await prisma.holder.count({
     where: {
-      User: {
+      HolderUser: {
         address,
       },
     },
@@ -283,7 +289,7 @@ export const getHoldKeyAmountModel = async (address: string): Promise<number> =>
 export const getKeyNFTHolderModel = async (address: string): Promise<IUser[]> => {
   const holders = await prisma.holder.findMany({
     where: {
-      User: {
+      HoldObjects: {
         address,
       },
     },
@@ -301,7 +307,7 @@ export const getKeyNFTHolderModel = async (address: string): Promise<IUser[]> =>
 export const getKeyNFTHolderAmountModel = async (address: string): Promise<number> => {
   const amount = await prisma.holder.count({
     where: {
-      User: {
+      HoldObjects: {
         address,
       },
     },
@@ -341,7 +347,45 @@ export const getTop50KeyNFTPriceUserModel = async (): Promise<IUser[]> => {
     take: 50,
     include: {
       _count: {
-        select: { Holders: true },
+        select: { HoldingUsers: true },
+      },
+    },
+  });
+  return users;
+};
+
+// holder
+export const getHolderModel = async (address: string): Promise<IUser[]> => {
+  const holders = await prisma.holder.findMany({
+    where: {
+      HolderUser: {
+        address,
+      },
+    },
+  });
+  const users = await prisma.user.findMany({
+    where: {
+      id: {
+        in: holders.map((holder) => holder.holder_id),
+      },
+    },
+  });
+  return users;
+};
+
+// holder
+export const getHoldModel = async (address: string): Promise<IUser[]> => {
+  const holders = await prisma.holder.findMany({
+    where: {
+      HoldObjects: {
+        address,
+      },
+    },
+  });
+  const users = await prisma.user.findMany({
+    where: {
+      id: {
+        in: holders.map((holder) => holder.id),
       },
     },
   });

@@ -6,6 +6,7 @@ CREATE TABLE "User" (
     "icon" TEXT,
     "key_img" TEXT,
     "address" TEXT NOT NULL,
+    "twitter_id" TEXT,
     "code_id" INTEGER NOT NULL,
     "key_price" INTEGER DEFAULT 0,
     "ranking" INTEGER,
@@ -14,9 +15,6 @@ CREATE TABLE "User" (
     "notification" BOOLEAN NOT NULL DEFAULT false,
     "last_login" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "twitter_access_token" TEXT,
-    "twitter_refresh_token" TEXT,
-    "twitter_access_token_expires_at" INTEGER,
     "register" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -66,8 +64,8 @@ CREATE TABLE "Message" (
 -- CreateTable
 CREATE TABLE "Holder" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
-    "chat_id" INTEGER NOT NULL,
+    "holder_id" INTEGER NOT NULL,
+    "object_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Holder_pkey" PRIMARY KEY ("id")
@@ -157,10 +155,10 @@ ALTER TABLE "Message" ADD CONSTRAINT "Message_user_id_fkey" FOREIGN KEY ("user_i
 ALTER TABLE "Message" ADD CONSTRAINT "Message_chat_id_fkey" FOREIGN KEY ("chat_id") REFERENCES "Chat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Holder" ADD CONSTRAINT "Holder_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Holder" ADD CONSTRAINT "Holder_holder_id_fkey" FOREIGN KEY ("holder_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Holder" ADD CONSTRAINT "Holder_chat_id_fkey" FOREIGN KEY ("chat_id") REFERENCES "Chat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Holder" ADD CONSTRAINT "Holder_object_id_fkey" FOREIGN KEY ("object_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Point" ADD CONSTRAINT "Point_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,6 +1,9 @@
 import { createChatModel } from "../models/chat";
+import { getCodeFromAddressModel } from "../models/code";
 import {
   createUserModel,
+  getHoldModel,
+  getHolderModel,
   getTop50KeyNFTPriceUserModel,
   getUserModel,
   getWatchListModel,
@@ -43,13 +46,14 @@ export const updateUserService = async (
   name: string | null,
   biography: string | null,
   icon: string | null,
+  twitterId: string | null,
   notification: boolean | null,
   register: boolean | null,
 ): Promise<boolean> => {
-  if (name && icon) {
+  if (name && icon && twitterId) {
     const user = await getUserModel(address);
     if (user.name) return true;
-    const result = await updateUserTwitterModel(address, name, icon);
+    const result = await updateUserTwitterModel(address, name, icon, twitterId);
     if (result) return true;
   }
   if (biography) {
@@ -96,4 +100,22 @@ export const searchUserService = async (keyword: string): Promise<IUser[]> => {
 export const getTopPriceUsersService = async (): Promise<IUser[]> => {
   const users: IUser[] = await getTop50KeyNFTPriceUserModel();
   return users;
+};
+
+// holder
+export const getHolderService = async (address: string): Promise<IUser[]> => {
+  const user = await getHolderModel(address);
+  return user;
+};
+
+// hold
+export const getHoldService = async (address: string): Promise<IUser[]> => {
+  const user = await getHoldModel(address);
+  return user;
+};
+
+// Code
+export const getCodeService = async (address: string): Promise<string> => {
+  const user = await getCodeFromAddressModel(address);
+  return user.code;
 };

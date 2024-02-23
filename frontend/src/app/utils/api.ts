@@ -35,11 +35,13 @@ export const getTwitterAuthLink = async (address: string): Promise<string> => {
 export const addUserTwitterProfile = async (
   address: string,
   name: string,
-  icon: string
+  icon: string,
+  twitterId: string,
 ): Promise<boolean> => {
   const result = (await baseRequest("PUT", `/user/${address}`, {
     name,
     icon,
+    twitterId,
   })) as any;
   return result?.data.message === "success";
 };
@@ -77,7 +79,7 @@ export const changeUserRegister = async (
   return result?.data.message === "success";
 };
 
-// user
+// user: get
 export const getUser = async (address: string): Promise<any> => {
   const data = await baseRequest("GET", `/user/${address}`);
   return data.data as IUser;
@@ -116,5 +118,29 @@ export const getAllUserTrade = async (): Promise<any> => {
 // trade: all user
 export const getTopUsers = async (): Promise<any> => {
   const data = await baseRequest("GET", `/user/top-price-users`);
+  return data.data as IUserList[];
+}
+
+// holder: get users
+export const getHolders = async (address: string): Promise<any> => {
+  const data = await baseRequest("GET", `/user/holder/${address}`);
+  return data.data as IUserList[];
+}
+
+// hold: get users
+export const getHoldObjects = async (address: string): Promise<any> => {
+  const data = await baseRequest("GET", `/user/hold/${address}`);
+  return data.data as IUserList[];
+}
+
+// code: get users
+export const getCode = async (address: string): Promise<any> => {
+  const data = await baseRequest("GET", `/user/code/${address}`);
+  return data.data as string;
+}
+
+// chat
+export const getLatestChat = async (): Promise<any> => {
+  const data = await baseRequest("GET", `/chat/latest`);
   return data.data as IUserList[];
 }

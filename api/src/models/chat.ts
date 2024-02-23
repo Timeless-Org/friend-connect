@@ -69,10 +69,9 @@ export const getLastestChatModel = async (): Promise<IChat[]> => {
     orderBy: {
       created_at: "desc",
     },
-    select: {
-      chat_id: true,
+    include: {
+      User: true,
     },
-    distinct: ["chat_id"],
   });
 
   // chat_id のリストを作成

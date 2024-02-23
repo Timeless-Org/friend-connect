@@ -25,7 +25,8 @@ export default function LoginConnectTwitter() {
       await addUserTwitterProfile(
         user.wallet.address,
         user.twitter.name,
-        user.twitter.profilePictureUrl || ""
+        user.twitter.profilePictureUrl || "",
+        user.twitter.username || ""
       );
     }
     router.push("/login/deposit");

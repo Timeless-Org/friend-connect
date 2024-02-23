@@ -38,8 +38,10 @@ export interface IUpdateUser {
 // Holder
 
 export interface IHolder {
-  user_id: number;
-  chat_id: number;
+  id: number;
+  holder_id: number;
+  object_id: number;
+  created_at: Date;
 }
 
 export interface IWatchList {
@@ -124,4 +126,9 @@ export interface ISession {
         state?: string;
       }
     | unknown;
+}
+
+// Code
+export interface ICode {
+  code: string;
 }

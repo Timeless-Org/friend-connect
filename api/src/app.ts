@@ -12,10 +12,8 @@ import nftRouters from "./routers/nft";
 import pointRouters from "./routers/point";
 import sessionRouters from "./routers/session";
 import tradeRouters from "./routers/trade";
-import twitterRouters from "./routers/twitter";
 import userRouters from "./routers/user";
 import { DATABASE_URL } from "./utils/config";
-// import cors from "cors";
 
 export const prisma = new PrismaClient();
 
@@ -81,7 +79,6 @@ app.use("/api/v1/message", messageRouters);
 app.use("/api/v1/point", pointRouters);
 app.use("/api/v1/trade", tradeRouters);
 app.use("/api/v1/session", sessionRouters);
-app.use("/api/v1/twitter", twitterRouters);
 
 app.get("/api/v1", (req: Request, res: Response) => {
   return res.status(200).send({

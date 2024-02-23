@@ -17,12 +17,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
-import { IAddress, IUser, IWallet } from "@utils/types";
+import { IAddress, IUser } from "@utils/types";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import ErrorModal from "@components/Modal/ErrorModal";
+import MessageModal from "@components/Modal/MessageModal";
 import { truncateString } from "@/utils/common";
 import { getUser } from "@/utils/api";
+import WithdrawModal from "@components/Modal/withdrawModal";
 
 export default function Wallet() {
   const { wallets } = useWallets();
@@ -33,8 +34,11 @@ export default function Wallet() {
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [balance, setBalance] = useState<number | null>(0);
   const [keyNftPrice, setKeyNftPrice] = useState<number>(0);
-  const [isModalDisplay, setIsmModalDisplay] = useState<boolean>(false);
-  const [userData, setUserData] = useState<IUser>({});
+  const [isWithdrawModalDisplay, setIsWithdrawModalDisplay] =
+    useState<boolean>(false);
+  const [isErrorModalDisplay, setIsErrorModalDisplay] =
+    useState<boolean>(false);
+  const [userData, setUserData] = useState<IUser>();
 
   const isAuthenticated = ready && authenticated;
 
@@ -59,14 +63,14 @@ export default function Wallet() {
       const provider = await embeddedWallet.getEthersProvider();
       const { keyNftShareContract } = await ethersContract(provider);
       const keyNftPrice = await keyNftShareContract.getBuyPrice(address, 1);
-      const formatPrice =
-        Math.floor(formatEther(keyNftPrice) * 10000) / 10000;
+      const formatPrice = Math.floor(formatEther(keyNftPrice) * 10000) / 10000;
       setKeyNftPrice(formatPrice);
     }
   }, [address, embeddedWallet]);
 
-  const closeErrorModal = () => {
-    setIsmModalDisplay(false);
+  const closeModal = () => {
+    setIsErrorModalDisplay(false);
+    setIsWithdrawModalDisplay(false);
   };
 
   useEffect(() => {
@@ -83,7 +87,7 @@ export default function Wallet() {
       const user = await getUser(address);
       setUserData(user);
     };
-    if (user?.wallet?.address && !userData.icon) {
+    if (user?.wallet?.address && !userData?.icon) {
       getUserData(user?.wallet?.address);
     }
   }, [user, userData]);
@@ -92,22 +96,26 @@ export default function Wallet() {
     <>
       <Header />
       <div className="flex flex-col items-center justify-center w-full mt-24 px-4 space-y-6">
-        <ErrorModal
-          message={"Comming soon ..."}
-          isModalDisplay={isModalDisplay}
-          closeModal={closeErrorModal}
+        <MessageModal
+          message={address}
+          isModalDisplay={isErrorModalDisplay}
+          closeModal={closeModal}
+        />
+        <WithdrawModal
+          isModalDisplay={isWithdrawModalDisplay}
+          closeModal={closeModal}
         />
         <div className="flex justify-between items-center mt-6 w-full">
           <div className="inline-flex items-center justify-center space-x-3">
             <Image
-              src={userData.icon || ""}
+              src={userData?.icon || ""}
               alt="user"
               className="rounded-full"
               width={48}
               height={48}
             />
             <div className="inline-flex flex-col justify-center items-start">
-              <p className="font-semibold">{userData.name}</p>
+              <p className="font-semibold">{userData?.name}</p>
               <div className="inline-flex space-x-3 items-center">
                 <p>{truncateString(address || "", 10)}</p>
                 <Copy
@@ -161,15 +169,9 @@ export default function Wallet() {
             </div>
           </div>
         </div>
-        {/* <div className="flex justify-between text-gray60 w-full">
-          <p>Tadings fees earned:</p>
-          <p>
-            <span className="font-semibold text-black">{keyNftPrice}</span> ETH
-          </p>
-        </div> */}
         <div className="flex justify-around w-full">
           <div className="inline-flex flex-col items-center justify-center space-y-3">
-            <button type="button" onClick={() => setIsmModalDisplay(true)}>
+            <button type="button" onClick={() => setIsErrorModalDisplay(true)}>
               <FontAwesomeIcon
                 icon={faDownload}
                 className="h-4 p-4 rounded-full border"
@@ -181,7 +183,7 @@ export default function Wallet() {
             <button
               type="button"
               className="rounded-full border p-3 items-center flex justify-center"
-              onClick={() => setIsmModalDisplay(true)}
+              onClick={() => setIsWithdrawModalDisplay(true)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

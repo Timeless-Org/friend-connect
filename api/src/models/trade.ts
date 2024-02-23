@@ -86,7 +86,7 @@ export const getTradesModel = async (addressList: string[]): Promise<ITrade[]> =
 export const getHolderTradesModel = async (address: string): Promise<ITrade[]> => {
   const users = await prisma.holder.findMany({
     where: {
-      User: {
+      HoldObjects: {
         address,
       },
     },

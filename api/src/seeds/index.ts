@@ -2,6 +2,7 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { post as userPost } from "./user";
 import { post as adminUserPost } from "./adminUser";
+import { post as userDevPost } from "./userDev";
 import { post as watchlistPost } from "./watchlist";
 import { post as codePost } from "./code";
 import { post as chatPost } from "./chat";
@@ -34,9 +35,12 @@ async function main() {
     await holderPost();
     await pointPost();
     await tradePost();
-  } else {
+  } else if (NODE_ENV === "production") {
     await codePost();
     await adminUserPost();
+  } else {
+    await codePost();
+    await userDevPost();
   }
 }
 

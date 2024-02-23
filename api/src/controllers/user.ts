@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import {
+  getHolderService,
   createUserService,
   getTopPriceUsersService,
   getUserService,
   getWatchlistService,
   searchUserService,
   updateNotificationService,
+  getCodeService,
   updateUserService,
   updateWatchlistService,
 } from "../services/user";
@@ -50,9 +52,17 @@ export const getUserController = async (req: Request, res: Response): Promise<vo
 export const updateUserController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const { name, biography, icon, notification, register } = req.body;
+    const { name, biography, icon, twitterId, notification, register } = req.body;
     const lowerAddress: string = address.toLowerCase();
-    const result: boolean = await updateUserService(lowerAddress, name, biography, icon, notification, register);
+    const result: boolean = await updateUserService(
+      lowerAddress,
+      name,
+      biography,
+      icon,
+      twitterId,
+      notification,
+      register,
+    );
     if (result) {
       res.status(200).json({ message: "success" });
       return;
@@ -127,6 +137,57 @@ export const getTopPriceUsersController = async (req: Request, res: Response): P
     res.status(200).json(users);
   } catch (err) {
     console.error(`👾 getTopPriceUsersController: ${err}`);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// holder
+export const getHolderController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { address } = req.params;
+    const lowerAddress: string = address.toLowerCase();
+    const user: IUser[] = await getHolderService(lowerAddress);
+    if (user) {
+      res.status(200).json(user);
+      return;
+    }
+    res.status(404).json({ message: "User not found" });
+  } catch (err) {
+    console.error(`👾 getHolderController: ${err}`);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// hold
+export const getHoldController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { address } = req.params;
+    const lowerAddress: string = address.toLowerCase();
+    const user: IUser[] = await getHolderService(lowerAddress);
+    if (user) {
+      res.status(200).json(user);
+      return;
+    }
+    res.status(404).json({ message: "User not found" });
+  } catch (err) {
+    console.error(`👾 getHoldController: ${err}`);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// code
+export const getCodeController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { address } = req.params;
+    const lowerAddress: string = address.toLowerCase();
+    const code: string | null = await getCodeService(lowerAddress);
+    if (code) {
+      res.status(200).json(code);
+      return;
+    }
+    res.status(404).json({ message: "code not found" });
+  } catch (err) {
+    console.error(`👾 getCodeController: ${err}`);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

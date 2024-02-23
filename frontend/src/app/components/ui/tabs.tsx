@@ -18,7 +18,7 @@ const TabsList = React.forwardRef<
     //   className
     // )}
     className={cn(
-      "inline-flex items-center justify-start bg-black text-orange dark:bg-slate-800 dark:text-slate-400",
+      "inline-flex items-center justify-start bg-black text-zinc-500 dark:bg-slate-800 dark:text-slate-400 ",
       className
     )}
     {...props}
@@ -37,7 +37,7 @@ const TabsTrigger = React.forwardRef<
     //   className
     // )}
     className={cn(
-      "inline-flex items-end justify-center pb-3 px-5 text-sm font-medium ring-offset-white  disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-b-2 border-b-2 border-black data-[state=active]:border-orange",
+      "inline-flex items-end justify-center pb-3 px-5 text-sm font-medium ring-offset-white  disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-b-2 border-b-2 border-black data-[state=active]:border-yellow data-[state=active]:text-yellow",
       className
     )}
     {...props}

@@ -9,6 +9,7 @@ import { createTrade } from "@utils/api";
 import { IAddress } from "@utils/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import LoadingModal from "@components/Modal/LoadingModal";
 
 export default function LoginKey() {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function LoginKey() {
   const address = (user?.wallet?.address as IAddress) || "0x";
 
   const [keyNftBalance, setKeyNftBalance] = useState<number>(0);
+  const [isLoadingModalDisplay, setIsLoadingModalDisplay] =
+    useState<boolean>(false);
 
   const changePrePage = () => {
     router.push("/login/deposit");
@@ -32,6 +35,7 @@ export default function LoginKey() {
 
   const getKeyNftBalance = useCallback(async () => {
     if (embeddedWallet) {
+      setIsLoadingModalDisplay(true);
       await embeddedWallet.switchChain(blastSepolia.id);
       const provider = await embeddedWallet.getEthersProvider();
       const { keyNftShareContract } = await ethersContract(provider);
@@ -40,21 +44,28 @@ export default function LoginKey() {
         address
       );
       setKeyNftBalance(keyNftBalance);
+      setIsLoadingModalDisplay(false);
     }
   }, [address, embeddedWallet]);
 
   const buyKey = async (_address: IAddress) => {
-    console.log(`embeddedWallet: ${embeddedWallet}`);
     if (embeddedWallet) {
+      setIsLoadingModalDisplay(true);
       await embeddedWallet.switchChain(blastSepolia.id);
       const provider = await embeddedWallet.getEthersProvider();
-      const { keyNftShareContract, gasPrice } = await ethersContract(provider);
+      const { keyNftShareContract } = await ethersContract(provider);
       const transaction = await keyNftShareContract.buyShares(_address, 1, {
         gasLimit: 2000000,
       });
       await transaction.wait();
+      setIsLoadingModalDisplay(false);
       getKeyNftBalance();
+
     }
+  };
+
+  const closeErrorModal = () => {
+    setIsLoadingModalDisplay(false);
   };
 
   useEffect(() => {
@@ -66,6 +77,10 @@ export default function LoginKey() {
   return (
     <div className="container flex flex-col items-center justify-center">
       <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+        <LoadingModal
+          isModalDisplay={isLoadingModalDisplay}
+          closeModal={closeErrorModal}
+        />
         <div>
           <Navigation
             changePrePage={changePrePage}
