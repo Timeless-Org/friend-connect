@@ -1,47 +1,41 @@
-"use client";
+'use client'
 
-import Navigation from "@components/common/Navigation";
-import OrangeButton from "@components/common/OrangeButton";
-import { Checkbox } from "@components/ui/checkbox";
-import { useRouter } from "next/navigation";
-import { changeUserRegister } from "@utils/api";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from '@privy-io/react-auth'
+import { useRouter } from 'next/navigation'
+import Navigation from '@components/common/Navigation'
+import OrangeButton from '@components/common/OrangeButton'
+import { Checkbox } from '@components/ui/checkbox'
+import { changeUserRegister } from '@utils/api'
 
 export default function LoginStart() {
-  const { user } = usePrivy();
-  const router = useRouter();
+  const { user } = usePrivy()
+  const router = useRouter()
 
   const changePrePage = () => {
-    router.push("/login/profile");
-  };
+    router.push('/login/profile')
+  }
 
   const changeKeysPage = async () => {
     if (user?.wallet?.address) {
-      await changeUserRegister(user?.wallet?.address);
-      router.push("/keys");
+      await changeUserRegister(user?.wallet?.address)
+      router.push('/keys')
     }
-  };
+  }
 
   return (
     <div className="container flex flex-col items-center justify-center">
-      <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+      <div className="flex h-screen w-full flex-col justify-between pb-5 pt-10">
         <div>
-          <Navigation
-            changePrePage={changePrePage}
-            progressValue={100}
-            pageNum={7}
-          />
-          <div className="mt-10 w-full flex flex-col items-start justify-center">
-            <p className="font-semibold text-lg">Long Star is in beta!</p>
-            <p className="text-gray60 mt-4">
+          <Navigation changePrePage={changePrePage} progressValue={100} pageNum={7} />
+          <div className="mt-10 flex w-full flex-col items-start justify-center">
+            <p className="text-lg font-semibold">Long Star is in beta!</p>
+            <p className="mt-4 text-gray60">
               Thanks for being an early supporter and helping us test the app.
               <br />
               <br />
-              We&rsquo;ve given you invite code to share with friends. You can
-              find it in the Airdrop tab. <br />
+              We&rsquo;ve given you invite code to share with friends. You can find it in the Airdrop tab. <br />
               <br />
-              If you have any feedback, please let us know on Twitter at
-              @longstar_social.
+              If you have any feedback, please let us know on Twitter at @longstar_social.
               <br />
               <br />
               By using this app, you confirm our terms of service
@@ -49,19 +43,16 @@ export default function LoginStart() {
           </div>
         </div>
 
-        <div className="flex flex-col mb-10 px-5">
-          <div className="flex items-center space-x-2 justify-start mb-3">
+        <div className="mb-10 flex flex-col px-5">
+          <div className="mb-3 flex items-center justify-start space-x-2">
             <Checkbox id="terms" />
             <label htmlFor="terms" className="text-sm">
               Post a Tweet to let your friends know you joined
             </label>
           </div>
-          <OrangeButton
-            text={"Start using the app"}
-            buttonAction={changeKeysPage}
-          />
+          <OrangeButton text={'Start using the app'} buttonAction={changeKeysPage} />
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,11 +1,14 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faMessage } from '@fortawesome/free-regular-svg-icons'
 import { faShareNodes, faAngleLeft, faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ConnectedWallet, usePrivy } from '@privy-io/react-auth'
+import { useWallets, usePrivy } from '@privy-io/react-auth'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 import { blastSepolia } from '@/lib/chain'
 import { ethersContract } from '@/lib/ethersContract'
 import { getUser } from '@/utils/api'
@@ -15,17 +18,13 @@ import EditBioModal from '@components/Modal/EditBioModal'
 import KeyTradeModal from '@components/Modal/KeyTradeModal'
 import SideMenuTab from '@components/SideMenu/SideMenuTab'
 
-interface IMenuWindow {
-  isMenuContentOpen: boolean
-  menuContent: string
-  setMenuContentOpen: (isOpen: boolean) => void
-  isLoginUser: boolean
-  wallet: ConnectedWallet
-}
-
-const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet }: IMenuWindow) => {
+const Profile = () => {
   const { user } = usePrivy()
-  const address = (user?.wallet?.address as IAddress) || '0x'
+  const { wallets } = useWallets()
+  const wallet = wallets[0]
+  const router = useRouter()
+  const pathname = usePathname()
+  const address = String(pathname.split('/')[2])
 
   const [isKeyTradeModalDisplay, setIsKeyTradeModalDisplay] = useState<boolean>(false)
   const [isEditBioModalDisplay, setIsEditBioModalDisplay] = useState<boolean>(false)
@@ -57,29 +56,27 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
 
   useEffect(() => {
     const getHolder = async () => {
-      setIsPendingHolder(true)
-      await wallet.switchChain(blastSepolia.id)
-      const provider = await wallet.getEthersProvider()
-      const { keyNftShareContract } = await ethersContract(provider)
-      const holders: bigint = await keyNftShareContract.sharesSupply(address)
-      const hold: bigint = await keyNftShareContract.sharesBalance(address, address)
-      setHolderAmount(Number(holders))
-      setHoldingAmount(Number(hold))
-      setIsPendingHolder(false)
+      try {
+        setIsPendingHolder(true)
+        await wallet.switchChain(blastSepolia.id)
+        const provider = await wallet.getEthersProvider()
+        const { keyNftShareContract } = await ethersContract(provider)
+        const holders: bigint = await keyNftShareContract.sharesSupply(address)
+        const hold: bigint = await keyNftShareContract.sharesBalance(address, address)
+        setHolderAmount(Number(holders))
+        setHoldingAmount(Number(hold))
+        setIsPendingHolder(false)
+      } catch (e) {}
     }
 
     if (wallet && holdingAmount === 0 && holderAmount === 0) getHolder()
   }, [address, holderAmount, holdingAmount, wallet])
 
   return (
-    <div
-      className={`fixed left-0 top-0${
-        isMenuContentOpen ? 'translate-x-0 ' : '-translate-x-full'
-      } z-50 size-full bg-white transition-transform duration-300`}
-    >
+    <div className="fixed left-0 top-0 z-50 size-full bg-white transition-transform duration-300">
       <KeyTradeModal
-        address={address}
-        shareObject={address}
+        address={address as IAddress}
+        shareObject={address as IAddress}
         isModalDisplay={isKeyTradeModalDisplay}
         closeModal={closeModal}
         isBuy={isBuy}
@@ -90,7 +87,7 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
       />
       <EditBioModal address={address} isModalDisplay={isEditBioModalDisplay} closeModal={closeModal} />
       <div className="flex h-16 w-full items-center justify-between bg-black px-4">
-        <button type="button" onClick={() => setMenuContentOpen(false)}>
+        <button type="button" onClick={() => router.back()}>
           <FontAwesomeIcon icon={faAngleLeft} className="h-6 text-white" />
         </button>
         <p className="mr-2 text-lg font-semibold text-white">@ {userData?.twitter_id}</p>
@@ -127,7 +124,7 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
             </button>
             <FontAwesomeIcon
               icon={faMessage}
-              className={`${isLoginUser ? 'hidden' : 'block'} h-4 rounded-full bg-squareGray p-3`}
+              className={`${userData?.register ? 'hidden' : 'block'} h-4 rounded-full bg-squareGray p-3`}
             />
           </div>
         </div>
@@ -162,7 +159,7 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
               <span className="text-black">{userData?.key_price}</span> ETH
             </p>
           </div>
-          <div className={`${isLoginUser ? 'hidden' : 'block'} inline-flex items-center justify-between`}>
+          <div className={`${userData?.register ? 'hidden' : 'block'} inline-flex items-center justify-between`}>
             <p>You own:</p>
             {isPendingHolder ? (
               <p className="size-4 animate-spin rounded-full border-4 border-orange border-t-transparent" />
@@ -190,9 +187,9 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
           </button>
         </div>
       </div>
-      <SideMenuTab address={address} isMenuContentOpen={isMenuContentOpen} userData={userData} />
+      <SideMenuTab address={address} isMenuContentOpen={true} userData={userData} />
     </div>
   )
 }
 
-export default MenuWindow
+export default Profile

@@ -1,59 +1,46 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark, faCopy } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import Copy from "../common/Copy";
+import { useState } from 'react'
+import { faCheck, faXmark, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Copy from '../common/Copy'
 
 interface IMessageModal {
-  message: string;
-  isModalDisplay: boolean;
-  closeModal: () => void;
+  message: string
+  isModalDisplay: boolean
+  closeModal: () => void
 }
-const MessageModal = ({
-  message,
-  isModalDisplay,
-  closeModal,
-}: IMessageModal) => {
-  const [isCopied, setIsCopied] = useState<boolean>(false);
+const MessageModal = ({ message, isModalDisplay, closeModal }: IMessageModal) => {
+  const [isCopied, setIsCopied] = useState<boolean>(false)
 
   return (
     <div
       className={`${
-        isModalDisplay ? "flex" : "hidden"
-      } absolute inset-0 h-screen items-center justify-center bg-gray20 z-50`}
+        isModalDisplay ? 'flex' : 'hidden'
+      } absolute inset-0 z-50 h-screen items-center justify-center bg-gray20`}
     >
-      <div className="inline-flex flex-col w-full justify-start pt-5 items-center mx-4 px-6 h-1/4 rounded-xl bg-white">
-        <button
-          type="button"
-          className="w-full inline-flex items-center justify-end z-50"
-          onClick={closeModal}
-        >
-          <FontAwesomeIcon
-            icon={faXmark}
-            className="h-4 w-4 bg-squareGray p-3 rounded-full"
-          />
+      <div className="mx-4 inline-flex h-1/4 w-full flex-col items-center justify-start rounded-xl bg-white px-6 pt-5">
+        <button type="button" className="z-50 inline-flex w-full items-center justify-end" onClick={closeModal}>
+          <FontAwesomeIcon icon={faXmark} className="size-4 rounded-full bg-squareGray p-3" />
         </button>
-        <div className="absolute inset-0 inline-flex items-center justify-center h-full z-40">
+        <div className="absolute inset-0 z-40 inline-flex h-full items-center justify-center">
           <div className="inline-flex flex-col">
             <Copy
               copyText={message}
               content={
                 <FontAwesomeIcon
                   icon={isCopied ? faCheck : faCopy}
-                  className="h-5 bg-squareGray p-2 rounded-full text-gray60"
+                  className="h-5 rounded-full bg-squareGray p-2 text-gray60"
                 />
               }
               setIsCopied={setIsCopied}
             />
-            <div className="inline-flex justify-center items-center mt-2 w-full">
-              <p className="text-center w-2/3 text-wrap break-all">
-                {message}
-              </p>
+            <div className="mt-2 inline-flex w-full items-center justify-center">
+              <p className="w-2/3 text-wrap break-all text-center">{message}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MessageModal;
+export default MessageModal

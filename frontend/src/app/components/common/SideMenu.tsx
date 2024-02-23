@@ -1,50 +1,48 @@
-import MenuWindow from "@components/common/MenuWindow";
-import { faEthereum } from "@fortawesome/free-brands-svg-icons";
-import { faAngleRight, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
-import { useWallets } from "@privy-io/react-auth";
-import { blastSepolia } from "@/lib/chain";
-import { formatEther } from "@/lib/common";
+import { useCallback, useEffect, useState } from 'react'
+import { faEthereum } from '@fortawesome/free-brands-svg-icons'
+import { faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useWallets } from '@privy-io/react-auth'
+import Image from 'next/image'
+import { blastSepolia } from '@/lib/chain'
+import { formatEther } from '@/lib/common'
+import MenuWindow from '@components/common/MenuWindow'
 
 interface ISideMenu {
-  isOpen: boolean;
-  setMenuOpen: (isOpen: boolean) => void;
-  userName: string;
-  address: string;
+  isOpen: boolean
+  setMenuOpen: (isOpen: boolean) => void
+  userName: string
+  address: string
 }
 
 const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
-  const { wallets } = useWallets();
-  const embeddedWallet = wallets[0];
+  const { wallets } = useWallets()
+  const embeddedWallet = wallets[0]
 
-  const [isMenuContentOpen, setMenuContentOpen] = useState<boolean>(false);
-  const [menuContent, setMenuContent] = useState<string>("");
-  const [balance, setBalance] = useState<number | null>(0);
-
+  const [isMenuContentOpen, setMenuContentOpen] = useState<boolean>(false)
+  const [menuContent, setMenuContent] = useState<string>('')
+  const [balance, setBalance] = useState<number | null>(0)
 
   const openMenuContent = (menu: string) => {
-    setMenuContent(menu);
-    setMenuContentOpen(true);
-  };
+    setMenuContent(menu)
+    setMenuContentOpen(true)
+  }
 
   const getBalance = useCallback(async () => {
     if (embeddedWallet) {
-      await embeddedWallet.switchChain(blastSepolia.id);
-      const provider = await embeddedWallet.getEthersProvider();
-      const currentBalance = await provider.getBalance(address);
-      const formatBalance =
-        Math.floor(formatEther(currentBalance) * 100000) / 100000;
-      setBalance(formatBalance);
+      await embeddedWallet.switchChain(blastSepolia.id)
+      const provider = await embeddedWallet.getEthersProvider()
+      const currentBalance = await provider.getBalance(address)
+      const formatBalance = Math.floor(formatEther(currentBalance) * 100000) / 100000
+      setBalance(formatBalance)
     }
-  }, [address, embeddedWallet]);
+  }, [address, embeddedWallet])
 
   useEffect(() => {
     if (balance === 0) {
-      getBalance();
+      getBalance()
     }
-  }, [address, balance, getBalance, wallets]);
+  }, [address, balance, getBalance, wallets])
   return (
     <>
       <MenuWindow
@@ -55,32 +53,27 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
         wallet={embeddedWallet}
       />
       <div
-        className={`fixed top-0 left-0 transform ${
-          isOpen ? "translate-x-0 w-11/12" : "-translate-x-full w-none"
-        } h-full transition-transform duration-300 ease-in-out z-40`}
+        className={`fixed left-0 top-0${
+          isOpen ? 'w-11/12 translate-x-0' : 'w-none -translate-x-full'
+        } z-40 h-full transition-transform duration-300 ease-in-out`}
       >
-        <div className="flex items-center justify-between px-4 h-16 w-full bg-black ">
-          <Image
-            src="/static/img/icon/long_star_logo_black.jpg"
-            alt="long_star"
-            width={40}
-            height={40}
-          />
-          <p className="text-white text-lg font-semibold">Menu</p>
+        <div className="flex h-16 w-full items-center justify-between bg-black px-4 ">
+          <Image src="/static/img/icon/long_star_logo_black.jpg" alt="long_star" width={40} height={40} />
+          <p className="text-lg font-semibold text-white">Menu</p>
           <button type="button" onClick={() => setMenuOpen(false)}>
-            <FontAwesomeIcon icon={faXmark} className="text-white h-6" />
+            <FontAwesomeIcon icon={faXmark} className="h-6 text-white" />
           </button>
         </div>
-        <div className="border-r border-grayThin bg-white  px-4 pt-6 h-full">
-          <div className="flex flex-col justify-center items-start">
+        <div className="h-full border-r border-grayThin  bg-white px-4 pt-6">
+          <div className="flex flex-col items-start justify-center">
             <p className="font-semibold text-gray60">Account</p>
-            <div className="flex flex-col w-full justify-center items-start bg-squareGray mt-4 rounded-xl px-2">
+            <div className="mt-4 flex w-full flex-col items-start justify-center rounded-xl bg-squareGray px-2">
               <button
                 type="button"
-                className="pb-3 border-b border-grayThin flex justify-between w-full items-center p-4"
-                onClick={() => openMenuContent("Account")}
+                className="flex w-full items-center justify-between border-b border-grayThin p-4 pb-3"
+                onClick={() => openMenuContent('Account')}
               >
-                <p className="text-gray60 font-semibold">{userName}</p>
+                <p className="font-semibold text-gray60">{userName}</p>
                 <FontAwesomeIcon icon={faAngleRight} className="h-4" />
               </button>
               {/* <button
@@ -117,15 +110,12 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
               </button> */}
             </div>
           </div>
-          <div className="flex flex-col justify-center items-start mt-6">
+          <div className="mt-6 flex flex-col items-start justify-center">
             <p className="font-semibold text-gray60">Assets</p>
-            <div className="flex flex-col w-full justify-center items-start bg-squareGray mt-4 rounded-xl px-2">
-              <div className="pb-3 border-b border-grayThin flex justify-between w-full items-center p-4">
-                <div className="flex justify-center space-x-3 items-center">
-                  <FontAwesomeIcon
-                    icon={faEthereum}
-                    className="h-4 w-4 p-2 bg-white text-gray60 rounded-full"
-                  />
+            <div className="mt-4 flex w-full flex-col items-start justify-center rounded-xl bg-squareGray px-2">
+              <div className="flex w-full items-center justify-between border-b border-grayThin p-4 pb-3">
+                <div className="flex items-center justify-center space-x-3">
+                  <FontAwesomeIcon icon={faEthereum} className="size-4 rounded-full bg-white p-2 text-gray60" />
                   <p className="font-semibold">Blast ETH</p>
                 </div>
                 <p className="font-semibold text-gray60">{balance}</p>
@@ -145,7 +135,7 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default SideMenu;
+export default SideMenu

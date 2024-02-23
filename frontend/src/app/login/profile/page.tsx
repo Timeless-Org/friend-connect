@@ -1,47 +1,43 @@
-"use client";
+'use client'
 
-import Navigation from "@components/common/Navigation";
-import OrangeButton from "@components/common/OrangeButton";
-import { Textarea } from "@components/ui/textarea";
-import { usePrivy } from "@privy-io/react-auth";
-import { addUserBiography } from "@utils/api";
-import { IAddress } from "@utils/types";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from 'react'
+import { usePrivy } from '@privy-io/react-auth'
+import { useRouter } from 'next/navigation'
+import Navigation from '@components/common/Navigation'
+import OrangeButton from '@components/common/OrangeButton'
+import { Textarea } from '@components/ui/textarea'
+import { addUserBiography } from '@utils/api'
+import { IAddress } from '@utils/types'
 
 export default function LoginNotification() {
-  const router = useRouter();
-  const { user } = usePrivy();
-  const address = (user?.wallet?.address as IAddress) || "0x";
+  const router = useRouter()
+  const { user } = usePrivy()
+  const address = (user?.wallet?.address as IAddress) || '0x'
 
-  const [biography, setBiography] = useState<string>("");
+  const [biography, setBiography] = useState<string>('')
 
   const changePrePage = () => {
-    router.push("/login/notification");
-  };
+    router.push('/login/notification')
+  }
 
   const handleSetBiography = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setBiography(event.target.value);
-  };
+    setBiography(event.target.value)
+  }
 
   const updateBiography = async () => {
-    const result = await addUserBiography(address, biography);
+    const result = await addUserBiography(address, biography)
     if (result) {
-      router.push("/login/start");
+      router.push('/login/start')
     }
-  };
+  }
 
   return (
     <div className="container flex flex-col items-center justify-center">
-      <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+      <div className="flex h-screen w-full flex-col justify-between pb-5 pt-10">
         <div>
-          <Navigation
-            changePrePage={changePrePage}
-            progressValue={85.8}
-            pageNum={6}
-          />
-          <div className="mt-10 w-full flex flex-col items-start justify-center">
-            <p className="font-semibold text-lg">Create your account</p>
+          <Navigation changePrePage={changePrePage} progressValue={85.8} pageNum={6} />
+          <div className="mt-10 flex w-full flex-col items-start justify-center">
+            <p className="text-lg font-semibold">Create your account</p>
             {/* <p className="text-gray mt-4">User name</p>
             <Input
               type="text"
@@ -71,23 +67,15 @@ export default function LoginNotification() {
         </div> */}
             <div className="mt-6 w-full">
               <p>Bio</p>
-              <Textarea
-                placeholder="Bio."
-                onChange={handleSetBiography}
-                className="w-full"
-              />
+              <Textarea placeholder="Bio." onChange={handleSetBiography} className="w-full" />
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col mb-10 px-5">
-          <OrangeButton
-            text={"Proceed"}
-            buttonAction={updateBiography}
-            disabled={!biography}
-          />
+        <div className="mb-10 flex flex-col px-5">
+          <OrangeButton text={'Proceed'} buttonAction={updateBiography} disabled={!biography} />
         </div>
       </div>
     </div>
-  );
+  )
 }

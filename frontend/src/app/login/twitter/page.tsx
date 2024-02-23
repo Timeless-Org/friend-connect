@@ -1,108 +1,93 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "@components/ui/button";
-import { useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
-import Navigation from "@components/common/Navigation";
-import { addUserTwitterProfile } from "@utils/api";
-import { usePrivy } from "@privy-io/react-auth";
-import ErrorModal from "@components/Modal/ErrorModal";
+import { useState } from 'react'
+import { faXTwitter } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { usePrivy } from '@privy-io/react-auth'
+import { useRouter } from 'next/navigation'
+import ErrorModal from '@components/Modal/ErrorModal'
+import Navigation from '@components/common/Navigation'
+import { Button } from '@components/ui/button'
+import { addUserTwitterProfile } from '@utils/api'
 
 export default function LoginConnectTwitter() {
-  const { user, linkTwitter, authenticated } = usePrivy();
-  const router = useRouter();
+  const { user, linkTwitter, authenticated } = usePrivy()
+  const router = useRouter()
 
-  const [isModalDisplay, setIsmModalDisplay] = useState<boolean>(false);
+  const [isModalDisplay, setIsmModalDisplay] = useState<boolean>(false)
 
   const changePrePage = () => {
-    router.push("/login/code");
-  };
+    router.push('/login/code')
+  }
 
   const changeNextPage = async () => {
     if (user && user.wallet?.address && user.twitter?.name) {
       await addUserTwitterProfile(
         user.wallet.address,
         user.twitter.name,
-        user.twitter.profilePictureUrl || "",
-        user.twitter.username || ""
-      );
+        user.twitter.profilePictureUrl || '',
+        user.twitter.username || ''
+      )
     }
-    router.push("/login/deposit");
-  };
+    router.push('/login/deposit')
+  }
 
   const connectTwitter = async () => {
     // if (user?.wallet?.address) {
     //   const url = await getTwitterAuthLink(user?.wallet?.address);
     //   if (url) router.push(url);
     // }
-    if (!authenticated) return;
+    if (!authenticated) return
     if (user && user.twitter?.name) {
-      setIsmModalDisplay(true);
+      setIsmModalDisplay(true)
     } else {
-      linkTwitter();
+      linkTwitter()
     }
-  };
+  }
 
   const closeErrorModal = () => {
-    setIsmModalDisplay(false);
-  };
+    setIsmModalDisplay(false)
+  }
   return (
     <div className="container flex flex-col items-center justify-center">
-      <ErrorModal
-        message={"Already linked to Twitter"}
-        isModalDisplay={isModalDisplay}
-        closeModal={closeErrorModal}
-      />
-      <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+      <ErrorModal message={'Already linked to Twitter'} isModalDisplay={isModalDisplay} closeModal={closeErrorModal} />
+      <div className="flex h-screen w-full flex-col justify-between pb-5 pt-10">
         <div>
-          <Navigation
-            changePrePage={changePrePage}
-            progressValue={28.6}
-            pageNum={2}
-          />
-          <div className="mt-10 w-full flex flex-col items-start justify-center">
-            <p className="font-semibold text-lg">Link your socials</p>
-            <p className="text-gray60 mt-4">
-              Connect your X account to verify your identity and make it easier
-              for friends to discover and trade your token.
+          <Navigation changePrePage={changePrePage} progressValue={28.6} pageNum={2} />
+          <div className="mt-10 flex w-full flex-col items-start justify-center">
+            <p className="text-lg font-semibold">Link your socials</p>
+            <p className="mt-4 text-gray60">
+              Connect your X account to verify your identity and make it easier for friends to discover and trade your
+              token.
             </p>
           </div>
-          <div className="mt-10 w-full flex flex-col items-start justify-center">
-            <div className="w-full flex justify-between bg-squareGray py-6 px-4 rounded-xl items-center">
+          <div className="mt-10 flex w-full flex-col items-start justify-center">
+            <div className="flex w-full items-center justify-between rounded-xl bg-squareGray px-4 py-6">
               <div className="flex items-center justify-center space-x-3">
-                <FontAwesomeIcon
-                  icon={faXTwitter}
-                  className="h-6 rounded-full  p-2 bg-white"
-                />
-                <p className="font-semibold text-lg">Link your Twitter</p>
+                <FontAwesomeIcon icon={faXTwitter} className="h-6 rounded-full  bg-white p-2" />
+                <p className="text-lg font-semibold">Link your Twitter</p>
               </div>
-              <Button
-                variant="linkButton"
-                className="font-semibold py-5"
-                onClick={connectTwitter}
-              >
+              <Button variant="linkButton" className="py-5 font-semibold" onClick={connectTwitter}>
                 Link
               </Button>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col w-full px-5">
+        <div className="flex w-full flex-col px-5">
           <Button
-            variant={user?.twitter?.name ? "default" : "roundedBtn"}
-            className="w-full h-12"
+            variant={user?.twitter?.name ? 'default' : 'roundedBtn'}
+            className="h-12 w-full"
             onClick={changeNextPage}
             disabled={!user?.twitter?.name}
           >
             Proceed
           </Button>
-          <Button variant="bgWhite" className="w-full h-12">
+          <Button variant="bgWhite" className="h-12 w-full">
             Log out
           </Button>
         </div>
       </div>
     </div>
-  );
+  )
 }
