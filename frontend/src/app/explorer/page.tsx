@@ -1,41 +1,38 @@
-"use client";
+'use client'
 
-import Footer from "@components/common/Footer";
-import Header from "@components/common/Header";
-import NewChatTab from "@components/explorer/NewChatTab";
-import TopTab from "@components/explorer/TopTab";
-import TrendTab from "@components/explorer/TrendTab";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
-import { Input } from "@components/ui/searchInput";
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useState } from 'react'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Footer from '@components/common/Footer'
+import Header from '@components/common/Header'
+import NewChatTab from '@components/explorer/NewChatTab'
+import TopTab from '@components/explorer/TopTab'
+import TrendTab from '@components/explorer/TrendTab'
+import { Input } from '@components/ui/searchInput'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
 
 export default function Search() {
-  const [word, setWord] = useState<string>("");
+  const [word, setWord] = useState<string>('')
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center justify-center w-full mt-24 mb-16">
-        <div className="w-full flex justify-center items-center pb-4 bg-black border-black border-b-2">
-          <div className="border-2 border-zinc-800 w-full mx-4 flex justify-center items-center space-x-2 px-2 bg-zinc-800 rounded-md">
-            <button type="button" className=" bg-gray20 rounded-full">
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="text-orange h-4 w-4"
-              />
+      <div className="fixed mb-16 mt-24 flex w-full flex-col items-center justify-center">
+        <div className="flex w-full items-center justify-center border-b-2 border-black bg-black pb-4">
+          <div className="mx-4 flex w-full items-center justify-center space-x-2 rounded-md border-2 border-zinc-800 bg-zinc-800 px-2">
+            <button type="button" className=" rounded-full bg-gray20">
+              <FontAwesomeIcon icon={faMagnifyingGlass} className="size-4 text-yellow" />
             </button>
             <Input
               type="text"
               value={word}
               onChange={(e) => setWord(e.target.value)}
-              className="flex-1 text-gray-700 focus:ring-0 ring-0 active:ring-0 focus:border-0 active:border-0 bg-gray20 text-white"
+              className="text-gray-700 flex-1 bg-gray20 text-white ring-0 focus:border-0 focus:ring-0 active:border-0 active:ring-0"
               placeholder="Search by username"
             />
           </div>
         </div>
         <Tabs defaultValue="top" className="w-full">
-          <TabsList className="w-full fixed justify-start">
+          <TabsList className="fixed w-full justify-start">
             <TabsTrigger value="top" className="text-lg">
               Top
             </TabsTrigger>
@@ -65,5 +62,5 @@ export default function Search() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

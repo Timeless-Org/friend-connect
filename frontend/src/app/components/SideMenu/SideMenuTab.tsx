@@ -1,32 +1,19 @@
-import { IUser } from "@/utils/types";
-import HoldersTab from "@components/SideMenu/HoldersTab";
+import { IUser } from '@/utils/types'
+import HoldersTab from '@components/SideMenu/HoldersTab'
 // import WatchListTab from "@components/SideMenu/WatchListTab";
-import YouTab from "@components/keys/YouTab";
-import YourKeyTab from "@components/keys/YourKeyTab";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@components/ui/sideMenuTabs";
+import YouTab from '@components/keys/YouTab'
+import YourKeyTab from '@components/keys/YourKeyTab'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/sideMenuTabs'
 
 interface ISideMenuTab {
-  address: string;
-  isMenuContentOpen: boolean;
-  userData: IUser | undefined;
+  address: string
+  isMenuContentOpen: boolean
+  userData: IUser | undefined
 }
 
-const SideMenuTab = ({
-  address,
-  isMenuContentOpen,
-  userData,
-}: ISideMenuTab) => {
+const SideMenuTab = ({ address, isMenuContentOpen }: ISideMenuTab) => {
   return (
-    <div
-      className={`${
-        isMenuContentOpen ? "flex" : "hidden"
-      } items-center justify-center mt-10 mb-16 w-full`}
-    >
+    <div className={`${isMenuContentOpen ? 'flex' : 'hidden'} mb-16 mt-10 w-full items-center justify-center`}>
       <Tabs defaultValue="keys" className="">
         <TabsList className="w-screen overflow-x-auto">
           <TabsTrigger value="keys" className="text-lg">
@@ -45,16 +32,16 @@ const SideMenuTab = ({
             Watchlist
           </TabsTrigger> */}
         </TabsList>
-        <TabsContent value="keys" className="mt-6 mx-3">
+        <TabsContent value="keys" className="mx-3 mt-6">
           <YouTab address={address} />
         </TabsContent>
-        <TabsContent value="trades" className="mt-6 mx-3">
+        <TabsContent value="trades" className="mx-3 mt-6">
           <YourKeyTab address={address} />
         </TabsContent>
-        <TabsContent value="holders" className="mt-6 mx-3">
+        <TabsContent value="holders" className="mx-3 mt-6">
           <HoldersTab address={address} />
         </TabsContent>
-        <TabsContent value="holding" className="mt-6 mx-3">
+        <TabsContent value="holding" className="mx-3 mt-6">
           <HoldersTab address={address} />
         </TabsContent>
         {/* <TabsContent value="watchlist" className="mt-6 mx-3">
@@ -62,7 +49,7 @@ const SideMenuTab = ({
         </TabsContent> */}
       </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default SideMenuTab;
+export default SideMenuTab

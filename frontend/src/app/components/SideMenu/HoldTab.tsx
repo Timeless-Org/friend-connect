@@ -1,43 +1,42 @@
-import { IUser } from "@utils/types";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { getHoldObjects } from "@utils/api";
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { getHoldObjects } from '@utils/api'
+import { IUser } from '@utils/types'
 
 interface IHoldTab {
-  address: string;
+  address: string
 }
 
 const HoldTab = ({ address }: IHoldTab) => {
-  const [holders, setHolders] = useState<IUser[]>([]);
+  const router = useRouter()
+
+  const [holders, setHolders] = useState<IUser[]>([])
 
   useEffect(() => {
     const getUserData = async (_address: string) => {
-      const holdersData = await getHoldObjects(_address);
+      const holdersData = await getHoldObjects(_address)
       if (holdersData) {
-        setHolders(holdersData);
+        setHolders(holdersData)
       }
-    };
-    if (address) {
-      getUserData(address);
     }
-  }, [address]);
+    if (address) {
+      getUserData(address)
+    }
+  }, [address])
 
   return (
-    <div className="flex flex-col justify-center space-y-4 w-full items-start">
+    <div className="flex w-full flex-col items-start justify-center space-y-4">
       {holders.map((user, index) => (
         <div className="flex items-center justify-start space-x-4" key={index}>
-          <Image
-            src={user.icon || ""}
-            alt="user"
-            className="rounded-full"
-            width={48}
-            height={48}
-          />
+          <button type="button" onClick={() => router.push(`profile/${address}`)}>
+            <Image src={user.icon || ''} alt="user" className="rounded-full" width={48} height={48} />
+          </button>
           <p className="font-semibold">{user.name}</p>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default HoldTab;
+export default HoldTab

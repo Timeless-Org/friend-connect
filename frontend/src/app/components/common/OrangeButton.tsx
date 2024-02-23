@@ -1,17 +1,17 @@
-import { Button } from "@components/ui/button";
+import { Button } from '@components/ui/button'
 
 interface IOrangeButton {
-    text: string;
-  buttonAction?: () => void;
-  disabled?: boolean;
+  text: string
+  buttonAction?: () => void
+  disabled?: boolean
 }
 
 const OrangeButton = ({ text, buttonAction, disabled = false }: IOrangeButton) => {
   return (
-    <Button variant="default" className="w-full h-12" onClick={buttonAction} disabled={disabled}>
+    <Button variant="default" className="h-12 w-full" onClick={buttonAction} disabled={disabled}>
       {text}
     </Button>
-  );
-};
+  )
+}
 
-export default OrangeButton;
+export default OrangeButton

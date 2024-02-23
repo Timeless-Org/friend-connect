@@ -1,37 +1,38 @@
-import Ranking from "@components/explorer/Ranking";
-import { ITop } from "@utils/types";
-import { useEffect, useState } from "react";
-import { getTopUsers } from "@utils/api";
+import { useEffect, useState } from 'react'
+import Ranking from '@components/explorer/Ranking'
+import { getTopUsers } from '@utils/api'
+import { ITop } from '@utils/types'
 
 const TrendTab = () => {
-  const [userInfo, setUserInfo] = useState<ITop[]>([]);
+  const [userInfo, setUserInfo] = useState<ITop[]>([])
 
   useEffect(() => {
     const getTopUsersData = async () => {
-      const user = await getTopUsers();
-      setUserInfo(user);
-    };
-    getTopUsersData();
-  }, []);
+      const user = await getTopUsers()
+      setUserInfo(user)
+    }
+    getTopUsersData()
+  }, [])
 
   return (
-    <div className=" flex flex-col justify-center items-center mx-3">
+    <div className=" mx-3 flex flex-col items-center justify-center">
       {userInfo &&
         userInfo.map((user, index) => (
           <Ranking
+            address={user.address}
             key={index}
-            ranking={"-"}
+            ranking={'-'}
             name={user.name}
             icon={user.icon}
             description={
-              <p className="text-gray60 text-sm">
+              <p className="text-sm text-gray60">
                 {user._count.Holders} holders・Price: {user.key_price} ETH
               </p>
             }
           />
         ))}
     </div>
-  );
-};
+  )
+}
 
-export default TrendTab;
+export default TrendTab

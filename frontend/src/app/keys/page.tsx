@@ -1,24 +1,24 @@
-"use client";
+'use client'
 
-import { IAddress } from "@/utils/types";
-import Footer from "@components/common/Footer";
-import Header from "@components/common/Header";
+import { usePrivy } from '@privy-io/react-auth'
+import { IAddress } from '@/utils/types'
+import Footer from '@components/common/Footer'
+import Header from '@components/common/Header'
 // import FriendsTab from "@components/keys/FriendsTab";
-import GlobalTab from "@components/keys/GlobalTab";
-import YouTab from "@components/keys/YouTab";
-import YourKeyTab from "@components/keys/YourKeyTab";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
-import { usePrivy } from "@privy-io/react-auth";
+import GlobalTab from '@components/keys/GlobalTab'
+import YouTab from '@components/keys/YouTab'
+import YourKeyTab from '@components/keys/YourKeyTab'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
 
 export default function Keys() {
-  const { user } = usePrivy();
-  const address = (user?.wallet?.address as IAddress) || "0x";
+  const { user } = usePrivy()
+  const address = (user?.wallet?.address as IAddress) || '0x'
   return (
     <>
       <Header />
-      <div className="flex flex-col items-center justify-center w-full mt-24 mb-16">
+      <div className="mb-16 mt-24 flex w-full flex-col items-center justify-center">
         <Tabs defaultValue="you" className="w-full">
-          <TabsList className="w-full fixed">
+          <TabsList className="fixed w-full">
             <TabsTrigger value="you" className="text-lg">
               You
             </TabsTrigger>
@@ -48,5 +48,5 @@ export default function Keys() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

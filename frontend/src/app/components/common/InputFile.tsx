@@ -1,9 +1,7 @@
-import { Input } from "@components/ui/input";
+import { Input } from '@components/ui/input'
 
 const InputFile = () => {
-  return (
-    <Input id="image" type="file" className="rounded-full"  />
-  );
+  return <Input id="image" type="file" className="rounded-full" />
 }
 
-export default InputFile;
+export default InputFile

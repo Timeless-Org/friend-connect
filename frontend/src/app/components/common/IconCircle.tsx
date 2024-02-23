@@ -1,13 +1,11 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface IIconCircle {
-    icon: any;
+  icon: any
 }
 
 const IconCircle = ({ icon }: IIconCircle) => {
-  return (
-    <FontAwesomeIcon icon={icon} className="rounded-full w-5 h-5 p-3 bg-white" />
-  );
-};
+  return <FontAwesomeIcon icon={icon} className="size-5 rounded-full bg-white p-3" />
+}
 
-export default IconCircle;
+export default IconCircle

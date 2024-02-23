@@ -1,5 +1,5 @@
-import { ethers, BigNumber } from "ethers";
+import { ethers, BigNumber } from 'ethers'
 
 export const formatEther = (value: BigNumber) => {
-    return Number(ethers.utils.formatEther(value));
+  return Number(ethers.utils.formatEther(value))
 }
