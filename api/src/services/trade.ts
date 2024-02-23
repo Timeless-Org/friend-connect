@@ -1,3 +1,4 @@
+import { createHolderModel, deleteHolderModel } from "../models/holder";
 import {
   createTradeModel,
   getHolderTradesModel,
@@ -15,6 +16,11 @@ export const createTradeService = async (
   isBuy: boolean,
 ) => {
   const result: ITrade = await createTradeModel(buyAddress, sellAddress, keyPrice, amount, isBuy);
+  if (isBuy) {
+    await createHolderModel(buyAddress, sellAddress);
+  } else {
+    await deleteHolderModel(buyAddress, sellAddress);
+  }
   if (result) return true;
   return false;
 };

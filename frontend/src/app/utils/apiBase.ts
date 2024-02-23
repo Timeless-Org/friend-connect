@@ -16,7 +16,6 @@ export const baseRequest = async (
   data?: Record<string, any>,
   options?: BaseRequestOptions
 ): Promise<BaseRequestResponse> => {
-  console.log(`adfnbpadhfb9ahdf90bnbadfb`)
   const { params, customPath } = options || {};
 
   const requestConfig: AxiosRequestConfig = {

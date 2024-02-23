@@ -19,7 +19,7 @@ const TopTab = () => {
       {userInfo && userInfo.map((user, index) => (
         <Ranking
           key={index}
-          ranking={"-"}
+          ranking={index + 1}
           name={user.name}
           icon={user.icon}
           description={

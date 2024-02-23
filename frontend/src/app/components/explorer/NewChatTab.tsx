@@ -1,18 +1,22 @@
 import Ranking from "@components/explorer/Ranking";
-import { ITop } from "@utils/types";
+import { IChatUser } from "@utils/types";
 import { useEffect, useState } from "react";
-import { getTopUsers } from "@utils/api";
+import { getLatestChat } from "@utils/api";
+import { getTimeAgo } from "@/utils/common";
 
 const NewChatTab = () => {
-  const [userInfo, setUserInfo] = useState<ITop[]>([]);
+  const [userInfo, setUserInfo] = useState<IChatUser[]>([]);
 
   useEffect(() => {
     const getTopUsersData = async () => {
-      const user = await getTopUsers();
-      setUserInfo(user);
+      const user = await getLatestChat();
+      console.log(`user: ${JSON.stringify(user)}`);
+      setUserInfo(user.user);
     };
     getTopUsersData();
   }, []);
+
+  console.log(`userInfo: ${userInfo}`);
 
   return (
     <div className=" flex flex-col justify-center items-center mx-3">
@@ -20,12 +24,13 @@ const NewChatTab = () => {
         userInfo.map((user, index) => (
           <Ranking
             key={index}
-            ranking={"-"}
-            name={user.name}
-            icon={user.icon}
+            ranking={index + 1}
+            name={user.User.name || ""}
+            icon={user.User.icon || ""}
             description={
               <p className="text-gray60 text-sm">
-                {user._count.Holders} holders・Price: {user.key_price} ETH
+                {getTimeAgo(user.User.created_at)} holders・Price: {user.User.key_price}{" "}
+                ETH
               </p>
             }
           />

@@ -13,6 +13,7 @@ import { copyClipboard } from "@utils/common";
 import { IAddress } from "@utils/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import LoadingModal from "@components/Modal/LoadingModal";
 
 export default function LoginDeposit() {
   const { user } = usePrivy();
@@ -21,6 +22,8 @@ export default function LoginDeposit() {
 
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [balance, setBalance] = useState<number | null>(0);
+  const [isLoadingModalDisplay, setIsLoadingModalDisplay] =
+    useState<boolean>(false);
 
   const router = useRouter();
   const changePrePage = () => {
@@ -38,14 +41,20 @@ export default function LoginDeposit() {
   const getBalance = useCallback(async () => {
     const embeddedWallet = wallets[0];
     if (embeddedWallet) {
+      setIsLoadingModalDisplay(true);
       await embeddedWallet.switchChain(blastSepolia.id);
       const provider = await embeddedWallet.getEthersProvider();
       const currentBalance = await provider.getBalance(address);
       const formatBalance =
         Math.floor(formatEther(currentBalance) * 100000) / 100000;
       setBalance(formatBalance);
+      setIsLoadingModalDisplay(false);
     }
   }, [address, wallets]);
+
+  const closeErrorModal = () => {
+    setIsLoadingModalDisplay(false);
+  };
 
   useEffect(() => {
     if (balance === 0) {
@@ -56,6 +65,10 @@ export default function LoginDeposit() {
   return (
     <div className="container flex flex-col items-center justify-center">
       <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
+        <LoadingModal
+          isModalDisplay={isLoadingModalDisplay}
+          closeModal={closeErrorModal}
+        />
         <div>
           <Navigation
             changePrePage={changePrePage}

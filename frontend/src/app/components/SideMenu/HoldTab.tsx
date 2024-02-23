@@ -1,18 +1,18 @@
 import { IUser } from "@utils/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { getHolders } from "@utils/api";
+import { getHoldObjects } from "@utils/api";
 
-interface IHoldersTab {
+interface IHoldTab {
   address: string;
 }
 
-const HoldersTab = ({ address }: IHoldersTab) => {
+const HoldTab = ({ address }: IHoldTab) => {
   const [holders, setHolders] = useState<IUser[]>([]);
 
   useEffect(() => {
     const getUserData = async (_address: string) => {
-      const holdersData = await getHolders(_address);
+      const holdersData = await getHoldObjects(_address);
       if (holdersData) {
         setHolders(holdersData);
       }
@@ -40,4 +40,4 @@ const HoldersTab = ({ address }: IHoldersTab) => {
   );
 };
 
-export default HoldersTab;
+export default HoldTab;

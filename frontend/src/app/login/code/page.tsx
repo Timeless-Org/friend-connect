@@ -8,33 +8,33 @@ import { ChangeEvent, useState } from "react";
 import { codeVerify } from "@utils/api";
 import { usePrivy } from "@privy-io/react-auth";
 import ErrorModal from "@components/Modal/ErrorModal";
+import LoadingModal from "@components/Modal/LoadingModal";
 
 export default function LoginLoginCode() {
   const router = useRouter();
   const { user, logout } = usePrivy();
 
   const [code, setCode] = useState<string>("");
-  const [isModalDisplay, setIsmModalDisplay] = useState<boolean>(false);
+  const [isModalDisplay, setIsModalDisplay] = useState<boolean>(false);
+  const [isLoadingModalDisplay, setIsLoadingModalDisplay] =
+    useState<boolean>(false);
 
   const verifyCode = async (code: string) => {
     try {
-      console.log(`user.wallet.address: ${user?.wallet?.address}`);
+      setIsLoadingModalDisplay(true);
       if (user?.wallet && user.wallet.address) {
         const result = await codeVerify(code, user.wallet.address);
-        console.log(`result: ${result}`);
         if (result) {
+          setIsLoadingModalDisplay(false);
           router.push("/login/twitter");
           return;
         }
       }
-      setIsmModalDisplay(true);
+      // setIsLoadingModalDisplay(false);
+      setIsModalDisplay(true);
     } catch (err: any) {
-      console.log(`err: ${err.status}`);
-      if (err.status === 400) {
-        router.push("/login/twitter");
-        return;
-      }
-      setIsmModalDisplay(true);
+      setIsLoadingModalDisplay(false);
+      setIsModalDisplay(true);
     }
   };
 
@@ -43,7 +43,8 @@ export default function LoginLoginCode() {
   };
 
   const closeErrorModal = () => {
-    setIsmModalDisplay(false);
+    setIsModalDisplay(false);
+    setIsLoadingModalDisplay(false);
   };
 
   const changePrePage = () => {
@@ -55,6 +56,10 @@ export default function LoginLoginCode() {
       <ErrorModal
         message={"Invalid code"}
         isModalDisplay={isModalDisplay}
+        closeModal={closeErrorModal}
+      />
+      <LoadingModal
+        isModalDisplay={isLoadingModalDisplay}
         closeModal={closeErrorModal}
       />
       <div className="flex flex-col justify-between h-screen w-full pt-10 pb-5">
@@ -91,7 +96,11 @@ export default function LoginLoginCode() {
           >
             Proceed
           </Button>
-          <Button variant="bgWhite" className="w-full h-12 mt-2" onClick={logout}>
+          <Button
+            variant="bgWhite"
+            className="w-full h-12 mt-2"
+            onClick={logout}
+          >
             Log out
           </Button>
         </div>

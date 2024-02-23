@@ -16,11 +16,13 @@ interface ISideMenu {
 }
 
 const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets[0];
+
   const [isMenuContentOpen, setMenuContentOpen] = useState<boolean>(false);
   const [menuContent, setMenuContent] = useState<string>("");
   const [balance, setBalance] = useState<number | null>(0);
 
-  const { wallets } = useWallets();
 
   const openMenuContent = (menu: string) => {
     setMenuContent(menu);
@@ -28,7 +30,6 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
   };
 
   const getBalance = useCallback(async () => {
-    const embeddedWallet = wallets[0];
     if (embeddedWallet) {
       await embeddedWallet.switchChain(blastSepolia.id);
       const provider = await embeddedWallet.getEthersProvider();
@@ -37,7 +38,7 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
         Math.floor(formatEther(currentBalance) * 100000) / 100000;
       setBalance(formatBalance);
     }
-  }, [address, wallets]);
+  }, [address, embeddedWallet]);
 
   useEffect(() => {
     if (balance === 0) {
@@ -47,11 +48,11 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
   return (
     <>
       <MenuWindow
-        userName={"Cardene"}
         isMenuContentOpen={isMenuContentOpen}
         menuContent={menuContent}
         setMenuContentOpen={setMenuContentOpen}
         isLoginUser={false}
+        wallet={embeddedWallet}
       />
       <div
         className={`fixed top-0 left-0 transform ${

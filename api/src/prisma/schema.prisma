@@ -14,6 +14,7 @@ model User {
   icon                            String?
   key_img                         String?
   address                         String    @unique
+  twitter_id                      String?
   code_id                         Int       @unique
   key_price                       Int?      @default(0)
   ranking                         Int?
@@ -22,9 +23,6 @@ model User {
   notification                    Boolean   @default(false)
   last_login                      DateTime  @default(now())
   created_at                      DateTime  @default(now())
-  twitter_access_token            String?
-  twitter_refresh_token          String?
-  twitter_access_token_expires_at Int?
   register                        Boolean   @default(false)
   Points                          Point[]
   Chats                           Chat[]
@@ -32,7 +30,8 @@ model User {
   TradesAsBuyer                   Trade[] @relation("TradeBuyer")
   TradesAsSeller                  Trade[] @relation("TradeSeller")
   Watchlists                      Watchlist[]
-  Holders                         Holder[]
+  HoldingUsers                    Holder[] @relation("HoldingUsers")
+  HoldObjects                       Holder[] @relation("HoldObjects")
 }
 
 model Watchlist {
@@ -59,7 +58,6 @@ model Chat {
   created_at   DateTime  @default(now())
   Messages     Message[]
   User         User?    @relation(fields: [user_id], references: [id])
-  Holders      Holder[]
 }
 
 model Message {
@@ -74,11 +72,11 @@ model Message {
 
 model Holder {
   id           Int     @id @default(autoincrement())
-  user_id      Int
-  chat_id      Int
-  created_at   DateTime  @default(now())
-  User         User    @relation(fields: [user_id], references: [id])
-  Chat         Chat    @relation(fields: [chat_id], references: [id])
+  holder_id      Int
+  object_id      Int
+  created_at     DateTime  @default(now())
+  HolderUser     User      @relation("HoldingUsers", fields: [holder_id], references: [id])
+  HoldObjects       User      @relation("HoldObjects", fields: [object_id], references: [id])
 }
 
 model Point {

@@ -83,6 +83,7 @@ const ChatRoom = () => {
       point: 100,
       is_online: true,
       last_login: "2021-10-01",
+      created_at: new Date(),
     });
   }, []);
 

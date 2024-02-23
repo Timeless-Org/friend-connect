@@ -11,6 +11,21 @@ export const getCodeModel = async (code: string) => {
   return response;
 };
 
+export const getCodeFromAddressModel = async (address: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      address,
+    },
+  });
+  if (!user) throw new Error("User not found");
+  const response = await prisma.code.findUnique({
+    where: {
+      user_id: user.id,
+    },
+  });
+  return response;
+};
+
 export const getUnusedCodeModel = async () => {
   const response = await prisma.code.findFirst({
     where: {
@@ -28,6 +43,8 @@ export const verificateCodeModel = async (code: string) => {
   });
   return validCodeCount > 0;
 };
+
+// update
 
 export const updateCodeModel = async (code: string, address: string) => {
   const user = await prisma.user.findUnique({
