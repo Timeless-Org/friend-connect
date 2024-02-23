@@ -73,7 +73,7 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
 
   return (
     <div
-      className={`fixed left-0 top-0${
+      className={`fixed left-0 top-0 ${
         isMenuContentOpen ? 'translate-x-0 ' : '-translate-x-full'
       } z-50 size-full bg-white transition-transform duration-300`}
     >

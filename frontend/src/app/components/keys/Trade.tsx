@@ -35,7 +35,7 @@ const Trade = ({
   return (
     <div className="my-3 flex w-full items-center justify-start space-x-12" key={key}>
       <div className="flex items-center">
-        <button type="button" onClick={() => router.push(`profile/${tradeUserAddress}`)} className="z-100 relative">
+        <button type="button" onClick={() => router.push(`profile/${tradeUserAddress}`)} className="relative">
           <Image src={tradeUser} alt="user" className="rounded-full" width={48} height={48} />
         </button>
         <button type="button" onClick={() => router.push(`profile/${objectUserAddress}`)} className="absolute left-12">
