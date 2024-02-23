@@ -53,7 +53,7 @@ const SideMenu = ({ isOpen, setMenuOpen, userName, address }: ISideMenu) => {
         wallet={embeddedWallet}
       />
       <div
-        className={`fixed left-0 top-0${
+        className={`fixed left-0 top-0 ${
           isOpen ? 'w-11/12 translate-x-0' : 'w-none -translate-x-full'
         } z-40 h-full transition-transform duration-300 ease-in-out`}
       >
