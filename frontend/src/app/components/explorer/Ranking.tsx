@@ -6,7 +6,7 @@ interface IRanking {
   ranking: string | number
   icon: string
   name: string
-  description: React.ReactNode
+  description?: React.ReactNode
 }
 
 const Ranking = ({ address, ranking, icon, name, description }: IRanking) => {

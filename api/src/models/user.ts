@@ -320,18 +320,10 @@ export const getKeyNFTHolderAmountModel = async (address: string): Promise<numbe
 export const searchUserModel = async (word: string): Promise<IUser[]> => {
   const users = await prisma.user.findMany({
     where: {
-      OR: [
-        {
-          name: {
-            contains: word,
-          },
-        },
-        // {
-        //     biography: {
-        //         contains: word,
-        //     },
-        // },
-      ],
+      name: {
+        contains: word,
+        mode: "insensitive",
+      },
     },
   });
   return users;
