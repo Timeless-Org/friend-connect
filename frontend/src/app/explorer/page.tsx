@@ -6,13 +6,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Footer from '@components/common/Footer'
 import Header from '@components/common/Header'
 import NewChatTab from '@components/explorer/NewChatTab'
+import SearchTab from '@components/explorer/SearchTab'
 import TopTab from '@components/explorer/TopTab'
 import TrendTab from '@components/explorer/TrendTab'
 import { Input } from '@components/ui/searchInput'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
 
+
 export default function Search() {
   const [word, setWord] = useState<string>('')
+  const [tab, setTab] = useState<string>('top')
+  const search = async (_word: string) => {
+    setTab("search")
+  }
+  const onTabChange = (value: string) => {
+    setTab(value)
+  }
   return (
     <>
       <Header />
@@ -28,11 +37,15 @@ export default function Search() {
               onChange={(e) => setWord(e.target.value)}
               className="text-gray-700 flex-1 bg-gray20 text-white ring-0 focus:border-0 focus:ring-0 active:border-0 active:ring-0"
               placeholder="Search by username"
+              onClick={() => search(word)}
             />
           </div>
         </div>
-        <Tabs defaultValue="top" className="w-full">
-          <TabsList className="fixed w-full justify-start">
+        <Tabs value={tab} onValueChange={onTabChange} className="w-full">
+          <TabsList className="overflow-x-auto whitespace-nowrap flex">
+            <TabsTrigger value="search" className="text-lg">
+              Search
+            </TabsTrigger>
             <TabsTrigger value="top" className="text-lg">
               Top
             </TabsTrigger>
@@ -46,6 +59,9 @@ export default function Search() {
               Featured
             </TabsTrigger> */}
           </TabsList>
+          <TabsContent value="search" className="mt-12">
+            <SearchTab word={word} />
+          </TabsContent>
           <TabsContent value="top" className="mt-12">
             <TopTab />
           </TabsContent>

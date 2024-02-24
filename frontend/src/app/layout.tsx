@@ -39,6 +39,8 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.jpg"></link>
         <meta name="theme-color" content="#d1cd0c" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
       </head>
       <body className={`${inter.className} h-screen w-screen`}>
         <WalletProvider>{children}</WalletProvider>

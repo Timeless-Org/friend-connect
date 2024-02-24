@@ -6,11 +6,11 @@ export type IAddress = Address
 
 // User
 export interface IUser {
-  name?: string
+  name: string
   biography?: string
-  icon?: string
+  icon: string
   key_img?: string
-  address?: string
+  address: string
   twitter_id?: string
   code?: string
   key_price?: number

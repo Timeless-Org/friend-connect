@@ -132,3 +132,9 @@ export const getLatestChat = async (): Promise<any> => {
   const data = await baseRequest('GET', `/chat/latest`)
   return data.data as IUserList[]
 }
+
+// search
+export const searchUser = async (keyword: string): Promise<any> => {
+  const data = await baseRequest('GET', `/user/search/${keyword}`)
+  return data.data as IUserList[]
+}
