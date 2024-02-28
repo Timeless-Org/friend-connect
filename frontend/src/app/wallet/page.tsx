@@ -99,13 +99,9 @@ export default function Wallet() {
                 <p>{truncateString(address || '', 10)}</p>
                 <Copy
                   copyText={address || ''}
-                  content={
-                    <FontAwesomeIcon
-                      icon={isCopied ? faCheck : faCopy}
-                      className="h-4 rounded-full bg-squareGray p-2 text-gray60"
-                    />
-                  }
+                  content={<FontAwesomeIcon icon={isCopied ? faCheck : faCopy} className="h-4 text-gray60" />}
                   setIsCopied={setIsCopied}
+                  className="w-8 h-8 p-2 rounded-full bg-squareGray flex items-center justify-center"
                 />
               </div>
             </div>
@@ -140,23 +136,27 @@ export default function Wallet() {
         </div>
         <div className="flex w-full justify-around">
           <div className="inline-flex flex-col items-center justify-center space-y-3">
-            <button type="button" onClick={() => setIsErrorModalDisplay(true)}>
-              <FontAwesomeIcon icon={faDownload} className="h-4 rounded-full border p-4" />
+            <button
+              type="button"
+              onClick={() => setIsErrorModalDisplay(true)}
+              className="w-8 h-8 p-7 rounded-full border flex items-center justify-center"
+            >
+              <FontAwesomeIcon icon={faDownload} className="h-5 text-gray80" />
             </button>
             <p className="font-semibold">Deposit on chain</p>
           </div>
           <div className="inline-flex flex-col items-center justify-center space-y-3">
             <button
               type="button"
-              className="flex items-center justify-center rounded-full border p-3"
+              className="p-3 rounded-full border flex items-center justify-center"
               onClick={() => setIsWithdrawModalDisplay(true)}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="1.5rem"
-                height="1.5rem"
+                width="3rem"
+                height="3rem"
                 viewBox="0 0 24 24"
-                className="pl-1 text-center text-gray80"
+                className="pl-1 text-center text-gray80 w-7 h-7"
               >
                 <path fill="currentColor" d="M3 20v-6l8-2l-8-2V4l19 8z" />
               </svg>

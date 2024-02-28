@@ -15,7 +15,7 @@ import {
   updateUserTwitterModel,
   upsertWatchListModel,
 } from "../models/user";
-import { IUser } from "../utils/interfaces";
+import { IInitialUser, IUser } from "../utils/interfaces";
 
 // Create
 
@@ -34,7 +34,7 @@ export const getUserService = async (address: string): Promise<IUser | null> => 
   return user;
 };
 
-export const getWatchlistService = async (address: string): Promise<IUser[]> => {
+export const getWatchlistService = async (address: string): Promise<IInitialUser[]> => {
   const users = await getWatchListModel(address);
   return users;
 };
@@ -72,12 +72,8 @@ export const updateUserService = async (
   }
 };
 
-export const updateWatchlistService = async (
-  address: string,
-  watch_user_id: number,
-  register: boolean,
-): Promise<boolean> => {
-  const watchList = await upsertWatchListModel(address, watch_user_id, register);
+export const updateWatchlistService = async (address: string, watchAddress: string): Promise<boolean> => {
+  const watchList = await upsertWatchListModel(address, watchAddress);
   if (watchList) {
     return true;
   }

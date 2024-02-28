@@ -81,6 +81,24 @@ export interface IMessage {
   text: string;
 }
 
+export interface IUserMessage {
+  User: {
+    name: string;
+    icon: string;
+    key_price: number;
+  };
+  Messages: {
+    User: {
+      id: number;
+      name: string;
+      icon: string;
+      address: string;
+    };
+    text: true;
+    created_at: true;
+  }[];
+}
+
 export interface ITrade {
   id: number;
   buy_user_id: number;

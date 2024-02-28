@@ -66,7 +66,6 @@ export const post = async () => {
         created_at: new Date().toISOString(),
       },
     );
-
   }
 
   const generateCodes = generateUniqueRandomCodes(10, 100);

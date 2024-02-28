@@ -31,7 +31,7 @@ const Header = () => {
         userName={userData?.name || ''}
         address={user?.wallet?.address || ''}
       />
-      <header className="fixed inset-x-0 top-0 flex h-24 items-center justify-between bg-black px-6">
+      <header className="fixed inset-x-0 top-0 flex h-24 items-center justify-between bg-black px-6 z-10">
         <div className="flex items-center justify-center space-x-3">
           <Image src="/static/img/banner/long_star_yellow.jpg" alt="long_star" width={170} height={80} />
         </div>

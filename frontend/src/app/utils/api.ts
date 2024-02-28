@@ -1,12 +1,12 @@
 import { baseRequest } from './apiBase'
-import { IUserList, IUser } from './types'
+import { IUser, IUserList } from './types'
 
 // login: wallet
 
 export const createUser = async (address: string): Promise<boolean> => {
   try {
     const result = (await baseRequest('POST', '/user', { address })) as any
-    return result?.data.message === 'success'
+    return result?.data.message === 'Success'
   } catch (err: any) {
     console.error(`👾 createUser: ${JSON.stringify(err)}`)
     return err?.data?.message === 'User already exists'
@@ -19,7 +19,7 @@ export const codeVerify = async (code: string, address: string): Promise<boolean
     code,
     address
   })) as any
-  return result?.data.message === 'success'
+  return result?.data.message === 'Success'
 }
 
 // login: twitter auth link
@@ -40,7 +40,7 @@ export const addUserTwitterProfile = async (
     icon,
     twitterId
   })) as any
-  return result?.data.message === 'success'
+  return result?.data.message === 'Success'
 }
 
 // login: add user biography
@@ -48,7 +48,7 @@ export const addUserBiography = async (address: string, biography: string): Prom
   const result = (await baseRequest('PUT', `/user/${address}`, {
     biography
   })) as any
-  return result?.data.message === 'success'
+  return result?.data.message === 'Success'
 }
 
 // login: change user notification
@@ -56,7 +56,7 @@ export const addUserNotification = async (address: string, notification: boolean
   const result = (await baseRequest('PUT', `/user/${address}`, {
     notification
   })) as any
-  return result?.data.message === 'success'
+  return result?.data.message === 'Success'
 }
 
 // login: change user register status
@@ -64,13 +64,28 @@ export const changeUserRegister = async (address: string): Promise<boolean> => {
   const result = (await baseRequest('PUT', `/user/${address}`, {
     register: true
   })) as any
-  return result?.data.message === 'success'
+  return result?.data.message === 'Success'
 }
 
 // user: get
 export const getUser = async (address: string): Promise<any> => {
   const data = await baseRequest('GET', `/user/${address}`)
   return data.data as IUser
+}
+
+// user: get watchlist
+export const getWatchlist = async (address: string): Promise<any> => {
+  const data = await baseRequest('GET', `/user/watchlists/${address}`)
+  return data.data as IUserList[]
+}
+
+// user: update watchlist
+export const updateWatchlist = async (address: string, watchAddress: string): Promise<boolean> => {
+  const result = (await baseRequest('PUT', '/user/watchlist', {
+    address,
+    watchAddress
+  })) as any
+  return result?.data.message === 'Success'
 }
 
 // trade: post
@@ -109,6 +124,12 @@ export const getTopUsers = async (): Promise<any> => {
   return data.data as IUserList[]
 }
 
+// trade: watchlist
+export const getWatchlistTrade = async (address: string): Promise<any> => {
+  const data = await baseRequest('GET', `/trade/watchlist/${address}`)
+  return data.data.trades as IUserList[]
+}
+
 // holder: get users
 export const getHolders = async (address: string): Promise<any> => {
   const data = await baseRequest('GET', `/user/holder/${address}`)
@@ -131,6 +152,28 @@ export const getCode = async (address: string): Promise<any> => {
 export const getLatestChat = async (): Promise<any> => {
   const data = await baseRequest('GET', `/chat/latest`)
   return data.data as IUserList[]
+}
+
+// chat: user
+export const getUserChat = async (address: string): Promise<any> => {
+  const data = await baseRequest('GET', `/chat/${address}`)
+  return data.data.chat as IUserList[]
+}
+
+// chat: user all chat
+export const getUserChats = async (address: string): Promise<any> => {
+  const data = await baseRequest('GET', `/chat/all/${address}`)
+  return data.data.allChat as IUserList[]
+}
+
+// message: create a message
+export const createMessage = async (address: string, objectAddress: string, text: string): Promise<boolean> => {
+  const result = (await baseRequest('POST', '/message', {
+    address,
+    objectAddress,
+    text
+  })) as any
+  return result?.data.message === 'Success'
 }
 
 // search

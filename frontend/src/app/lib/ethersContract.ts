@@ -1,7 +1,8 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { BigNumber, Contract, ethers } from 'ethers'
+import longStarKeyAbi from '@utils/abi/longStarKey.json'
 import longStarShareAbi from '@utils/abi/longStarShare.json'
-import { LONG_STAR_SHARE_CONTRACT_ADDRESS } from '@utils/config'
+import { LONG_STAR_SHARE_CONTRACT_ADDRESS, NEXT_PUBLIC_LONG_STAR_KEY_CONTRACT_ADDRESS } from '@utils/config'
 
 export const ethersContract = async (provider: Web3Provider) => {
   const signer = provider.getSigner()
@@ -9,7 +10,9 @@ export const ethersContract = async (provider: Web3Provider) => {
 
   const keyNftShareContract = new ethers.Contract(LONG_STAR_SHARE_CONTRACT_ADDRESS, longStarShareAbi, signer)
 
-  return { keyNftShareContract, gasPrice }
+  const keyNftContract = new ethers.Contract(NEXT_PUBLIC_LONG_STAR_KEY_CONTRACT_ADDRESS, longStarKeyAbi, signer)
+
+  return { keyNftShareContract, keyNftContract, gasPrice }
 }
 
 export const estimateGas = async (

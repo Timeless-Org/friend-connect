@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { usePrivy } from '@privy-io/react-auth'
 import { useRouter } from 'next/navigation'
 import Navigation from '@components/common/Navigation'
@@ -11,6 +12,8 @@ export default function LoginStart() {
   const { user } = usePrivy()
   const router = useRouter()
 
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
   const changePrePage = () => {
     router.push('/login/profile')
   }
@@ -20,6 +23,10 @@ export default function LoginStart() {
       await changeUserRegister(user?.wallet?.address)
       router.push('/keys')
     }
+  }
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsChecked(checked) // チェックボックスの状態を更新
   }
 
   return (
@@ -45,12 +52,12 @@ export default function LoginStart() {
 
         <div className="mb-10 flex flex-col px-5">
           <div className="mb-3 flex items-center justify-start space-x-2">
-            <Checkbox id="terms" />
+            <Checkbox id="terms" checked={isChecked} onCheckedChange={handleCheckboxChange} />
             <label htmlFor="terms" className="text-sm">
               Post a Tweet to let your friends know you joined
             </label>
           </div>
-          <OrangeButton text={'Start using the app'} buttonAction={changeKeysPage} />
+          <OrangeButton text={'Start using the app'} buttonAction={changeKeysPage} disabled={!isChecked} />
         </div>
       </div>
     </div>

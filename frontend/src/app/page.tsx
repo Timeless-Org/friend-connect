@@ -52,10 +52,7 @@ export default function Home() {
         </p>
         {isStandalone && <OrangeButton text={'Proceed'} buttonAction={changeNextPage} disabled={!isStandalone} />}
         <div className="flex flex-col mb-10 px-5">
-          <OrangeButton
-            text={"change keys page"}
-            buttonAction={() => router.push("/keys")}
-          />
+          <OrangeButton text={'change keys page'} buttonAction={() => router.push('/keys')} />
         </div>
       </div>
     </main>

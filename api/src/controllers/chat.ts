@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { getLastestChatService, getUserAllChatService, getUserChatService } from "../services/chat";
-import { IAllChat, IChat, IChatWithMessage } from "../utils/interfaces";
+import { IAllChat, IChat } from "../utils/interfaces";
 
 export const getUserChatController = async (req: Request, res: Response) => {
   const { address } = req.params;
   if (!address) return res.status(400).json({ message: "Bad Request" });
 
   try {
-    const chat: IChatWithMessage | null = await getUserChatService(address);
+    const lowerAddress = address.toLowerCase();
+    const chat: IAllChat | null = await getUserChatService(lowerAddress);
     if (chat) {
       res.status(200).json({ chat });
       return;
@@ -23,7 +24,8 @@ export const getUserAllChatController = async (req: Request, res: Response) => {
   if (!address) return res.status(400).json({ message: "Bad Request" });
 
   try {
-    const allChat: IAllChat[] = await getUserAllChatService(address);
+    const lowerAddress = address.toLowerCase();
+    const allChat: IAllChat[] = await getUserAllChatService(lowerAddress);
     if (allChat) {
       res.status(200).json({ allChat });
       return;

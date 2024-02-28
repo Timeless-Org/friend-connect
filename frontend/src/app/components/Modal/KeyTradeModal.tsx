@@ -4,11 +4,12 @@ import { faQuestion, faCircleExclamation } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ConnectedWallet } from '@privy-io/react-auth'
 import Image from 'next/image'
-import { blastSepolia } from '@/lib/chain'
-import { formatEther } from '@/lib/common'
-import { ethersContract } from '@/lib/ethersContract'
-import { createTrade } from '@/utils/api'
-import { IAddress } from '@/utils/types'
+import { blastSepolia } from '@lib/chain'
+import { formatEther } from '@lib/common'
+import { ethersContract } from '@lib/ethersContract'
+import { createTrade } from '@utils/api'
+import { LONG_STAR_SHARE_CONTRACT_ADDRESS } from '@utils/config'
+import { IAddress } from '@utils/types'
 
 interface IKeyTradeModal {
   address: IAddress
@@ -51,18 +52,30 @@ const KeyTradeModal = ({
       if (wallet) {
         await wallet.switchChain(blastSepolia.id)
         const provider = await wallet.getEthersProvider()
-        const { keyNftShareContract } = await ethersContract(provider)
+        const { keyNftShareContract, keyNftContract, gasPrice } = await ethersContract(provider)
         let transaction
         setIsPending(true)
         const buyPrice = await keyNftShareContract.getBuyPrice(_address, 1)
+
+        console.log(`buyPrice: ${buyPrice}`)
+
         if (_isBuy) {
+          const estimateGas = await keyNftShareContract.estimateGas.buyShares(_address, 1, { value: buyPrice })
+
+          const gasLimit = estimateGas.mul(120).div(100) // 20% more than estimated gas
           transaction = await keyNftShareContract.buyShares(_address, 1, {
-            gasLimit: 2000000,
+            gasPrice,
+            gasLimit,
             value: buyPrice
           } as any)
         } else {
+          await keyNftContract.setApprovalForAll(LONG_STAR_SHARE_CONTRACT_ADDRESS, true)
+          const estimateGas = await keyNftShareContract.estimateGas.sellShares(_address, 1)
+
+          const gasLimit = estimateGas.mul(120).div(100) // 20% more than estimated gas
           transaction = await keyNftShareContract.sellShares(_address, 1, {
-            gasLimit: 2000000
+            gasPrice,
+            gasLimit
           } as any)
         }
         await transaction.wait()
@@ -111,7 +124,7 @@ const KeyTradeModal = ({
     <div
       className={`${
         isModalDisplay ? 'flex' : 'hidden'
-      } absolute inset-0 h-screen w-full items-center justify-center bg-gray20`}
+      } absolute inset-0 z-50 h-screen w-full items-center justify-center bg-gray20`}
       onClick={handleContainerClick}
     >
       <div

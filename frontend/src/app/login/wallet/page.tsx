@@ -12,11 +12,14 @@ export default function LoginLoginWallet() {
 
   const changeNextPage = async () => {
     if (user?.wallet && user.wallet.address) {
-      const userData = await getUser(user.wallet.address)
-      if (userData.register) {
-        router.push('/keys')
-        return
-      }
+      try {
+        const userData = await getUser(user.wallet.address)
+        console.log(`userData: ${userData}`)
+        if (userData.register) {
+          router.push('/keys')
+          return
+        }
+      } catch (err) {}
       router.push('/login/code')
       return
     }

@@ -16,7 +16,7 @@ export const createKeyNftController = async (req: Request, res: Response) => {
   try {
     const result: boolean = await createKeyNftService(address);
     if (result) {
-      res.status(200).json({ message: "success" });
+      res.status(200).json({ message: "Success" });
       return;
     }
     res.status(500).json({ message: "Internal Server Error" });

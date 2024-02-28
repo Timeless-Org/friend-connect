@@ -103,32 +103,35 @@ const MenuWindow = ({ isMenuContentOpen, setMenuContentOpen, isLoginUser, wallet
           </div>
           <div className="flex items-center justify-center space-x-3 text-gray60">
             <Link
-              className="flex h-4 items-center justify-center"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
               href={`twitter://user?screen_name=${userData?.twitter_id}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FontAwesomeIcon icon={faTwitter} className="h-4 rounded-full bg-squareGray p-3" />
+              <FontAwesomeIcon icon={faTwitter} className="h-5" />
             </Link>
             <Link
-              className="flex h-4 items-center justify-center"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FontAwesomeIcon icon={faShareNodes} className="h-4 rounded-full bg-squareGray p-3" />
+              <FontAwesomeIcon icon={faShareNodes} className="h-4" />
             </Link>
             <button
               type="button"
-              className="flex h-4 items-center justify-center"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
               onClick={() => setIsEditBioModalDisplay(true)}
             >
-              <FontAwesomeIcon icon={faPen} className="h-4 rounded-full bg-squareGray p-3" />
+              <FontAwesomeIcon icon={faPen} className="h-4" />
             </button>
-            <FontAwesomeIcon
-              icon={faMessage}
-              className={`${isLoginUser ? 'hidden' : 'block'} h-4 rounded-full bg-squareGray p-3`}
-            />
+            <button
+              type="button"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
+              onClick={() => setIsEditBioModalDisplay(true)}
+            >
+              <FontAwesomeIcon icon={faMessage} className={`${isLoginUser ? 'hidden' : 'block'} h-4`} />
+            </button>
           </div>
         </div>
         <div className="mt-4 inline-flex items-center justify-start space-x-3">

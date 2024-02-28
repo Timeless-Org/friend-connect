@@ -19,9 +19,9 @@ const GlobalTab = () => {
     <div className=" mx-3 flex flex-col items-center justify-center">
       {userInfo.map((user, index) => (
         <Trade
+          key={index}
           tradeUserAddress={user.Buyer.address}
           objectUserAddress={user.Seller.address}
-          key={index}
           tradeUser={user.Buyer.icon}
           objectUser={user.Seller.icon}
           tradeUserName={user.Buyer.name}

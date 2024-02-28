@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
-import { faXmark, faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { faCircleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { usePrivy } from '@privy-io/react-auth'
 import { ethers } from 'ethers'
@@ -35,7 +35,7 @@ const WithdrawModal = ({ isModalDisplay, closeModal }: IWithdrawModal) => {
       if (!toAddress || !price) throw new Error('Invalid input')
       setTxStatus('pending')
       await sendTransaction(unsignedTx, uiConfig)
-      setTxStatus('success')
+      setTxStatus('Success')
       setTimeout(() => {
         closeModal()
         setToAddress('0x')
@@ -61,7 +61,7 @@ const WithdrawModal = ({ isModalDisplay, closeModal }: IWithdrawModal) => {
           <FontAwesomeIcon icon={faXmark} className="size-4 rounded-full bg-squareGray p-3" />
         </button>
         <div className="absolute inset-0  z-40 mt-6 inline-flex size-full flex-col items-center justify-center">
-          {txStatus === 'success' ? (
+          {txStatus === 'Success' ? (
             <FontAwesomeIcon icon={faCircleCheck} className="size-20 text-gray60" />
           ) : txStatus === 'failed' ? (
             <div className="inline-flex flex-col items-center justify-center space-y-6">

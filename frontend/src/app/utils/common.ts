@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow, format } from 'date-fns'
 
 export const copyClipboard = async (text: string) => {
   try {
@@ -18,4 +18,12 @@ export const getTimeAgo = (date: Date) => {
   const dateToCompare = date instanceof Date ? date : new Date(date)
 
   return formatDistanceToNow(dateToCompare, { addSuffix: true })
+}
+
+export const formatTime = (date: Date): string => {
+  try {
+    return format(date, 'HH:mm')
+  } catch (err) {
+    return ''
+  }
 }

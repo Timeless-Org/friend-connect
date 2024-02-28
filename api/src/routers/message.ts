@@ -3,6 +3,6 @@ import { createMessageController } from "../controllers/message";
 
 const routers = router.Router();
 
-routers.post("/message", createMessageController);
+routers.post("/", createMessageController);
 
 export default routers;
