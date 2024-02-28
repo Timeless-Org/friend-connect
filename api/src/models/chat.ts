@@ -1,5 +1,5 @@
 import { prisma } from "../app";
-import { IAllChat, IChat, IChatWithMessage } from "../utils/interfaces";
+import { IAllChat, IChat } from "../utils/interfaces";
 
 // Chat
 
@@ -20,7 +20,7 @@ export const createChatModel = async (address: string): Promise<boolean> => {
   return false;
 };
 
-export const getChatModel = async (address: string): Promise<IChatWithMessage | null> => {
+export const getChatModel = async (address: string): Promise<IAllChat | null> => {
   const user = await prisma.user.findUnique({
     where: {
       address: address,
@@ -32,34 +32,73 @@ export const getChatModel = async (address: string): Promise<IChatWithMessage | 
       user_id: user?.id,
     },
     include: {
-      Messages: true,
-      User: true,
+      User: {
+        select: {
+          name: true,
+          address: true,
+          icon: true,
+          key_price: true,
+        },
+      },
+      Messages: {
+        select: {
+          User: true,
+          text: true,
+          created_at: true,
+        },
+      },
     },
   });
 
-  if (!chat || !chat.User) {
+  if (!chat) {
     return null;
   }
   return chat;
 };
 
 export const getUserAllChatModel = async (address: string): Promise<IAllChat[]> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      address: address,
+    },
+  });
+  const holdObjectsUsers = await prisma.holder.findMany({
+    where: {
+      holder_id: user.id,
+    },
+    select: {
+      object_id: true,
+    },
+  });
+  console.log(`holdObjectsUsers: ${JSON.stringify(holdObjectsUsers)}`);
+  const holdObjectIds = holdObjectsUsers.map((user) => user.object_id);
+  console.log(`holdObjectIds: ${holdObjectIds}`);
   const chat = await prisma.chat.findMany({
     where: {
       User: {
-        address: address,
+        id: {
+          in: holdObjectIds,
+        },
       },
     },
     include: {
       User: {
         select: {
           name: true,
+          address: true,
           icon: true,
           key_price: true,
         },
       },
+      Messages: {
+        orderBy: {
+          created_at: "desc",
+        },
+        take: 1,
+      },
     },
   });
+  console.log(`chat: ${JSON.stringify(chat)}`);
   return chat;
 };
 

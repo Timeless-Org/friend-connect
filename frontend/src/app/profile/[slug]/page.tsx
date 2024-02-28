@@ -1,22 +1,22 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faMessage } from '@fortawesome/free-regular-svg-icons'
-import { faShareNodes, faAngleLeft, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faMessage, faBookmark } from '@fortawesome/free-regular-svg-icons'
+import { faShareNodes, faAngleLeft, faPen, faBookmark as faBookmarkRegister } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useWallets, usePrivy } from '@privy-io/react-auth'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { blastSepolia } from '@/lib/chain'
-import { ethersContract } from '@/lib/ethersContract'
-import { getUser } from '@/utils/api'
-import { SHARE_TEXT } from '@/utils/config'
-import { IAddress, IUser } from '@/utils/types'
 import EditBioModal from '@components/Modal/EditBioModal'
 import KeyTradeModal from '@components/Modal/KeyTradeModal'
 import SideMenuTab from '@components/SideMenu/SideMenuTab'
+import { blastSepolia } from '@lib/chain'
+import { ethersContract } from '@lib/ethersContract'
+import { getUser, getWatchlist, updateWatchlist } from '@utils/api'
+import { SHARE_TEXT } from '@utils/config'
+import { IAddress, IUser, IUserAddress } from '@utils/types'
 
 const Profile = () => {
   const { user } = usePrivy()
@@ -25,6 +25,7 @@ const Profile = () => {
   const router = useRouter()
   const pathname = usePathname()
   const address = String(pathname.split('/')[2])
+  const currentAddress = user?.wallet?.address
 
   const [isKeyTradeModalDisplay, setIsKeyTradeModalDisplay] = useState<boolean>(false)
   const [isEditBioModalDisplay, setIsEditBioModalDisplay] = useState<boolean>(false)
@@ -33,6 +34,7 @@ const Profile = () => {
   const [holderAmount, setHolderAmount] = useState<number>(0)
   const [holdingAmount, setHoldingAmount] = useState<number>(0)
   const [isPendingHolder, setIsPendingHolder] = useState<boolean>(false)
+  const [isRegisterBookmark, setIsRegisterBookmark] = useState<boolean>(false)
 
   const openTradeModal = async (isBuy: boolean) => {
     setIsBuy(isBuy)
@@ -44,6 +46,28 @@ const Profile = () => {
     setIsEditBioModalDisplay(false)
   }
 
+  const getWatchlistUserData = useCallback(
+    async (_address: string) => {
+      if (currentAddress) {
+        const watchlistUserData = await getWatchlist(currentAddress)
+        const isAddressRegister = watchlistUserData.some((userAddress: IUserAddress) => {
+          return userAddress.address.toLowerCase() === _address.toLowerCase()
+        })
+        setIsRegisterBookmark(isAddressRegister)
+      }
+    },
+    [currentAddress]
+  )
+
+  const updateBookmark = async () => {
+    try {
+      if (currentAddress) {
+        await updateWatchlist(currentAddress, address)
+        await getWatchlistUserData(address)
+      }
+    } catch (e) {}
+  }
+
   useEffect(() => {
     const getUserData = async (address: string) => {
       const user = await getUser(address)
@@ -51,8 +75,9 @@ const Profile = () => {
     }
     if (address && !userData) {
       getUserData(address)
+      getWatchlistUserData(address)
     }
-  }, [address, user, userData])
+  }, [address, getWatchlistUserData, user, userData])
 
   useEffect(() => {
     const getHolder = async () => {
@@ -69,13 +94,13 @@ const Profile = () => {
       } catch (e) {}
     }
 
-    if (wallet && holdingAmount === 0 && holderAmount === 0) getHolder()
-  }, [address, holderAmount, holdingAmount, wallet])
+    if (wallet) getHolder()
+  }, [address, holderAmount, holdingAmount, wallet, isKeyTradeModalDisplay])
 
   return (
     <div className="fixed left-0 top-0 z-50 size-full bg-white transition-transform duration-300">
       <KeyTradeModal
-        address={address as IAddress}
+        address={currentAddress as IAddress}
         shareObject={address as IAddress}
         isModalDisplay={isKeyTradeModalDisplay}
         closeModal={closeModal}
@@ -100,32 +125,48 @@ const Profile = () => {
           </div>
           <div className="flex items-center justify-center space-x-3 text-gray60">
             <Link
-              className="flex h-4 items-center justify-center"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
               href={`twitter://user?screen_name=${userData?.twitter_id}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FontAwesomeIcon icon={faTwitter} className="h-4 rounded-full bg-squareGray p-3" />
+              <FontAwesomeIcon icon={faTwitter} className="h-5" />
             </Link>
             <Link
-              className="flex h-4 items-center justify-center"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FontAwesomeIcon icon={faShareNodes} className="h-4 rounded-full bg-squareGray p-3" />
+              <FontAwesomeIcon icon={faShareNodes} className="h-5" />
             </Link>
             <button
               type="button"
-              className="flex h-4 items-center justify-center"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
+              onClick={
+                currentAddress?.toLowerCase() === userData?.address.toLowerCase()
+                  ? () => setIsEditBioModalDisplay(true)
+                  : () => updateBookmark()
+              }
+            >
+              <FontAwesomeIcon
+                icon={
+                  currentAddress?.toLowerCase() === userData?.address.toLowerCase()
+                    ? faPen
+                    : isRegisterBookmark
+                      ? faBookmarkRegister
+                      : faBookmark
+                }
+                className="h-5"
+              />
+            </button>
+            <button
+              type="button"
+              className="flex w-10 h-10 items-center justify-center p-2 rounded-full bg-squareGray"
               onClick={() => setIsEditBioModalDisplay(true)}
             >
-              <FontAwesomeIcon icon={faPen} className="h-4 rounded-full bg-squareGray p-3" />
+              <FontAwesomeIcon icon={faMessage} className={`${userData?.register ? 'hidden' : 'block'} h-5`} />
             </button>
-            <FontAwesomeIcon
-              icon={faMessage}
-              className={`${userData?.register ? 'hidden' : 'block'} h-4 rounded-full bg-squareGray p-3`}
-            />
           </div>
         </div>
         <div className="mt-4 inline-flex items-center justify-start space-x-3">

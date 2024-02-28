@@ -5,6 +5,7 @@ import {
   getHolderTradeService,
   getLatestTrade50Service,
   getUserTradeService,
+  getWatchlistTradeService,
 } from "../services/trade";
 import { ITrade } from "../utils/interfaces";
 
@@ -51,7 +52,8 @@ export const getHolderTradeController = async (req: Request, res: Response): Pro
 export const getWatchlistTradeController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const trades: ITrade[] = await getHolderTradeService(address);
+    const lowerAddress = address.toLowerCase();
+    const trades: ITrade[] = await getWatchlistTradeService(lowerAddress);
     res.status(200).json({ trades });
   } catch (err) {
     console.error(`👾 getWatchlistTradeController: ${err}`);

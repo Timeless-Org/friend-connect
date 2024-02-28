@@ -10,7 +10,7 @@ export const VerifyCodeController = async (req: Request, res: Response) => {
     const lowerAddress = address.toLowerCase();
     const result = await VerifyCodeService(code, lowerAddress);
     if (result) {
-      res.status(200).json({ message: "success" });
+      res.status(200).json({ message: "Success" });
       return;
     }
     res.status(500).json({ message: "Internal Server Error" });

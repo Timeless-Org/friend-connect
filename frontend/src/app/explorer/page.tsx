@@ -12,12 +12,11 @@ import TrendTab from '@components/explorer/TrendTab'
 import { Input } from '@components/ui/searchInput'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
 
-
 export default function Search() {
   const [word, setWord] = useState<string>('')
   const [tab, setTab] = useState<string>('top')
   const search = async (_word: string) => {
-    setTab("search")
+    setTab('search')
   }
   const onTabChange = (value: string) => {
     setTab(value)

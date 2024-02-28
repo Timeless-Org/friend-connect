@@ -1,8 +1,8 @@
 import { getChatModel, getLastestChatModel, getUserAllChatModel } from "../models/chat";
-import { IAllChat, IChat, IChatWithMessage } from "../utils/interfaces";
+import { IAllChat, IChat } from "../utils/interfaces";
 
-export const getUserChatService = async (address: string): Promise<IChatWithMessage | null> => {
-  const chat: IChatWithMessage | null = await getChatModel(address);
+export const getUserChatService = async (address: string): Promise<IAllChat | null> => {
+  const chat: IAllChat | null = await getChatModel(address);
   return chat;
 };
 

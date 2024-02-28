@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import {
-  getHolderService,
   createUserService,
+  getCodeService,
+  getHolderService,
   getTopPriceUsersService,
   getUserService,
   getWatchlistService,
   searchUserService,
   updateNotificationService,
-  getCodeService,
   updateUserService,
   updateWatchlistService,
 } from "../services/user";
-import { IUser } from "../utils/interfaces";
+import { IInitialUser, IUser } from "../utils/interfaces";
 
 export const createUserController = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -24,7 +24,7 @@ export const createUserController = async (req: Request, res: Response): Promise
     }
     const result: boolean = await createUserService(lowerAddress);
     if (result) {
-      res.status(200).json({ message: "success" });
+      res.status(200).json({ message: "Success" });
       return;
     }
     res.status(500).json({ message: "Internal Server Error" });
@@ -64,7 +64,7 @@ export const updateUserController = async (req: Request, res: Response): Promise
       register,
     );
     if (result) {
-      res.status(200).json({ message: "success" });
+      res.status(200).json({ message: "Success" });
       return;
     }
     res.status(404).json({ message: "User not found" });
@@ -77,7 +77,8 @@ export const updateUserController = async (req: Request, res: Response): Promise
 export const getWatchlistController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { address } = req.params;
-    const user: IUser[] = await getWatchlistService(address);
+    const lowerAddress: string = address.toLowerCase();
+    const user: IInitialUser[] = await getWatchlistService(lowerAddress);
     if (user) {
       res.status(200).json(user);
       return;
@@ -91,9 +92,10 @@ export const getWatchlistController = async (req: Request, res: Response): Promi
 
 export const updateWatchlistController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { address } = req.params;
-    const { watchAddress, register } = req.body;
-    const result: boolean = await updateWatchlistService(address, watchAddress, register);
+    const { address, watchAddress } = req.body;
+    const lowerAddress: string = address.toLowerCase();
+    const lowerWatchAddress: string = watchAddress.toLowerCase();
+    const result: boolean = await updateWatchlistService(lowerAddress, lowerWatchAddress);
     if (result) {
       res.status(200).json({ message: "Success" });
       return;

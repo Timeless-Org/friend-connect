@@ -1,6 +1,6 @@
 import { IUser } from '@/utils/types'
 import HoldersTab from '@components/SideMenu/HoldersTab'
-// import WatchListTab from "@components/SideMenu/WatchListTab";
+import WatchListTab from '@components/SideMenu/WatchListTab'
 import YouTab from '@components/keys/YouTab'
 import YourKeyTab from '@components/keys/YourKeyTab'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/sideMenuTabs'
@@ -28,9 +28,9 @@ const SideMenuTab = ({ address, isMenuContentOpen }: ISideMenuTab) => {
           <TabsTrigger value="holding" className="text-lg">
             Holding
           </TabsTrigger>
-          {/* <TabsTrigger value="watchlist" className="text-lg">
+          <TabsTrigger value="watchlist" className="text-lg">
             Watchlist
-          </TabsTrigger> */}
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="keys" className="mx-3 mt-6">
           <YouTab address={address} />
@@ -44,9 +44,9 @@ const SideMenuTab = ({ address, isMenuContentOpen }: ISideMenuTab) => {
         <TabsContent value="holding" className="mx-3 mt-6">
           <HoldersTab address={address} />
         </TabsContent>
-        {/* <TabsContent value="watchlist" className="mt-6 mx-3">
-          <WatchListTab />
-        </TabsContent> */}
+        <TabsContent value="watchlist" className="mt-6 mx-3">
+          <WatchListTab address={address} />
+        </TabsContent>
       </Tabs>
     </div>
   )

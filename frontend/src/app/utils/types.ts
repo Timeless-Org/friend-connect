@@ -23,6 +23,10 @@ export interface IUser {
   created_at: Date
 }
 
+export interface IUserAddress {
+  address: string
+}
+
 export interface IUserInfo {
   objectUserIcon?: string
   objectUserName?: string
@@ -60,21 +64,38 @@ export interface IUserList {
 
 // Chat
 export interface IChat {
-  userIcon: string
-  userName: string
-  timestamp: string
-  latestMessage: string
-  keyPrice: number
-  unReadMessage: number
-  kingMark: boolean
+  created_at: Date
+  User: {
+    name: string
+    icon: string
+    address: string
+    key_price: number
+  }
+  Messages: IMessage[]
 }
 
 // Message
 export interface IMessage {
-  userIcon: string
-  userName: string
-  timestamp: string
-  message: string
+  text: string
+  created_at: Date
+}
+
+export interface IUserMessage {
+  User: {
+    name: string
+    icon: string
+    key_price: number
+  }
+  Messages: {
+    User: {
+      id: number
+      name: string
+      icon: string
+      address: string
+    }
+    text: true
+    created_at: true
+  }[]
 }
 
 // Search

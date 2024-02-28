@@ -185,43 +185,56 @@ export const updateInitialUserModel = async (
 
 // WatchList
 
-export const upsertWatchListModel = async (
-  address: string,
-  watchUserId: number,
-  register: boolean,
-): Promise<IWatchList> => {
+export const upsertWatchListModel = async (address: string, watchAddress: string): Promise<IWatchList> => {
   const user = await prisma.user.findUnique({
     where: {
       address,
     },
   });
+  const watchUser = await prisma.user.findUnique({
+    where: {
+      address: watchAddress,
+    },
+  });
   if (!user) {
     throw new Error("User not found");
   }
+  const currentWatchData = await prisma.watchlist.findUnique({
+    where: {
+      user_id_watch_user_id: {
+        user_id: user.id,
+        watch_user_id: watchUser.id,
+      },
+    },
+  });
   const watchList = await prisma.watchlist.upsert({
     where: {
       user_id_watch_user_id: {
         user_id: user.id,
-        watch_user_id: watchUserId,
+        watch_user_id: watchUser.id,
       },
     },
     update: {
-      register,
+      register: currentWatchData ? !currentWatchData.register : true,
     },
     create: {
       user_id: user.id,
-      watch_user_id: watchUserId,
+      watch_user_id: watchUser.id,
     },
   });
   return watchList;
 };
 
-export const getWatchListModel = async (address: string): Promise<IUser[]> => {
+export const getWatchListModel = async (address: string): Promise<IInitialUser[]> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      address,
+    },
+  });
   const watchlists = await prisma.watchlist.findMany({
     where: {
-      User: {
-        address,
-      },
+      user_id: user.id,
+      register: true,
     },
   });
   const users = await prisma.user.findMany({

@@ -30,13 +30,11 @@ export const deleteHolderModel = async (buyAddress: string, objectAddress: strin
       address: buyAddress,
     },
   });
-  console.log(`holder: ${JSON.stringify(holder)}`);
   const object = await prisma.user.findUnique({
     where: {
       address: objectAddress,
     },
   });
-  console.log(`object: ${JSON.stringify(object)}`);
   if (!holder || !object) throw new Error("User not found");
   const deleteHolder = await prisma.holder.findFirst({
     where: {

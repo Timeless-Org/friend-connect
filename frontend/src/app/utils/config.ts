@@ -5,6 +5,8 @@ export const PRIVY_APP_ID: string = process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''
 export const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_BASE_URL || ''
 export const LONG_STAR_SHARE_CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_LONG_STAR_SHARE_CONTRACT_ADDRESS ||
   '') as IAddress
+export const NEXT_PUBLIC_LONG_STAR_KEY_CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_LONG_STAR_KEY_CONTRACT_ADDRESS ||
+  '') as IAddress
 
 // Metadata
 export const SITE_NAME = 'Long Star'

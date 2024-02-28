@@ -66,13 +66,9 @@ export default function AirDrop() {
             <p>{code}</p>
             <Copy
               copyText={code}
-              content={
-                <FontAwesomeIcon
-                  icon={isCopied ? faCheck : faCopy}
-                  className="h-3 rounded-full bg-squareGray p-2 text-gray60"
-                />
-              }
+              content={<FontAwesomeIcon icon={isCopied ? faCheck : faCopy} className="h-4 text-gray60" />}
               setIsCopied={setIsCopied}
+              className="w-8 h-8 p-2 rounded-full bg-squareGray flex items-center justify-center"
             />
           </div>
         </div>
